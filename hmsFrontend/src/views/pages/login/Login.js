@@ -23,6 +23,7 @@ const Login = () => {
     email: '',
     password: '',
   })
+  const [validationErrors, setValidationErrors] = useState({})
   const navigate = useNavigate()
 
   const handleChange = (e) => {
@@ -36,14 +37,23 @@ const Login = () => {
     e.preventDefault()
     console.log(formData)
     axios
-      .post('http://localhost:8000/api/sendData', formData)
+      .post('http://localhost:8000/api/login', formData)
       .then((res) => {
-        console.log(res)
+        if (res.data.validationError) {
+          setValidationErrors(res.data.validationError)
+          setTimeout(() => setValidationErrors({}), 3000)
+        } else if (res.data.status === 401) {
+          console.log(res.data.message)
+        } else if (res.data.status === 200) {
+          console.log(res.data.message)
+          localStorage.setItem('login-token', res.data.token)
+          localStorage.setItem('userData', JSON.stringify(res.data.userData))
+          navigate('/dashboard/dashboard')
+        }
       })
       .catch((err) => {
         console.log(err)
       })
-    // navigate('/dashboard/dashboard')
   }
 
   return (
@@ -69,6 +79,7 @@ const Login = () => {
                         name="email"
                       />
                     </CInputGroup>
+                    {validationErrors && <p style={{ color: 'red' }}>{validationErrors.email}</p>}
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
                         <CIcon icon={cilLockLocked} />
@@ -81,6 +92,9 @@ const Login = () => {
                         onChange={handleChange}
                       />
                     </CInputGroup>
+                    {validationErrors && (
+                      <p style={{ color: 'red' }}>{validationErrors.password}</p>
+                    )}
                     <CRow>
                       <CCol xs={6}>
                         <CButton type="submit" color="primary" className="px-4">

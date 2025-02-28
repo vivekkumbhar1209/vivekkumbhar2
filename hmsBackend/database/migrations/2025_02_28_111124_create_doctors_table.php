@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('doctors', function (Blueprint $table) {
             $table->bigIncrements('doctorID');
             $table->unsignedBigInteger('userID');
-            $table->foreign('userID')->references('userID')->on('users')->onDelete('cascade');
+            $table->foreign('userID')->references('id')->on('users')->onDelete('cascade');
             $table->string('specialization');
             $table->integer('experience');
             $table->unsignedBigInteger('departmentID');
