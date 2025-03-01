@@ -35,6 +35,8 @@ const AppHeader = () => {
   const dispatch = useDispatch()
   const sidebarShow = useSelector((state) => state.sidebarShow)
 
+  const userName = JSON.parse(localStorage.getItem('userData')).name.split(' ')[0]
+
   useEffect(() => {
     document.addEventListener('scroll', () => {
       headerRef.current &&
@@ -54,7 +56,7 @@ const AppHeader = () => {
         <CHeaderNav className="d-none d-md-flex">
           <CNavItem>
             <CNavLink to="/dashboard" as={NavLink}>
-              Dashboard
+              Welcome {userName}
             </CNavLink>
           </CNavItem>
         </CHeaderNav>
