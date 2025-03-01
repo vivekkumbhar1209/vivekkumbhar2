@@ -46,9 +46,9 @@ const AppSidebar = () => {
       }}
     >
       <CSidebarHeader className="border-bottom">
-        <CSidebarBrand to="/" style={{ display: 'flex', gap: '10px' }}>
+        <CSidebarBrand to="/" style={{ display: 'flex', gap: '10px', textDecoration: 'none' }}>
           <CIcon customClassName="sidebar-brand-full" icon={cilMedicalCross} height={25} />
-          <h6>HMS</h6>
+          <h3>HMS</h3>
         </CSidebarBrand>
         <CCloseButton
           className="d-lg-none"
