@@ -1,6 +1,5 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-
 import {
   CCloseButton,
   CSidebar,
@@ -10,19 +9,30 @@ import {
   CSidebarToggler,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-
 import { AppSidebarNav } from './AppSidebarNav'
+import { cilMedicalCross } from '@coreui/icons'
 
-import { logo } from 'src/assets/brand/logo'
-import { sygnet } from 'src/assets/brand/sygnet'
-
-// sidebar nav config
-import navigation from '../_nav'
+// this is the side bar navigation link list
+import adminLinks from '../_Admin_nav'
+import receptionistLinks from '../_Receptionist_nav'
+import doctorLinks from '../_Doctor_nav'
 
 const AppSidebar = () => {
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
   const sidebarShow = useSelector((state) => state.sidebarShow)
+
+  //fetch the role of logged in user from local storage
+  const role = JSON.parse(localStorage.getItem('userData')).role
+  var links = null
+
+  if (role === 'Admin') {
+    links = adminLinks
+  } else if (role === 'Doctor') {
+    links = doctorLinks
+  } else if (role === 'Receptionist') {
+    links = receptionistLinks
+  }
 
   return (
     <CSidebar
@@ -36,9 +46,9 @@ const AppSidebar = () => {
       }}
     >
       <CSidebarHeader className="border-bottom">
-        <CSidebarBrand to="/">
-          <CIcon customClassName="sidebar-brand-full" icon={logo} height={32} />
-          <CIcon customClassName="sidebar-brand-narrow" icon={sygnet} height={32} />
+        <CSidebarBrand to="/" style={{ display: 'flex', gap: '10px' }}>
+          <CIcon customClassName="sidebar-brand-full" icon={cilMedicalCross} height={25} />
+          <h6>HMS</h6>
         </CSidebarBrand>
         <CCloseButton
           className="d-lg-none"
@@ -46,7 +56,10 @@ const AppSidebar = () => {
           onClick={() => dispatch({ type: 'set', sidebarShow: false })}
         />
       </CSidebarHeader>
-      <AppSidebarNav items={navigation} />
+
+      {/* this is the line where sidebar links are given as props to AppSideBarNav component */}
+      <AppSidebarNav items={links} />
+
       <CSidebarFooter className="border-top d-none d-lg-flex">
         <CSidebarToggler
           onClick={() => dispatch({ type: 'set', sidebarUnfoldable: !unfoldable })}
