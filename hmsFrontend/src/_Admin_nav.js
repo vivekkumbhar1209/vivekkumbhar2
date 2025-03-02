@@ -1,7 +1,6 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
 import {
-  cilCursor,
   cilSpeedometer,
   cilUser,
   cilUserFollow,
@@ -14,6 +13,8 @@ import {
   cilApplicationsSettings,
   cilMedicalCross,
   cilList,
+  cilGraph,
+  cilChartLine,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -123,6 +124,28 @@ const _nav = [
         name: 'Manage Medicines',
         to: '/dashboard/manageMedicines',
         icon: <CIcon icon={cilList} customClassName="nav-icon" />,
+      },
+    ],
+  },
+  {
+    component: CNavTitle,
+    name: 'Statistics',
+  },
+  {
+    component: CNavGroup,
+    name: 'HMS Statistics',
+    to: '/HMS_Components',
+    icon: <CIcon icon={cilGraph} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'View Statistics',
+        to: '/dashboard/addMedicines',
+        icon: <CIcon icon={cilChartLine} customClassName="nav-icon" />,
+        badge: {
+          color: 'danger',
+          text: 'Pro',
+        },
       },
     ],
   },
