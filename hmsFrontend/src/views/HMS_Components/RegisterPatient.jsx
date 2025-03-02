@@ -1,7 +1,7 @@
 import React from 'react'
 
 const RegisterPatient = () => {
-  return <div>Register patient component</div>
+  return <div>RegisterPatient</div>
 }
 
 export default RegisterPatient
