@@ -8,7 +8,7 @@ Backend Setup:-
 4. In .env file uncomment the database lines.
 5. php artisan key:generate - generate application key
 6. php artisan migrate - migrate all the table into mysql
-7. php artisan db:seed UsersTableSeeder - run this to insert demo users of the system in the user table.
+7. php artisan db:seed - run this to insert demo data the database.
 8. php artisan serve - start the development server
 
 Frontend Setup
