@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             DepartmentTableSeeder::class,
             DiseaseTableSeeder::class,
+            PatientTableSeeder::class,
         ]);
     }
 }
