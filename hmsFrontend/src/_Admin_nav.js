@@ -31,7 +31,7 @@ const _nav = [
   {
     component: CNavGroup,
     name: 'Patients',
-    to: '/base',
+    to: '/HMS_Components',
     icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
     items: [
       {
@@ -43,7 +43,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Search Patient',
-        to: '/dashboard/base/breadcrumbs',
+        to: '/dashboard/searchPatient',
         icon: <CIcon icon={cilMagnifyingGlass} customClassName="nav-icon" />,
       },
     ],
@@ -55,25 +55,25 @@ const _nav = [
   {
     component: CNavGroup,
     name: 'Users',
-    to: '/buttons',
+    to: '/HMS_Components',
     icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
         name: 'Add User',
-        to: '/buttons/buttons',
+        to: '/dashboard/addUser',
         icon: <CIcon icon={cilUserFollow} customClassName="nav-icon" />,
       },
       {
         component: CNavItem,
         name: 'Update User Details',
-        to: '/buttons/button-groups',
+        to: '/dashboard/updateUserDetails',
         icon: <CIcon icon={cilUserPlus} customClassName="nav-icon" />,
       },
       {
         component: CNavItem,
         name: 'View All Users',
-        to: '/buttons/button-groups',
+        to: '/dashboard/viewAllUsers',
         icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
       },
     ],
@@ -85,19 +85,19 @@ const _nav = [
   {
     component: CNavGroup,
     name: 'Department',
-    to: '/buttons',
+    to: '/HMS_Components',
     icon: <CIcon icon={cilBuilding} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
-        name: 'New Department',
-        to: '/buttons/buttons',
+        name: 'Add Department',
+        to: '/dashboard/newDepartment',
         icon: <CIcon icon={cilLibraryAdd} customClassName="nav-icon" />,
       },
       {
         component: CNavItem,
         name: 'Manage Department',
-        to: '/buttons/button-groups',
+        to: '/dashboard/manageDepartment',
         icon: <CIcon icon={cilApplicationsSettings} customClassName="nav-icon" />,
       },
     ],
@@ -109,19 +109,19 @@ const _nav = [
   {
     component: CNavGroup,
     name: 'Medicines',
-    to: '/buttons',
+    to: '/HMS_Components',
     icon: <CIcon icon={cilMedicalCross} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
-        name: 'Manage Medicines',
-        to: '/buttons/buttons',
+        name: 'Add Medicines',
+        to: '/dashboard/addMedicines',
         icon: <CIcon icon={cilApplicationsSettings} customClassName="nav-icon" />,
       },
       {
         component: CNavItem,
-        name: 'View Medicines',
-        to: '/buttons/buttons',
+        name: 'Manage Medicines',
+        to: '/dashboard/manageMedicines',
         icon: <CIcon icon={cilList} customClassName="nav-icon" />,
       },
     ],

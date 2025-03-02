@@ -51,17 +51,65 @@ const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
-const RegisterPatient = React.lazy(
-  () => import('./views/hmsDashboardComponents/registerPatient/RegisterPatient'),
-)
+const RegisterPatient = React.lazy(() => import('./views/HMS_Components/RegisterPatient'))
+const AddMedicines = React.lazy(() => import('./views/HMS_Components/AddMedicines'))
+const AddUser = React.lazy(() => import('./views/HMS_Components/AddUser'))
+const ManageDepartment = React.lazy(() => import('./views/HMS_Components/ManageDepartment'))
+const ManageMedicines = React.lazy(() => import('./views/HMS_Components/ManageMedicines'))
+const NewDepartment = React.lazy(() => import('./views/HMS_Components/NewDepartment'))
+const SearchPatient = React.lazy(() => import('./views/HMS_Components/SearchPatient'))
+const UpdateUserDetails = React.lazy(() => import('./views/HMS_Components/UpdateUserDetails'))
+const ViewAllUsers = React.lazy(() => import('./views/HMS_Components/ViewAllUsers'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
+
   {
     path: '/registerPatient',
     name: 'Register Patient',
     element: RegisterPatient,
+  },
+
+  {
+    path: '/addMedicines',
+    name: 'Add Medicines',
+    element: AddMedicines,
+  },
+  {
+    path: '/addUser',
+    name: 'Add User',
+    element: AddUser,
+  },
+  {
+    path: '/manageDepartment',
+    name: 'Manage Department',
+    element: ManageDepartment,
+  },
+  {
+    path: '/manageMedicines',
+    name: 'Manage Medicines',
+    element: ManageMedicines,
+  },
+  {
+    path: '/newDepartment',
+    name: 'New Department',
+    element: NewDepartment,
+  },
+  {
+    path: '/searchPatient',
+    name: 'Search Patient',
+    element: SearchPatient,
+  },
+  {
+    path: '/updateUserDetails',
+    name: 'Update User Details',
+    element: UpdateUserDetails,
+  },
+  {
+    path: '/viewAllUsers',
+    name: 'View All Users',
+    element: ViewAllUsers,
   },
 
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
