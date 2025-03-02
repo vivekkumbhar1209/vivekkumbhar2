@@ -50,6 +50,9 @@ const AppHeaderDropdown = () => {
         <CDropdownItem>
           <CIcon icon={cilSettings} className="me-2" />
           Settings
+          <CBadge color="danger" className="ms-2">
+            Pro
+          </CBadge>
         </CDropdownItem>
         <CDropdownDivider />
         <CDropdownItem onClick={handleLogout}>
