@@ -34,18 +34,18 @@ const SearchPatient = () => {
   const [currentPage, setCurrentPage] = useState(0)
   const itemPerPage = 5
 
-  useEffect(() => {
-    var token = localStorage.getItem('login-token')
-    axios
-      .get('http://127.0.0.1:8000/api/patientData', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => {
-        setData(res.data.data)
-      })
-  }, [])
+  // useEffect(() => {
+  //   var token = localStorage.getItem('login-token')
+  //   axios
+  //     .get('http://127.0.0.1:8000/api/patientData', {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       setData(res.data.data)
+  //     })
+  // }, [])
 
   const handleSearchButtonClick = () => {
     console.log('search button clicked')
@@ -100,7 +100,9 @@ const SearchPatient = () => {
             </div>
             <div style={{ width: '10%', margin: '0px 5px' }}>
               <CFormSelect className="text-start" aria-label="Default select example">
-                <option color="secondary">Sort By</option>
+                <option color="secondary" defaultChecked>
+                  Sort By
+                </option>
                 <option value="1">Name</option>
                 <option value="2">Phone</option>
                 <option value="3">Email</option>
