@@ -9,13 +9,13 @@ class Department extends Model
 {
     use HasFactory;
 
-    protected $table = 'departments'; 
-    protected $primaryKey = 'departmentID'; 
 
-    public $incrementing = true;
-    public $timestamps = false;
-    protected $fillable = [
-        'department_name',
-        'hod'
-    ];
+    // Define the table name (optional if Laravel follows naming convention)
+    protected $table = 'departments';
+
+    // Define the primary key (optional if it's "id")
+    protected $primaryKey = 'departmentID';
+
+    // Allow mass assignment for these fields
+    protected $fillable = ['department_name', 'hod'];
 }
