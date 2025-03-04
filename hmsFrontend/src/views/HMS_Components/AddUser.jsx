@@ -1,7 +1,14 @@
 import React from 'react'
+import AddReceptionistForm from './AddReceptionistForm';//component added
 
-const AddUser = () => {
-  return <div>AddUser</div>
+const AddUser = () =>
+{
+  return(
+    <>
+      <AddReceptionistForm/>
+    </>
+  );
+
 }
 
 export default AddUser
