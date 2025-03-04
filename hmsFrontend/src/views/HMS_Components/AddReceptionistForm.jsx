@@ -59,7 +59,7 @@ const AddReceptionistForm = () => {
             
                 swal.fire({
                   title: "Validation Error",
-                  html: `<ul style="text-align: left;">${errorMessages}</ul>`, // Use `html` instead of `text`
+                  html: `<ul style="text-align: left;">${errorMessages}</ul>`, 
                   icon: "error",
                   confirmButtonText: "Try Again",
                 });
