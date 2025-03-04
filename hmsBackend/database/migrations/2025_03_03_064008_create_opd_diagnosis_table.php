@@ -15,7 +15,8 @@ return new class extends Migration
             $table->bigIncrements('diagnosisID');
             $table->unsignedBigInteger('consultationID');
             $table->foreign('consultationID')->references('consultationID')->on('opd_consultation')->onDelete('cascade');
-            $table->text('diagnosis');
+            $table->unsignedBigInteger('diseaseID');
+            $table->foreign('diseaseID')->references('diseaseID')->on('diseases')->onDelete('cascade');
             $table->text('remark')->nullable();
             $table->timestamps();
         });

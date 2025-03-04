@@ -14,7 +14,7 @@ class DiseaseTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('diseases')->truncate();
+        //DB::table('diseases')->truncate();
 
         $diseases = [
             ['diseaseName' => 'Influenza', 'diseaseDescription' => 'A common viral infection that affects the respiratory system.', 'isActive' => 'Active'],

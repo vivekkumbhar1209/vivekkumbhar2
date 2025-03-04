@@ -14,86 +14,69 @@ import {
   CTableDataCell,
   CFormSelect,
 } from '@coreui/react'
-import { FaSearch, FaSort } from 'react-icons/fa'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import axios from 'axios'
+import { formatDate } from '../../../dateUtility'
+import { FaSearch } from 'react-icons/fa'
 import ReactPaginate from 'react-paginate'
 
-const SearchPatient = () => {
-  // State for storing patient data
-  const [data, setData] = useState([])
-
-  // State for storing search input
+const ViewAllDepartment = () => {
+  const [deptData, setDeptData] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
-
-  // State for storing filtered input
   const [filteredData, setFilteredData] = useState([])
-
-  // State for storing current page input
   const [currentPage, setCurrentPage] = useState(0)
-  const itemPerPage = 5
+  const itemsPerPage = 5
 
-  // useEffect(() => {
-  //   var token = localStorage.getItem('login-token')
-  //   axios
-  //     .get('http://127.0.0.1:8000/api/patientData', {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     })
-  //     .then((res) => {
-  //       setData(res.data.data)
-  //     })
-  // }, [])
-
-  const handleSearchButtonClick = () => {
-    console.log('search button clicked')
-  }
+  useEffect(() => {
+    var token = localStorage.getItem('login-token')
+    axios
+      .get('http://127.0.0.1:8000/api/getDept', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data)
+        setDeptData(res.data.deptData)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
 
   const handleSearch = (e) => {
     var value = e.target.value.toLowerCase()
     setSearchTerm(value)
-    const filtered = data.filter(
-      (patient) =>
-        patient.patient_name.toLowerCase().includes(value) ||
-        patient.patient_mobile.includes(value),
-    )
+    const filtered = deptData.filter((dept) => dept.department_name.toLowerCase().includes(value))
 
     setFilteredData(filtered)
     setCurrentPage(0)
   }
 
-  // Get current page data
   const currentData =
     searchTerm.length > 0
-      ? filteredData.slice(currentPage * itemPerPage, (currentPage + 1) * itemPerPage)
-      : data.slice(currentPage * itemPerPage, (currentPage + 1) * itemPerPage)
+      ? filteredData.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
+      : deptData.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
 
   return (
     <>
-      <CCard>
+      <CCard className="mb-3">
         <CCardHeader>
-          <strong>Search Patient</strong>
+          <strong>Search Department</strong>
         </CCardHeader>
         <CCardBody>
           <p className="text-body-secondary small">
-            Search patients by their <code>id</code>, <code>name</code> or <code>mobile</code>.
+            Search department by <code>id</code> or <code>name</code>.
           </p>
           <CInputGroup className="flex-nowrap">
-            <CButton
-              style={{ borderRadius: '3px' }}
-              color="primary"
-              id="addon-wrapping"
-              onClick={handleSearchButtonClick}
-            >
+            <CButton style={{ borderRadius: '3px' }} color="primary" id="addon-wrapping">
               <FaSearch />
             </CButton>
             <div style={{ width: '80%', margin: '0px 5px' }}>
               <CFormInput
                 placeholder="Search"
-                aria-label="Username"
-                value={searchTerm}
+                aria-label="Search"
                 aria-describedby="addon-wrapping"
                 onChange={handleSearch}
               />
@@ -120,43 +103,33 @@ const SearchPatient = () => {
           </CInputGroup>
         </CCardBody>
       </CCard>
-      <CCard className="mt-2">
+      <CCard>
         <CCardBody>
-          <CTable responsive bordered hover>
+          <CTable bordered responsive hover>
             <CTableHead color="light">
               <CTableRow>
-                <CTableHeaderCell>ID</CTableHeaderCell>
-                <CTableHeaderCell>Name</CTableHeaderCell>
-                <CTableHeaderCell>Email</CTableHeaderCell>
-                <CTableHeaderCell>Mobile</CTableHeaderCell>
-                <CTableHeaderCell>Emergency Contact</CTableHeaderCell>
-                <CTableHeaderCell>Address</CTableHeaderCell>
-                <CTableHeaderCell>Gender</CTableHeaderCell>
-                <CTableHeaderCell>DOB</CTableHeaderCell>
-                <CTableHeaderCell>Age</CTableHeaderCell>
+                <CTableHeaderCell>Department ID</CTableHeaderCell>
+                <CTableHeaderCell>Department Name</CTableHeaderCell>
+                <CTableHeaderCell>Head of Department</CTableHeaderCell>
+                <CTableHeaderCell>Created At</CTableHeaderCell>
+                <CTableHeaderCell>Modified At</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
             <CTableBody>
               {currentData.length > 0 ? (
                 currentData.map((elem, index) => (
                   <CTableRow key={index}>
-                    <CTableDataCell>{elem.patientID}</CTableDataCell>
-                    <CTableDataCell>{elem.patient_name}</CTableDataCell>
-                    <CTableDataCell>{elem.patient_email}</CTableDataCell>
-                    <CTableDataCell>{elem.patient_mobile}</CTableDataCell>
-                    <CTableDataCell>
-                      {elem.emergency_name + ' | ' + elem.emergency_no}
-                    </CTableDataCell>
-                    <CTableDataCell>{elem.patient_address}</CTableDataCell>
-                    <CTableDataCell>{elem.patient_gender}</CTableDataCell>
-                    <CTableDataCell>{elem.patient_dob}</CTableDataCell>
-                    <CTableDataCell>{elem.patient_age}</CTableDataCell>
+                    <CTableDataCell>{elem.departmentID}</CTableDataCell>
+                    <CTableDataCell>{elem.department_name}</CTableDataCell>
+                    <CTableDataCell>{elem.hod}</CTableDataCell>
+                    <CTableDataCell>{formatDate(elem.created_at)}</CTableDataCell>
+                    <CTableDataCell>{formatDate(elem.updated_at)}</CTableDataCell>
                   </CTableRow>
                 ))
               ) : (
                 <CTableRow>
-                  <CTableDataCell colSpan="9" className="text-center">
-                    No matching record found...
+                  <CTableDataCell colSpan="5" className="text-center">
+                    No departments found
                   </CTableDataCell>
                 </CTableRow>
               )}
@@ -172,7 +145,7 @@ const SearchPatient = () => {
               nextLabel={'>>'}
               breakLabel={'...'}
               pageCount={Math.ceil(
-                (filteredData.length > 0 ? filteredData.length : data.length) / itemPerPage,
+                (filteredData.length > 0 ? filteredData.length : deptData.length) / itemsPerPage,
               )}
               marginPagesDisplayed={2}
               pageRangeDisplayed={3}
@@ -195,4 +168,4 @@ const SearchPatient = () => {
   )
 }
 
-export default SearchPatient
+export default ViewAllDepartment
