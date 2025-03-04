@@ -59,6 +59,7 @@ const ManageMedicines = React.lazy(() => import('./views/HMS_Components/ManageMe
 const SearchPatient = React.lazy(() => import('./views/HMS_Components/SearchPatient'))
 const UpdateUserDetails = React.lazy(() => import('./views/HMS_Components/UpdateUserDetails'))
 const ViewAllUsers = React.lazy(() => import('./views/HMS_Components/ViewAllUsers'))
+const ManageDisease = React.lazy(() => import('./views/HMS_Components/ManageDisease'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -71,9 +72,9 @@ const routes = [
   },
 
   {
-    path: '/addMedicines',
-    name: 'Add Medicines',
-    element: AddMedicines,
+    path: '/manageDiseases',
+    name: 'Manage Disease',
+    element: ManageDisease,
   },
   {
     path: '/addUser',
