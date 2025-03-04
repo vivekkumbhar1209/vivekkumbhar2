@@ -9,12 +9,12 @@ import {
   cilUserPlus,
   cilSettings,
   cilBuilding,
-  cilLibraryAdd,
   cilApplicationsSettings,
   cilMedicalCross,
   cilList,
   cilGraph,
   cilChartLine,
+  cilMonitor,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -103,14 +103,14 @@ const _nav = [
   },
   {
     component: CNavGroup,
-    name: 'Medicines',
+    name: 'System',
     to: '/HMS_Components',
-    icon: <CIcon icon={cilMedicalCross} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilMonitor} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
-        name: 'Add Medicines',
-        to: '/dashboard/addMedicines',
+        name: 'Manage Diseases Lists',
+        to: '/dashboard/manageDiseases',
         icon: <CIcon icon={cilApplicationsSettings} customClassName="nav-icon" />,
       },
       {
