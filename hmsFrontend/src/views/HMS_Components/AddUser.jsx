@@ -17,6 +17,8 @@ const AddUser = () => {
 
   // Function to render form based on selected role
   const renderForm = () => {
+    if (!selectedRole) return <p className="text-muted">Please select a role to proceed</p>
+
     switch (selectedRole) {
       case 'Admin':
         return <AddAdminForm role={selectedRole} />
@@ -25,9 +27,10 @@ const AddUser = () => {
       case 'Doctor':
         return <AddDoctorForm role={selectedRole} />
       default:
-        return <p className="text-muted">Please select a role to proceed</p>
+        return null
     }
-  }
+}
+
 
   return (
     <div>
@@ -43,16 +46,13 @@ const AddUser = () => {
             <CDropdownToggle color="primary">Select Role</CDropdownToggle>
             <CDropdownMenu>
               <CDropdownItem onClick={() => setSelectedRole('Admin')}>Admin</CDropdownItem>
-              <CDropdownItem onClick={() => setSelectedRole('Receptionist')}>
-                Receptionist
-              </CDropdownItem>
+              <CDropdownItem onClick={() => setSelectedRole('Receptionist')}> Receptionist</CDropdownItem>
               <CDropdownItem onClick={() => setSelectedRole('Doctor')}>Doctor</CDropdownItem>
             </CDropdownMenu>
           </CDropdown>
+          <div className="mt-4">{renderForm()}</div>
         </CCardBody>
       </CCard>
-
-      <div className="mt-4">{renderForm()}</div>
     </div>
   )
 }
