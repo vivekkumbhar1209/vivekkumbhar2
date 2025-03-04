@@ -3,6 +3,7 @@
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogOutController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PatientRegistration;
 
 Route::post('/login', [LoginController::class, 'login']);
 
@@ -10,5 +11,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     //all team members add your post/get routes in this middleware group function since all the links are protected in this group. Only authenticated user with valid authentication token will be able to access these links
     Route::post('/logout', [LogOutController::class, 'logout']);
-
+    Route::post('/registerpatient',[PatientRegistration::class,'registerPatient']);
 });
+
