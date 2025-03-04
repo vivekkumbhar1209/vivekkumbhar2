@@ -56,7 +56,6 @@ const AddMedicines = React.lazy(() => import('./views/HMS_Components/AddMedicine
 const AddUser = React.lazy(() => import('./views/HMS_Components/AddUser'))
 const ManageDepartment = React.lazy(() => import('./views/HMS_Components/ManageDepartment'))
 const ManageMedicines = React.lazy(() => import('./views/HMS_Components/ManageMedicines'))
-const NewDepartment = React.lazy(() => import('./views/HMS_Components/NewDepartment'))
 const SearchPatient = React.lazy(() => import('./views/HMS_Components/SearchPatient'))
 const UpdateUserDetails = React.lazy(() => import('./views/HMS_Components/UpdateUserDetails'))
 const ViewAllUsers = React.lazy(() => import('./views/HMS_Components/ViewAllUsers'))
@@ -90,11 +89,6 @@ const routes = [
     path: '/manageMedicines',
     name: 'Manage Medicines',
     element: ManageMedicines,
-  },
-  {
-    path: '/newDepartment',
-    name: 'New Department',
-    element: NewDepartment,
   },
   {
     path: '/searchPatient',

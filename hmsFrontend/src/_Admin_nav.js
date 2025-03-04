@@ -91,12 +91,6 @@ const _nav = [
     items: [
       {
         component: CNavItem,
-        name: 'Add Department',
-        to: '/dashboard/newDepartment',
-        icon: <CIcon icon={cilLibraryAdd} customClassName="nav-icon" />,
-      },
-      {
-        component: CNavItem,
         name: 'Manage Department',
         to: '/dashboard/manageDepartment',
         icon: <CIcon icon={cilApplicationsSettings} customClassName="nav-icon" />,
