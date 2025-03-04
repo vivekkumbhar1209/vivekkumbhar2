@@ -9,8 +9,9 @@ import {
   CTabPanel,
   CTabs,
 } from '@coreui/react'
-import AddDepartmentForm from './Forms/AddDepartmentForm'
-import ViewAllDepartment from './Forms/ViewAllDepartment'
+import AddDepartmentForm from './Components/AddDepartmentForm'
+import ViewAllDepartment from './Components/ViewAllDepartment'
+import EditDepartmentForm from './Components/EditDepartmentForm'
 
 const ManageDepartment = () => {
   return (
@@ -35,7 +36,8 @@ const ManageDepartment = () => {
                 <AddDepartmentForm />
               </CTabPanel>
               <CTabPanel className="py-3" itemKey={2}>
-                Edit tab content
+                {/* edit department form */}
+                <EditDepartmentForm />
               </CTabPanel>
               <CTabPanel className="py-3" itemKey={3}>
                 {/* view department */}
