@@ -23,18 +23,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
     //Implementation is done for this api in the frontend
     Route::post('/adddisease', [AddDisease::class, 'addDisease']);
     Route::post('/registerDepartment', [DeptReg::class, 'registerDepartment']);
+    
+    //api which will show all the departments 
+    Route::get('/getDept', [DeptReg::class, 'getDept']);
+
     Route::post('/updateDepartment', [UpdateDepartment::class, 'updateDepartment']);
     Route::post('/registerpatient', [PatientRegistration::class, 'registerPatient']);
     Route::post('/registeruser', [UserRegistration::class, 'registerUser']);
     Route::get('/patients', [PatientController::class, 'index']);
     Route::get('/patients/{id}', [PatientController::class, 'show']);
-    Route::get('/getDept', function () {
-        return response()->json([
-            'status'   => 200,
-            'message'  => 'Department Data',
-            'deptData' => Department::all(),
-        ]);
-    });
+    
 
     //Implementation is not done for these api in the frontend
     Route::post('/addMedicineCategory', [MedicineCategoryController::class, 'addCategory']);

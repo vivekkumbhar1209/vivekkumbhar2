@@ -35,4 +35,15 @@ class DeptReg extends Controller
 
     }
 
+    public function getDept()
+    {
+        $departments = Department::all();
+
+        return response()->json([
+            "status"  => 200,
+            "message" => "List of all departments",
+            "deptData"    => $departments,
+        ]);
+    }
+
 }
