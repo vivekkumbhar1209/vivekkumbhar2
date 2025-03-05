@@ -22,33 +22,33 @@ import { FaSearch } from 'react-icons/fa'
 import ReactPaginate from 'react-paginate'
 
 const ViewAllMedicine = () => {
-  const [deptData, setDeptData] = useState([])
+  const [medicines, setMedicines] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredData, setFilteredData] = useState([])
   const [currentPage, setCurrentPage] = useState(0)
   const itemsPerPage = 5
 
-  // useEffect(() => {
-  //   var token = localStorage.getItem('login-token')
-  //   axios
-  //     .get('http://127.0.0.1:8000/api/getDept', {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     })
-  //     .then((res) => {
-  //       console.log(res.data)
-  //       setDeptData(res.data.deptData)
-  //     })
-  //     .catch((err) => {
-  //       console.log(err)
-  //     })
-  // }, [])
+  useEffect(() => {
+    var token = localStorage.getItem('login-token')
+    axios
+      .get('http://127.0.0.1:8000/api/getMedicines', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data)
+        setMedicines(res.data.medicines)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
 
   const handleSearch = (e) => {
     var value = e.target.value.toLowerCase()
     setSearchTerm(value)
-    const filtered = deptData.filter((dept) => dept.department_name.toLowerCase().includes(value))
+    const filtered = medicines.filter((medicine) => medicine.name.toLowerCase().includes(value))
 
     setFilteredData(filtered)
     setCurrentPage(0)
@@ -57,7 +57,7 @@ const ViewAllMedicine = () => {
   const currentData =
     searchTerm.length > 0
       ? filteredData.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
-      : deptData.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
+      : medicines.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
 
   return (
     <>
@@ -119,9 +119,9 @@ const ViewAllMedicine = () => {
               {currentData.length > 0 ? (
                 currentData.map((elem, index) => (
                   <CTableRow key={index}>
-                    <CTableDataCell>{elem.departmentID}</CTableDataCell>
-                    <CTableDataCell>{elem.department_name}</CTableDataCell>
-                    <CTableDataCell>{elem.hod}</CTableDataCell>
+                    <CTableDataCell>{elem.medicineID}</CTableDataCell>
+                    <CTableDataCell>{elem.medicine_name}</CTableDataCell>
+                    <CTableDataCell>{elem.cost}</CTableDataCell>
                     <CTableDataCell>{formatDate(elem.created_at)}</CTableDataCell>
                     <CTableDataCell>{formatDate(elem.updated_at)}</CTableDataCell>
                   </CTableRow>
@@ -145,7 +145,7 @@ const ViewAllMedicine = () => {
               nextLabel={'>>'}
               breakLabel={'...'}
               pageCount={Math.ceil(
-                (filteredData.length > 0 ? filteredData.length : deptData.length) / itemsPerPage,
+                (filteredData.length > 0 ? filteredData.length : medicines.length) / itemsPerPage,
               )}
               marginPagesDisplayed={2}
               pageRangeDisplayed={3}

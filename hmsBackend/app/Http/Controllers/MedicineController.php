@@ -8,6 +8,29 @@ use Illuminate\Support\Facades\Validator;
 
 class MedicineController extends Controller
 {
+    public function getMedicines() {
+        $medicines = Medicine::all();
+                        //Retrieves all existing medicines from medicines table.
+                            // Get the params sent from the frontend fetch req. 
+                            //   },
+                              // params: {
+                              //   sortBy: sortBy,
+                              //   order: order,
+                              // },
+                            // $sortBy = $request->query("sortBy", "name");
+                            // $order = $request->query("order", "asc");
+                      
+                            // second argument in the query method is a default value
+                            
+                            return response()->json([
+                              "status" => 200,
+                              "message" => "Medicines Data",
+                              "medicines" => $medicines,
+                            //   "params" => $requestParams,
+                            ]);
+                            
+                          }
+
     public function addMedicine(Request $request)
     {
         // Validate input
