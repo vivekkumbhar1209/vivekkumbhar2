@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   CCard,
   CCardHeader,
@@ -14,61 +14,76 @@ import {
   CTableDataCell,
   CFormSelect,
 } from '@coreui/react'
-import { FaSearch, FaSort } from 'react-icons/fa'
-import { useEffect } from 'react'
-import { useState } from 'react'
+import { FaSearch } from 'react-icons/fa'
 import axios from 'axios'
 import ReactPaginate from 'react-paginate'
+import Loader from '../../components/Loader'
 
 const SearchPatient = () => {
-  // State for storing patient data
   const [data, setData] = useState([])
-
-  // State for storing search input
   const [searchTerm, setSearchTerm] = useState('')
-
-  // State for storing filtered input
   const [filteredData, setFilteredData] = useState([])
-
-  // State for storing current page input
   const [currentPage, setCurrentPage] = useState(0)
-  const itemPerPage = 5
+  const [sortColumn, setSortColumn] = useState('name')
+  const [sortOrder, setSortOrder] = useState('asc')
+  const [loading, setLoading] = useState(false)
 
-  // useEffect(() => {
-  //   var token = localStorage.getItem('login-token')
-  //   axios
-  //     .get('http://127.0.0.1:8000/api/patientData', {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     })
-  //     .then((res) => {
-  //       setData(res.data.data)
-  //     })
-  // }, [])
+  const itemsPerPage = 5
 
-  const handleSearchButtonClick = () => {
-    console.log('search button clicked')
+  useEffect(() => {
+    setLoading(true)
+    const token = localStorage.getItem('login-token')
+    axios
+      .get('http://127.0.0.1:8000/api/patients', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        setData(res.data.data)
+        setLoading(false)
+      })
+  }, [])
+
+  // Sorting function
+  const sortData = (list) => {
+    return [...list].sort((a, b) => {
+      let valueA = a[sortColumn]?.toString().toLowerCase() || ''
+      let valueB = b[sortColumn]?.toString().toLowerCase() || ''
+
+      if (sortOrder === 'asc') {
+        return valueA.localeCompare(valueB)
+      } else {
+        return valueB.localeCompare(valueA)
+      }
+    })
   }
 
-  const handleSearch = (e) => {
-    var value = e.target.value.toLowerCase()
-    setSearchTerm(value)
-    const filtered = data.filter(
-      (patient) =>
-        patient.patient_name.toLowerCase().includes(value) ||
-        patient.patient_mobile.includes(value),
-    )
+  // Apply filtering and sorting
+  useEffect(() => {
+    let updatedData = [...data]
 
-    setFilteredData(filtered)
+    if (searchTerm) {
+      updatedData = updatedData.filter(
+        (patient) =>
+          patient.name.toLowerCase().includes(searchTerm) || patient.mobile.includes(searchTerm),
+      )
+    }
+
+    setFilteredData(sortData(updatedData))
+  }, [data, searchTerm, sortColumn, sortOrder])
+
+  // Handle search input change
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value.toLowerCase())
     setCurrentPage(0)
   }
 
-  // Get current page data
-  const currentData =
-    searchTerm.length > 0
-      ? filteredData.slice(currentPage * itemPerPage, (currentPage + 1) * itemPerPage)
-      : data.slice(currentPage * itemPerPage, (currentPage + 1) * itemPerPage)
+  // Get paginated data
+  const currentData = filteredData.slice(
+    currentPage * itemsPerPage,
+    (currentPage + 1) * itemsPerPage,
+  )
 
   return (
     <>
@@ -78,92 +93,92 @@ const SearchPatient = () => {
         </CCardHeader>
         <CCardBody>
           <p className="text-body-secondary small">
-            Search patients by their <code>id</code>, <code>name</code> or <code>mobile</code>.
+            Search patients by their <code>id</code>, <code>name</code>, or <code>mobile</code>.
           </p>
           <CInputGroup className="flex-nowrap">
-            <CButton
-              style={{ borderRadius: '3px' }}
-              color="primary"
-              id="addon-wrapping"
-              onClick={handleSearchButtonClick}
-            >
+            <CButton color="primary" id="addon-wrapping">
               <FaSearch />
             </CButton>
-            <div style={{ width: '80%', margin: '0px 5px' }}>
-              <CFormInput
-                placeholder="Search"
-                aria-label="Username"
-                value={searchTerm}
-                aria-describedby="addon-wrapping"
-                onChange={handleSearch}
-              />
-            </div>
-            <div style={{ width: '10%', margin: '0px 5px' }}>
-              <CFormSelect className="text-start" aria-label="Default select example">
-                <option color="secondary" defaultChecked>
-                  Sort By
-                </option>
-                <option value="1">Name</option>
-                <option value="2">Phone</option>
-                <option value="3">Email</option>
-              </CFormSelect>
-            </div>
-            <div style={{ width: '10%', margin: '0px 5px' }}>
-              <CFormSelect className="text-start" aria-label="Default select example">
-                <option color="secondary" disabled>
-                  Order
-                </option>
-                <option value="1">Asc</option>
-                <option value="2">Desc</option>
-              </CFormSelect>
-            </div>
+            <CFormInput
+              placeholder="Search"
+              aria-label="Search"
+              value={searchTerm}
+              onChange={handleSearch}
+              style={{ width: '80%', margin: '0px 5px' }}
+            />
+            <CFormSelect
+              style={{ width: '10%', margin: '0px 5px' }}
+              onChange={(e) => setSortColumn(e.target.value)}
+              value={sortColumn}
+            >
+              <option value="">Sort By</option>
+              <option value="name">Name</option>
+              <option value="mobile">Phone</option>
+              <option value="email">Email</option>
+            </CFormSelect>
+            <CFormSelect
+              style={{ width: '10%', margin: '0px 5px' }}
+              onChange={(e) => setSortOrder(e.target.value)}
+              value={sortOrder}
+            >
+              <option value="asc">Asc</option>
+              <option value="desc">Desc</option>
+            </CFormSelect>
           </CInputGroup>
         </CCardBody>
       </CCard>
+
       <CCard className="mt-2">
         <CCardBody>
-          <CTable responsive bordered hover>
-            <CTableHead color="light">
-              <CTableRow>
-                <CTableHeaderCell>ID</CTableHeaderCell>
-                <CTableHeaderCell>Name</CTableHeaderCell>
-                <CTableHeaderCell>Email</CTableHeaderCell>
-                <CTableHeaderCell>Mobile</CTableHeaderCell>
-                <CTableHeaderCell>Emergency Contact</CTableHeaderCell>
-                <CTableHeaderCell>Address</CTableHeaderCell>
-                <CTableHeaderCell>Gender</CTableHeaderCell>
-                <CTableHeaderCell>DOB</CTableHeaderCell>
-                <CTableHeaderCell>Age</CTableHeaderCell>
-              </CTableRow>
-            </CTableHead>
-            <CTableBody>
-              {currentData.length > 0 ? (
-                currentData.map((elem, index) => (
-                  <CTableRow key={index}>
-                    <CTableDataCell>{elem.patientID}</CTableDataCell>
-                    <CTableDataCell>{elem.patient_name}</CTableDataCell>
-                    <CTableDataCell>{elem.patient_email}</CTableDataCell>
-                    <CTableDataCell>{elem.patient_mobile}</CTableDataCell>
-                    <CTableDataCell>
-                      {elem.emergency_name + ' | ' + elem.emergency_no}
-                    </CTableDataCell>
-                    <CTableDataCell>{elem.patient_address}</CTableDataCell>
-                    <CTableDataCell>{elem.patient_gender}</CTableDataCell>
-                    <CTableDataCell>{elem.patient_dob}</CTableDataCell>
-                    <CTableDataCell>{elem.patient_age}</CTableDataCell>
-                  </CTableRow>
-                ))
-              ) : (
+          {loading ? (
+            <div className="d-flex justify-content-center align-items-center">
+              <Loader />
+            </div>
+          ) : (
+            <CTable responsive bordered hover>
+              <CTableHead color="light">
                 <CTableRow>
-                  <CTableDataCell colSpan="9" className="text-center">
-                    No matching record found...
-                  </CTableDataCell>
+                  <CTableHeaderCell>ID</CTableHeaderCell>
+                  <CTableHeaderCell>Name</CTableHeaderCell>
+                  <CTableHeaderCell>Email</CTableHeaderCell>
+                  <CTableHeaderCell>Mobile</CTableHeaderCell>
+                  <CTableHeaderCell>Emergency Contact</CTableHeaderCell>
+                  <CTableHeaderCell>Address</CTableHeaderCell>
+                  <CTableHeaderCell>Gender</CTableHeaderCell>
+                  <CTableHeaderCell>DOB</CTableHeaderCell>
+                  <CTableHeaderCell>Age</CTableHeaderCell>
                 </CTableRow>
-              )}
-            </CTableBody>
-          </CTable>
+              </CTableHead>
+              <CTableBody>
+                {currentData.length > 0 ? (
+                  currentData.map((elem, index) => (
+                    <CTableRow key={index}>
+                      <CTableDataCell>{elem.id}</CTableDataCell>
+                      <CTableDataCell>{elem.name}</CTableDataCell>
+                      <CTableDataCell>{elem.email}</CTableDataCell>
+                      <CTableDataCell>{elem.mobile}</CTableDataCell>
+                      <CTableDataCell>
+                        {elem.emergency_contact.name + ' - ' + elem.emergency_contact.number}
+                      </CTableDataCell>
+                      <CTableDataCell>{elem.address}</CTableDataCell>
+                      <CTableDataCell>{elem.gender}</CTableDataCell>
+                      <CTableDataCell>{elem.dob}</CTableDataCell>
+                      <CTableDataCell>{elem.age}</CTableDataCell>
+                    </CTableRow>
+                  ))
+                ) : (
+                  <CTableRow>
+                    <CTableDataCell colSpan="9" className="text-center">
+                      No matching record found...
+                    </CTableDataCell>
+                  </CTableRow>
+                )}
+              </CTableBody>
+            </CTable>
+          )}
         </CCardBody>
       </CCard>
+
       <CCard className="mt-2">
         <CCardBody className="pb-0">
           <div className="d-flex justify-content-center">
@@ -171,9 +186,7 @@ const SearchPatient = () => {
               previousLabel={'<<'}
               nextLabel={'>>'}
               breakLabel={'...'}
-              pageCount={Math.ceil(
-                (filteredData.length > 0 ? filteredData.length : data.length) / itemPerPage,
-              )}
+              pageCount={Math.ceil(filteredData.length / itemsPerPage)}
               marginPagesDisplayed={2}
               pageRangeDisplayed={3}
               onPageChange={(e) => setCurrentPage(e.selected)}

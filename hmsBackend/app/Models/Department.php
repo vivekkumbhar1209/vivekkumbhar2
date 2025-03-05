@@ -9,6 +9,7 @@ class Department extends Model
 {
     use HasFactory;
 
+
     // Define the table name (optional if Laravel follows naming convention)
     protected $table = 'departments';
 
