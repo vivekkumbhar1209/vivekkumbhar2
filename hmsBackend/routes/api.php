@@ -5,6 +5,7 @@ use App\Http\Controllers\LogOutController;
 use App\Models\Department;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserRegistration;
+use App\Http\Controllers\ShowAllExistingUsers;
 
 Route::post('/login', [LoginController::class, 'login']);
 
@@ -26,7 +27,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
             'message'  => 'Department Data',
             'deptData' => Department::all(),
         ]);
+
     });
+    Route::get('/viewAllUsers', [ShowAllExistingUsers::class, 'AllExistingUsers']);
+
 
 });
 
