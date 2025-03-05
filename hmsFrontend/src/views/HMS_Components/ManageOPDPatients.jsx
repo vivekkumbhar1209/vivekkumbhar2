@@ -9,8 +9,7 @@ import {
   CTabPanel,
   CTabs,
 } from '@coreui/react'
-import SearchPatient from './SearchPatient'
-
+import AddOPDPatientForm from './Components/AddOPDPatientForm'
 const ManageOPDPatients = () => {
   return (
     <>
@@ -29,7 +28,7 @@ const ManageOPDPatients = () => {
             </CTabList>
             <CTabContent>
               <CTabPanel className="py-3" itemKey={2}>
-                Add OPD Patient
+                <AddOPDPatientForm />
               </CTabPanel>
               <CTabPanel className="py-3" itemKey={3}>
                 Edit OPD Patient
