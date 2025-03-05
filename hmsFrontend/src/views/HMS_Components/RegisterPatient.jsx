@@ -4,16 +4,16 @@ import Swal from 'sweetalert2'
 
 const RegisterPatient = () => {
   const [data, setData] = useState({
-    patient_name: '',
-    patient_email: '',
-    patient_mobile: '',
-    emergency_name: '',
-    emergency_no: '',
-    patient_address: '',
-    patient_gender: '',
-    patient_dob: '',
-    password: '',
-  })
+    patient_name: "",
+    patient_email: "",
+    patient_mobile: "",
+    emergency_name: "",
+    emergency_no: "",
+    patient_address: "",
+    patient_gender: "",
+    patient_dob: "",
+  });
+
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value })
@@ -199,17 +199,6 @@ const RegisterPatient = () => {
           />
         </div>
 
-        <div className="flex flex-col">
-          <label className="font-medium">Password</label>
-          <input
-            type="password"
-            name="password"
-            value={data.password}
-            onChange={handleChange}
-            required
-            className="border rounded p-2"
-          />
-        </div>
 
         <div className="md:col-span-2 flex justify-center">
           <button
