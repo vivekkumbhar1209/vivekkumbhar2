@@ -22,33 +22,54 @@ import { FaSearch } from 'react-icons/fa'
 import ReactPaginate from 'react-paginate'
 
 const ViewAllMedicine = () => {
-  const [deptData, setDeptData] = useState([])
+  const [medicines, setMedicines] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredData, setFilteredData] = useState([])
   const [currentPage, setCurrentPage] = useState(0)
+  const [sortBy, setSortBy] = useState('medicine_name')
+  const [order, setOrder] = useState('asc')
   const itemsPerPage = 5
 
-  // useEffect(() => {
-  //   var token = localStorage.getItem('login-token')
-  //   axios
-  //     .get('http://127.0.0.1:8000/api/getDept', {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     })
-  //     .then((res) => {
-  //       console.log(res.data)
-  //       setDeptData(res.data.deptData)
-  //     })
-  //     .catch((err) => {
-  //       console.log(err)
-  //     })
-  // }, [])
+  useEffect(() => {
+    var token = localStorage.getItem('login-token')
+    axios
+      .get('http://127.0.0.1:8000/api/getMedicines', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          sortBy: sortBy,
+          order: order,
+        },
+      })
+      .then((res) => {
+        console.log(res.data)
+        setMedicines(res.data.medicines)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [sortBy, order])
+
+  const handleOrderChange = (e) => {
+    setOrder(e.target.value === '1' ? 'asc' : 'desc');
+  }
+
+  const handleSortChange = (e) => {
+    const value = e.target.value;
+    switch (value) {
+      case "1": setSortBy("medicine_name");
+      break;
+      case "2": setSortBy("cost");
+      break;
+      default: setSortBy("medicine_name");
+    }
+  };
 
   const handleSearch = (e) => {
     var value = e.target.value.toLowerCase()
     setSearchTerm(value)
-    const filtered = deptData.filter((dept) => dept.department_name.toLowerCase().includes(value))
+    const filtered = medicines.filter((medicine) => medicine.medicine_name.toLowerCase().includes(value))
 
     setFilteredData(filtered)
     setCurrentPage(0)
@@ -57,7 +78,7 @@ const ViewAllMedicine = () => {
   const currentData =
     searchTerm.length > 0
       ? filteredData.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
-      : deptData.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
+      : medicines.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
 
   return (
     <>
@@ -82,17 +103,16 @@ const ViewAllMedicine = () => {
               />
             </div>
             <div style={{ width: '10%', margin: '0px 5px' }}>
-              <CFormSelect className="text-start" aria-label="Default select example">
-                <option color="secondary" defaultChecked>
+              <CFormSelect className="text-start" aria-label="Default select example" onChange={handleSortChange}>
+                <option color="secondary" disabled>
                   Sort By
                 </option>
-                <option value="1">Name</option>
-                <option value="2">Phone</option>
-                <option value="3">Email</option>
+                <option value="1">Medicine name</option>
+                <option value="2">Cost</option>
               </CFormSelect>
             </div>
             <div style={{ width: '10%', margin: '0px 5px' }}>
-              <CFormSelect className="text-start" aria-label="Default select example">
+              <CFormSelect className="text-start" aria-label="Default select example" onChange={handleOrderChange}>
                 <option color="secondary" disabled>
                   Order
                 </option>
@@ -119,9 +139,9 @@ const ViewAllMedicine = () => {
               {currentData.length > 0 ? (
                 currentData.map((elem, index) => (
                   <CTableRow key={index}>
-                    <CTableDataCell>{elem.departmentID}</CTableDataCell>
-                    <CTableDataCell>{elem.department_name}</CTableDataCell>
-                    <CTableDataCell>{elem.hod}</CTableDataCell>
+                    <CTableDataCell>{elem.medicineID}</CTableDataCell>
+                    <CTableDataCell>{elem.medicine_name}</CTableDataCell>
+                    <CTableDataCell>{elem.cost}</CTableDataCell>
                     <CTableDataCell>{formatDate(elem.created_at)}</CTableDataCell>
                     <CTableDataCell>{formatDate(elem.updated_at)}</CTableDataCell>
                   </CTableRow>
@@ -145,7 +165,7 @@ const ViewAllMedicine = () => {
               nextLabel={'>>'}
               breakLabel={'...'}
               pageCount={Math.ceil(
-                (filteredData.length > 0 ? filteredData.length : deptData.length) / itemsPerPage,
+                (filteredData.length > 0 ? filteredData.length : medicines.length) / itemsPerPage,
               )}
               marginPagesDisplayed={2}
               pageRangeDisplayed={3}

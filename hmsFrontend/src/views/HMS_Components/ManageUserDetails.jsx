@@ -10,7 +10,7 @@ import {
   CTabs,
 } from '@coreui/react'
 import ViewAllUsers from './ViewAllUsers'
-
+import EditUsers from './EditUsers'
 const ManageUserDetails=()=>{
     return (
         <>
@@ -36,6 +36,7 @@ const ManageUserDetails=()=>{
               </CTabPanel>
               <CTabPanel className="py-3" itemKey={2}>
                 {/* edit department form */}
+                <ViewAllUsers/>
                 two
               </CTabPanel>
               <CTabPanel className="py-3" itemKey={3}>

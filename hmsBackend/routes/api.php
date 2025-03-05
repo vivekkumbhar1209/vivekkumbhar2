@@ -5,6 +5,7 @@ use App\Http\Controllers\DeptReg;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogOutController;
 use App\Http\Controllers\MedicineCategoryController;
+use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PatientRegistration;
 use App\Http\Controllers\UpdateDepartment;
@@ -30,15 +31,19 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/registeruser', [UserRegistration::class, 'registerUser']);//this will register all users
     Route::get('/patients', [PatientController::class, 'index']);
     Route::get('/patients/{id}', [PatientController::class, 'show']);
-    Route::get('/viewAllUsers', [ShowAllExistingUsers::class, 'AllExistingUsers']);
-    Route::get('/getDept', function () {
-        return response()->json([
-            'status'   => 200,
-            'message'  => 'Department Data',
-            'deptData' => Department::all(),
-        ]);
 
-    });
+
+    // Following routes get all the data for the respective resources : only for rendering purposes
+    Route::get('/viewAllUsers', [UserRegistration::class, 'getAllUsers']);
+    Route::get('/getDept', [DeptReg::class, 'getDepartments']);
+    Route::get('/getMedicines', [MedicineController::class, "getMedicines"]);
+    // Route::get('/getDept', function () {
+    //     return response()->json([
+    //         'status'   => 200,
+    //         'message'  => 'Department Data',
+    //         'deptData' => Department::all(),
+    //     ]);
+    // });
     
 
 
