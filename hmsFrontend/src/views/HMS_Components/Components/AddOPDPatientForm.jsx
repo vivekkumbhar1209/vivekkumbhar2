@@ -234,7 +234,9 @@ const ManageOPDPatients = () => {
         onClose={() => setModelVisibility(false)}
       >
         <CModalContent>
-          <CModalHeader>OPD Registration Form</CModalHeader>
+          <CModalHeader>
+            <strong>OPD Registration Form</strong>
+          </CModalHeader>
           <CModalBody>
             <CForm>
               <div className="mb-3">
@@ -248,6 +250,7 @@ const ManageOPDPatients = () => {
               <div className="mb-3">
                 <CFormLabel>Select Department</CFormLabel>
                 <CFormSelect onChange={(e) => setSelectedDepartment(e.target.value)}>
+                  <option>-</option>
                   {departments.map((elem, index) => (
                     <option key={index} value={elem.departmentID}>
                       {elem.department_name}

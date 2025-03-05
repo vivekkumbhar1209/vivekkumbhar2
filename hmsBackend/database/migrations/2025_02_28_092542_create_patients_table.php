@@ -22,6 +22,7 @@ return new class extends Migration
             $table->enum('patient_gender', ['Male', 'Female', 'Others']);
             $table->date('patient_dob');
             $table->integer('patient_age');
+            $table->string('profilePhoto')->nullable();
             $table->timestamps();
         });
     }
