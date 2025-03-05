@@ -107,10 +107,13 @@ const RegisterPatient = () => {
 
   return (
     <CCard className="mx-auto" style={{ maxWidth: '1100px', minHeight: '500px', backgroundColor: '#f8f9fa' }}>
-  <CCardHeader className="text-left" style={{ fontSize: "24px", fontWeight: "bold", fontFamily: "Arial, sans-serif" }}>
+  <CCardHeader>
     <strong>Patient Registration</strong>
   </CCardHeader>
-   <CCardBody>
+   <CCardBody className="mb-0">
+       <p className="text-body-secondary small">
+         You can register new <code>patients</code> from here.
+       </p>
       <CForm onSubmit={handleSubmit}>
         <CRow className="mb-3">
         <CCol md={6}><CFormLabel>Full Name</CFormLabel><CFormInput type="text" name="patient_name" value={data.patient_name} onChange={handleChange} required /></CCol>
