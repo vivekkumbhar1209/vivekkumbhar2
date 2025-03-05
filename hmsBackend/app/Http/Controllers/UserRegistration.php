@@ -12,22 +12,23 @@ class UserRegistration extends Controller
 {
     public function registerUser(Request $request)
     {
-       
         $data= $request->all();
-        $validator = Validator::make($data, ['role'=>['required', 'in:Doctor,Receptionist,Admin']]);
+        $validator = Validator::make($data, ['role'=>['required']]);
         if($validator->fails())
         {
             return response()->json([
-                'satus'=>403,
+                'status'=>403,
                 'message'=>'Validation failed',
                 'errors'=>$validator->errors(),
             ]);
         }
-        $role = $request->input('role');
+       //\Log::info("User Role:", ['role' => $request->role]);  //for debugging
 
         //add valiadtion if user is Receptionist
-        if($role=='Receptionist')
+        if($request->role=='Receptionist')
         {
+            ///\Log::info("Processing receptionist");//for dadebugging
+            
             $validator = Validator::make($data, [
                 'name'=>['required'],
                 'email'=>['required', 'email', 'unique:users,email'],
@@ -60,33 +61,19 @@ class UserRegistration extends Controller
             {
                 return response()->json([
                     'status'=>500,
-                    'message'=>'Invalis data',
+                    'message'=>'Invalid data',
                     'errors'=>$e->getMessage(),
                 ]);
 
             }
         
-          /*return response()->json([
-            'status'=>200,
-            'message'=>'User added successfully',
-            'data'=>[
-                'name'=>$request->name,
-                'email'=>$request->email,
-                'password'=>$request->password,
-                'gender'=> $request->gender,
-                'date_Of_Birth'=>$request->date_Of_Birth,       
-                'age'=> $age,
-                'mobile'=>$request->mobile,
-                'address'=>$request->address,
-                'role'=>$request->role
-               ]
-            ]);*/
-            //Add data into database
+          
+            //Add receptionist data into database
            $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password), // Encrypt password
-                'role' => $role,
+                'role' => $request->role,
                 'gender' => $request->gender,
                 'date_Of_Birth' => $request->date_Of_Birth,
                 'age' => $age, // Save calculated age
@@ -104,7 +91,7 @@ class UserRegistration extends Controller
 
 
     //adding and validating doctors data
-    else if($role=='Doctor')
+    else if($request->role=='Doctor')
         {
             $validator = Validator::make($data, [
                 'name'=>['required'],
@@ -130,8 +117,12 @@ class UserRegistration extends Controller
             }
             //calculate age
             try{
-                $date_Of_Birth=Carbon::parse($request->date_Of_Birth);
-                $age=$date_Of_Birth->age;
+                if ($request->date_Of_Birth) {
+                    $date_Of_Birth = Carbon::parse($request->date_Of_Birth);
+                    $age = $date_Of_Birth->age;
+                } else {
+                    $age = 0;
+                }
             }
             catch(\Exception $e)
             {
@@ -147,7 +138,7 @@ class UserRegistration extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password), // Encrypt password
-                'role' => $role,
+                'role' => $request->role,
                 'gender' => $request->gender,
                 'date_Of_Birth' => $request->date_Of_Birth,
                 'age' => $age, // Save calculated age

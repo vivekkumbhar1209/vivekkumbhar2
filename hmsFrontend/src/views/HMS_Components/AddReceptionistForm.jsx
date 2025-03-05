@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import swal from 'sweetalert2'
+import {CCard,CForm,CFormSelect,CFormTextarea ,CFormInput,CCardBody,CButton,CFormLabel} from '@coreui/react'
 
-const AddReceptionistForm = ({ role }) => {
+const AddReceptionistForm = ({ role }) =>
+   {
   const [data, setData] = useState({
     name: '',
     email: '',
@@ -18,7 +20,7 @@ const AddReceptionistForm = ({ role }) => {
   useEffect(() => {
     setData((prevData) => ({
       ...prevData,
-      role: role,
+      role: role, // Update role in state
     }))
   }, [role]) // Runs whenever `role` changes
 
@@ -29,7 +31,7 @@ const AddReceptionistForm = ({ role }) => {
   const handleSubmit = (e) => {
     e.preventDefault()
     const token = localStorage.getItem('login-token')
-
+    
     axios
       .post('http://127.0.0.1:8000/api/registeruser', data, {
         headers: {
@@ -78,20 +80,26 @@ const AddReceptionistForm = ({ role }) => {
           })
         }
       })
+      console.log("Final Data Sent to API:", data);
   }
 
-  console.log(role)
+  //console.log('Current Role:', role) // Debugging Log
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
+    <div className="container">
+      <p className="text-body-secondary fs-5">
+            Add Receptionist
+          </p>
+  <CForm onSubmit={handleSubmit} className="w-100">
+    <div className="row">
+      {/* Left Column */}
+      <div className="col-md-6">
         <div>
-          <label htmlFor="name">Name:</label>
-          <input
+          <CFormLabel htmlFor="name">Name:</CFormLabel>
+          <CFormInput
             id="name"
             onChange={handleChange}
             type="text"
-            className="border p-2 w-full"
             placeholder="Name"
             name="name"
             required
@@ -100,12 +108,11 @@ const AddReceptionistForm = ({ role }) => {
         </div>
 
         <div>
-          <label htmlFor="email">Email:</label>
-          <input
+          <CFormLabel htmlFor="email">Email:</CFormLabel>
+          <CFormInput
             id="email"
             onChange={handleChange}
             type="email"
-            className="border p-2 w-full"
             placeholder="Email"
             name="email"
             required
@@ -114,79 +121,85 @@ const AddReceptionistForm = ({ role }) => {
         </div>
 
         <div>
-          <label htmlFor="password">Password:</label>
-          <input
+          <CFormLabel htmlFor="password">Password:</CFormLabel>
+          <CFormInput
             id="password"
             onChange={handleChange}
             type="password"
-            className="border p-2 w-full"
             name="password"
             required
             autoComplete="new-password"
+            placeholder='Password'
             value={data.password}
           />
         </div>
 
         <div>
-          <label htmlFor="gender">Gender:</label>
-          <select
+          <CFormLabel htmlFor="gender">Gender:</CFormLabel>
+          <CFormSelect
             id="gender"
             name="gender"
-            title="Select your gender"
             onChange={handleChange}
-            className="border p-2 w-full"
             required
             value={data.gender}
           >
-            <option value="">Select Gender</option>
+            <option value="" disabled>Select Gender</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
             <option value="Other">Other</option>
-          </select>
+          </CFormSelect>
         </div>
+      </div>
 
+      {/* Right Column */}
+      <div className="col-md-6">
         <div>
-          <label htmlFor="date_Of_Birth">Date of Birth:</label>
-          <input
+          <CFormLabel htmlFor="date_Of_Birth">Date of Birth:</CFormLabel>
+          <CFormInput
             id="date_Of_Birth"
             onChange={handleChange}
             type="date"
             name="date_Of_Birth"
-            className="border p-2 w-full"
             value={data.date_Of_Birth || ''}
           />
         </div>
 
         <div>
-          <label htmlFor="mobile">Mobile:</label>
-          <input
+          <CFormLabel htmlFor="mobile">Mobile:</CFormLabel>
+          <CFormInput
             id="mobile"
             onChange={handleChange}
             type="text"
-            className="border p-2 w-full"
             name="mobile"
             required
+            placeholder='Mobile Number'
             value={data.mobile}
           />
         </div>
 
         <div>
-          <label htmlFor="address">Address:</label>
-          <textarea
+          <CFormLabel htmlFor="address">Address:</CFormLabel>
+          <CFormTextarea 
             id="address"
             onChange={handleChange}
-            className="border p-2 w-full"
             name="address"
             required
+            placeholder='Enter address'
             value={data.address}
-          ></textarea>
+          ></CFormTextarea>
         </div>
-
-        <button type="submit" aria-label="Add User">
-          Add User
-        </button>
-      </form>
+      </div>
     </div>
+
+    
+    <div className="text-left mt-3">
+      <CButton color="primary" type="submit">
+        Add User
+      </CButton>
+    </div>
+  </CForm>
+</div>
+
   )
 }
 

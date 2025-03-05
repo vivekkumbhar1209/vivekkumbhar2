@@ -9,12 +9,12 @@ import {
   cilUserPlus,
   cilSettings,
   cilBuilding,
-  cilLibraryAdd,
   cilApplicationsSettings,
   cilMedicalCross,
   cilList,
   cilGraph,
   cilChartLine,
+  cilMonitor,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -65,18 +65,14 @@ const _nav = [
         to: '/dashboard/addUser',
         icon: <CIcon icon={cilUserFollow} customClassName="nav-icon" />,
       },
+      
       {
         component: CNavItem,
-        name: 'Update User Details',
-        to: '/dashboard/updateUserDetails',
-        icon: <CIcon icon={cilUserPlus} customClassName="nav-icon" />,
-      },
-      {
-        component: CNavItem,
-        name: 'View All Users',
-        to: '/dashboard/viewAllUsers',
+        name: 'Manage Users',
+        to: '/dashboard/manageUserDetails',
         icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
       },
+
     ],
   },
   {
@@ -103,14 +99,14 @@ const _nav = [
   },
   {
     component: CNavGroup,
-    name: 'Medicines',
+    name: 'System',
     to: '/HMS_Components',
-    icon: <CIcon icon={cilMedicalCross} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilMonitor} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
-        name: 'Add Medicines',
-        to: '/dashboard/addMedicines',
+        name: 'Manage Diseases Lists',
+        to: '/dashboard/manageDiseases',
         icon: <CIcon icon={cilApplicationsSettings} customClassName="nav-icon" />,
       },
       {

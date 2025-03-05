@@ -4,21 +4,9 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import axios from 'axios'
 import Loader from '../../../components/Loader'
+import swal from 'sweetalert2'
 
 const EditDepartmentForm = () => {
-  const [formData, setFormData] = useState({
-    selectedDeptId: null,
-    changedDeptName: '',
-    changedDeptHodName: '',
-  })
-
-  const [deptData, setDeptData] = useState([])
-  const [loading, setLoading] = useState(false)
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-  }
-
   useEffect(() => {
     setLoading(true)
     var token = localStorage.getItem('login-token')
@@ -30,6 +18,7 @@ const EditDepartmentForm = () => {
       })
       .then((res) => {
         setDeptData(res.data.deptData)
+        setFormData({ departmentID: res.data.deptData[0].departmentID })
         setLoading(false)
       })
       .catch((err) => {
@@ -37,6 +26,60 @@ const EditDepartmentForm = () => {
         setLoading(false)
       })
   }, [])
+  const [formData, setFormData] = useState({
+    departmentID: null,
+    department_name: '',
+    hod: '',
+  })
+
+  const [deptData, setDeptData] = useState([])
+  const [loading, setLoading] = useState(false)
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    var token = localStorage.getItem('login-token')
+    console.log(formData)
+    axios
+      .post('http://localhost:8000/api/updateDepartment', formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        if (res.data.status === 403) {
+          const validationErrorMessages = Object.values(res.data.validationErrors)
+            .flat()
+            .map((msg) => `<li>${msg}</li>`)
+            .join('')
+
+          swal.fire({
+            title: res.data.message,
+            html: `<ul style='text-align: left'>${validationErrorMessages}</ul>`,
+            icon: 'error',
+            confirmButtonText: 'Try again',
+          })
+        } else if (res.data.status === 200) {
+          swal.fire({
+            title: 'Success!',
+            text: 'Department updated successfully.',
+            icon: 'success',
+            confirmButtonText: 'OK',
+          })
+        }
+      })
+      .catch((err) => {
+        swal.fire({
+          title: 'Error!',
+          text: 'Something went wrong.',
+          icon: 'error',
+          confirmButtonText: 'OK',
+        })
+      })
+  }
 
   return (
     <>
@@ -48,10 +91,15 @@ const EditDepartmentForm = () => {
           <Loader />
         </div>
       ) : (
-        <CForm className="w-100 w-lg-50">
+        <CForm onSubmit={handleSubmit} className="w-100 w-lg-50">
           <div className="mb-3">
             <CFormLabel htmlFor="deptName">Select Department</CFormLabel>
-            <CFormSelect className="text-start" aria-label="Default select example">
+            <CFormSelect
+              name="departmentID"
+              className="text-start"
+              aria-label="Default select example"
+              onChange={handleChange}
+            >
               {deptData.map((elem, index) => (
                 <option key={index} value={elem.departmentID}>
                   {elem.department_name}
@@ -61,14 +109,22 @@ const EditDepartmentForm = () => {
           </div>
           <div className="mb-3">
             <CFormLabel htmlFor="deptName">Department Name</CFormLabel>
-            <CFormInput type="text" id="deptName" aria-describedby="emailHelp" name="deptName" />
+            <CFormInput
+              type="text"
+              id="deptName"
+              aria-describedby="emailHelp"
+              name="department_name"
+              onChange={handleChange}
+            />
           </div>
           <div className="mb-3">
             <CFormLabel htmlFor="hodName">Name of Head</CFormLabel>
-            <CFormInput type="text" id="hodName" name="hodName" />
+            <CFormInput onChange={handleChange} type="text" id="hodName" name="hod" />
           </div>
           <div className="mb-3">
-            <CButton color="primary">Update</CButton>
+            <CButton type="submit" color="primary">
+              Update
+            </CButton>
           </div>
         </CForm>
       )}

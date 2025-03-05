@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
             DepartmentTableSeeder::class,
             DiseaseTableSeeder::class,
             PatientTableSeeder::class,
+            MedicineCategorySeeder::class,
+            MedicineSeeder::class
         ]);
     }
 }
