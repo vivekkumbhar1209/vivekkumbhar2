@@ -129,6 +129,7 @@ const AddReceptionistForm = ({ role }) =>
             name="password"
             required
             autoComplete="new-password"
+            placeholder='Password'
             value={data.password}
           />
         </div>
@@ -142,7 +143,7 @@ const AddReceptionistForm = ({ role }) =>
             required
             value={data.gender}
           >
-            <option value="">Select Gender</option>
+            <option value="" disabled>Select Gender</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
             <option value="Other">Other</option>
@@ -171,6 +172,7 @@ const AddReceptionistForm = ({ role }) =>
             type="text"
             name="mobile"
             required
+            placeholder='Mobile Number'
             value={data.mobile}
           />
         </div>
@@ -182,13 +184,14 @@ const AddReceptionistForm = ({ role }) =>
             onChange={handleChange}
             name="address"
             required
+            placeholder='Enter address'
             value={data.address}
           ></CFormTextarea>
         </div>
       </div>
     </div>
 
-    {/* Submit Button Centered */}
+    
     <div className="text-left mt-3">
       <CButton color="primary" type="submit">
         Add User
