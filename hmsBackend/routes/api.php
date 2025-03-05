@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AddDisease;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DeptReg;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogOutController;
@@ -10,10 +11,7 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PatientRegistration;
 use App\Http\Controllers\UpdateDepartment;
 use App\Http\Controllers\UserRegistration;
-use App\Models\Department;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ShowAllExistingUsers;
-
 
 Route::post('/login', [LoginController::class, 'login']);
 
@@ -28,24 +26,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/registerDepartment', [DeptReg::class, 'registerDepartment']);
     Route::post('/updateDepartment', [UpdateDepartment::class, 'updateDepartment']);
     Route::post('/registerpatient', [PatientRegistration::class, 'registerPatient']);
-    Route::post('/registeruser', [UserRegistration::class, 'registerUser']);//this will register all users
+    Route::post('/registeruser', [UserRegistration::class, 'registerUser']); //this will register all users
     Route::get('/patients', [PatientController::class, 'index']);
     Route::get('/patients/{id}', [PatientController::class, 'show']);
-
-
-    // Following routes get all the data for the respective resources : only for rendering purposes
     Route::get('/viewAllUsers', [UserRegistration::class, 'getAllUsers']);
     Route::get('/getDept', [DeptReg::class, 'getDepartments']);
     Route::get('/getMedicines', [MedicineController::class, "getMedicines"]);
-    // Route::get('/getDept', function () {
-    //     return response()->json([
-    //         'status'   => 200,
-    //         'message'  => 'Department Data',
-    //         'deptData' => Department::all(),
-    //     ]);
-    // });
-    
-
+    Route::get('/getDept', [DepartmentController::class, 'allDepartment']);
 
     //Implementation is not done for these api in the frontend
     Route::post('/addMedicineCategory', [MedicineCategoryController::class, 'addCategory']);
