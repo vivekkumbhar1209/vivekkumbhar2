@@ -60,15 +60,33 @@ const SearchPatient = React.lazy(() => import('./views/HMS_Components/SearchPati
 const ViewAllUsers = React.lazy(() => import('./views/HMS_Components/ViewAllUsers'))
 const ManageDisease = React.lazy(() => import('./views/HMS_Components/ManageDisease'))
 const ManageUserDetails = React.lazy(()=>import('./views/HMS_Components/ManageUserDetails'))
+const ManageOPDPatients = React.lazy(()=>import('./views/HMS_Components/ManageOPDPatients'))
+const Settings = React.lazy(()=>import('./views/HMS_Components/Settings'))
+const Profile = React.lazy(()=>import('./views/HMS_Components/Profile'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
-
+  {
+    path: '/userSettings',
+    name: 'Settings',
+    element: Settings
+  },
+  {
+    path: '/userProfile',
+    name: 'User Profile',
+    element: Profile,
+  },
   {
     path: '/registerPatient',
     name: 'Register Patient',
     element: RegisterPatient,
+  },
+
+  {
+    path: '/manageOPDPatient',
+    name: 'Manage OPD Patient',
+    element: ManageOPDPatients
   },
 
   {
