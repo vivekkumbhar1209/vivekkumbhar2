@@ -19,5 +19,6 @@ class Patients extends Model
         'patient_gender',
         'patient_dob',
         'patient_age',
+        'profilePhoto',
     ];
 }
