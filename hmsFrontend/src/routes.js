@@ -57,7 +57,6 @@ const AddUser = React.lazy(() => import('./views/HMS_Components/AddUser'))
 const ManageDepartment = React.lazy(() => import('./views/HMS_Components/ManageDepartment'))
 const ManageMedicines = React.lazy(() => import('./views/HMS_Components/ManageMedicines'))
 const SearchPatient = React.lazy(() => import('./views/HMS_Components/SearchPatient'))
-const UpdateUserDetails = React.lazy(() => import('./views/HMS_Components/UpdateUserDetails'))
 const ViewAllUsers = React.lazy(() => import('./views/HMS_Components/ViewAllUsers'))
 const ManageDisease = React.lazy(() => import('./views/HMS_Components/ManageDisease'))
 const ManageUserDetails = React.lazy(()=>import('./views/HMS_Components/ManageUserDetails'))
@@ -103,11 +102,7 @@ const routes = [
     name: 'Search Patient',
     element: SearchPatient,
   },
-  {
-    path: '/updateUserDetails',
-    name: 'Update User Details',
-    element: UpdateUserDetails,
-  },
+ 
 
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/dashboard/theme/colors', name: 'Colors', element: Colors },
