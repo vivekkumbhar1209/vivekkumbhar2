@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
-import axios from 'axios'
-import Swal from 'sweetalert2'
+
+import React, { useState } from "react";
+import axios from "axios";
+import Swal from "sweetalert2";
+
 
 const RegisterPatient = () => {
   const [data, setData] = useState({
@@ -52,16 +54,17 @@ const RegisterPatient = () => {
       })
 
       setData({
-        patient_name: '',
-        patient_email: '',
-        patient_mobile: '',
-        emergency_name: '',
-        emergency_no: '',
-        patient_address: '',
-        patient_gender: '',
-        patient_dob: '',
-        password: '',
-      })
+        patient_name: "",
+        patient_email: "",
+        patient_mobile: "",
+        emergency_name: "",
+        emergency_no: "",
+        patient_address: "",
+        patient_gender: "",
+        patient_dob: "",
+        password: "",
+      });
+  
     } catch (err) {
       console.error('Error Response:', err.response ? err.response.data : err.message)
 
@@ -101,85 +104,44 @@ const RegisterPatient = () => {
       <form className="grid grid-cols-1 md:grid-cols-2 gap-4" onSubmit={handleSubmit}>
         <div className="flex flex-col">
           <label className="font-medium">Full Name</label>
-          <input
-            type="text"
-            name="patient_name"
-            value={data.patient_name}
-            onChange={handleChange}
-            required
-            className="border rounded p-2"
-          />
+          <input type="text" name="patient_name" value={data.patient_name} onChange={handleChange} required
+            className="border rounded p-2"/>
         </div>
 
         <div className="flex flex-col">
           <label className="font-medium">Email</label>
-          <input
-            type="email"
-            name="patient_email"
-            value={data.patient_email}
-            onChange={handleChange}
-            required
-            className="border rounded p-2"
-          />
+          <input type="email" name="patient_email" value={data.patient_email} onChange={handleChange} required
+            className="border rounded p-2"/>
         </div>
 
         <div className="flex flex-col">
           <label className="font-medium">Mobile</label>
-          <input
-            type="tel"
-            name="patient_mobile"
-            value={data.patient_mobile}
-            onChange={handleChange}
-            required
-            className="border rounded p-2"
-          />
+          <input type="tel" name="patient_mobile" value={data.patient_mobile} onChange={handleChange} required
+            className="border rounded p-2"/>
         </div>
 
         <div className="flex flex-col">
           <label className="font-medium">Emergency Contact Name</label>
-          <input
-            type="text"
-            name="emergency_name"
-            value={data.emergency_name}
-            onChange={handleChange}
-            required
-            className="border rounded p-2"
-          />
+          <input type="text" name="emergency_name" value={data.emergency_name} onChange={handleChange} required
+            className="border rounded p-2"/>
         </div>
 
         <div className="flex flex-col">
           <label className="font-medium">Emergency Contact Mobile</label>
-          <input
-            type="tel"
-            name="emergency_no"
-            value={data.emergency_no}
-            onChange={handleChange}
-            required
-            className="border rounded p-2"
-          />
+          <input type="tel" name="emergency_no" value={data.emergency_no} onChange={handleChange} required
+            className="border rounded p-2"/>
         </div>
 
         <div className="flex flex-col">
           <label className="font-medium">Address</label>
-          <input
-            type="text"
-            name="patient_address"
-            value={data.patient_address}
-            onChange={handleChange}
-            required
-            className="border rounded p-2"
-          />
+          <input type="text" name="patient_address" value={data.patient_address} onChange={handleChange} required
+            className="border rounded p-2"/>
         </div>
 
         <div className="flex flex-col">
           <label className="font-medium">Gender</label>
-          <select
-            name="patient_gender"
-            value={data.patient_gender}
-            onChange={handleChange}
-            required
-            className="border rounded p-2"
-          >
+          <select name="patient_gender" value={data.patient_gender} onChange={handleChange} required
+            className="border rounded p-2">
             <option value="">Select Gender</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
@@ -189,47 +151,38 @@ const RegisterPatient = () => {
 
         <div className="flex flex-col">
           <label className="font-medium">Date of Birth</label>
-          <input
-            type="date"
-            name="patient_dob"
-            value={data.patient_dob}
-            onChange={handleChange}
-            required
-            className="border rounded p-2"
-          />
+          <input type="date" name="patient_dob" value={data.patient_dob} onChange={handleChange} required
+            className="border rounded p-2"/>
         </div>
 
-
+        
         <div className="md:col-span-2 flex justify-center">
-          <button
-            type="reset"
-            onClick={() =>
-              setData({
-                patient_name: '',
-                patient_email: '',
-                patient_mobile: '',
-                emergency_name: '',
-                emergency_no: '',
-                patient_address: '',
-                patient_gender: '',
-                patient_dob: '',
-                password: '',
-              })
-            }
-            className="w-1/2 bg-red-500 text-black font-semibold py-2 rounded-md hover:bg-red-600 transition mr-2"
-          >
-            Reset
-          </button>
-          <button
-            type="submit"
-            className="w-full bg-gray-200 text-black font-semibold py-2 rounded-md hover:bg-gray-300 transition"
-          >
-            Submit
-          </button>
+        <button 
+    type="reset" 
+    onClick={() => setData({
+      patient_name: "",
+      patient_email: "",
+      patient_mobile: "",
+      emergency_name: "",
+      emergency_no: "",
+      patient_address: "",
+      patient_gender: "",
+      patient_dob: "",
+      password: "",
+    })}
+    className="w-1/2 bg-red-500 text-black font-semibold py-2 rounded-md hover:bg-red-600 transition mr-2"
+  >
+    Reset
+  </button>
+        <button type="submit"
+        className="w-full bg-gray-200 text-black font-semibold py-2 rounded-md hover:bg-gray-300 transition">
+        Submit
+       </button>
+
         </div>
       </form>
     </div>
-  )
-}
+  );
+};
 
 export default RegisterPatient
