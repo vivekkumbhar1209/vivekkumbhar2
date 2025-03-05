@@ -11,9 +11,10 @@ import {
 } from '@coreui/react'
 import ViewAllUsers from './ViewAllUsers'
 
-const UpdateUserDetails = () => {
-  return (
-    <>
+const ManageUserDetails=()=>{
+    return (
+        <>
+            <>
       <CCard>
         <CCardHeader>
           <strong>Manage User Details</strong>
@@ -45,7 +46,8 @@ const UpdateUserDetails = () => {
         </CCardBody>
       </CCard>
     </>
-  )
+        </>
+    )
 }
 
-export default UpdateUserDetails
+export default ManageUserDetails

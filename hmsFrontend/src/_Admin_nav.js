@@ -73,10 +73,11 @@ const _nav = [
       },
       {
         component: CNavItem,
-        name: 'View All Users',
-        to: '/dashboard/viewAllUsers',
+        name: 'Manage Users',
+        to: '/dashboard/manageUserDetails',
         icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
       },
+
     ],
   },
   {
