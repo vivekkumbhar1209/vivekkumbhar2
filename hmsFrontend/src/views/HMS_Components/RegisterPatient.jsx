@@ -14,7 +14,6 @@ const RegisterPatient = () => {
     patient_address: "",
     patient_gender: "",
     patient_dob: "",
-    password: "",
   });
 
   const handleChange = (e) => {
@@ -153,12 +152,7 @@ const RegisterPatient = () => {
             className="border rounded p-2"/>
         </div>
 
-        <div className="flex flex-col">
-          <label className="font-medium">Password</label>
-          <input type="password" name="password" value={data.password} onChange={handleChange} required
-            className="border rounded p-2"/>
-        </div>
-
+        
         <div className="md:col-span-2 flex justify-center">
         <button 
     type="reset" 
