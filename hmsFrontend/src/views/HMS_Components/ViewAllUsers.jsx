@@ -1,10 +1,3 @@
-// import React from 'react'
-
-// const ViewAllUsers = () => {
-//   return <div>ViewAllUsers</div>
-// }
-
-// export default ViewAllUsers
 
 import React from 'react'
 import {
@@ -98,7 +91,7 @@ const ViewAllUsers = () => {
         </CCardHeader>
         <CCardBody>
           <p className="text-body-secondary small">
-            Search department by <code>id</code> or <code>name</code>.
+            Search users by <code>id</code> or <code>name</code>.
           </p>
           <CInputGroup className="flex-nowrap">
             <CButton style={{ borderRadius: '3px' }} color="primary" id="addon-wrapping">
