@@ -26,6 +26,8 @@ const ViewAllMedicine = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredData, setFilteredData] = useState([])
   const [currentPage, setCurrentPage] = useState(0)
+  const [sortBy, setSortBy] = useState('medicine_name')
+  const [order, setOrder] = useState('asc')
   const itemsPerPage = 5
 
   useEffect(() => {
@@ -35,6 +37,10 @@ const ViewAllMedicine = () => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        params: {
+          sortBy: sortBy,
+          order: order,
+        },
       })
       .then((res) => {
         console.log(res.data)
@@ -43,12 +49,27 @@ const ViewAllMedicine = () => {
       .catch((err) => {
         console.log(err)
       })
-  }, [])
+  }, [sortBy, order])
+
+  const handleOrderChange = (e) => {
+    setOrder(e.target.value === '1' ? 'asc' : 'desc');
+  }
+
+  const handleSortChange = (e) => {
+    const value = e.target.value;
+    switch (value) {
+      case "1": setSortBy("medicine_name");
+      break;
+      case "2": setSortBy("cost");
+      break;
+      default: setSortBy("medicine_name");
+    }
+  };
 
   const handleSearch = (e) => {
     var value = e.target.value.toLowerCase()
     setSearchTerm(value)
-    const filtered = medicines.filter((medicine) => medicine.name.toLowerCase().includes(value))
+    const filtered = medicines.filter((medicine) => medicine.medicine_name.toLowerCase().includes(value))
 
     setFilteredData(filtered)
     setCurrentPage(0)
@@ -82,17 +103,16 @@ const ViewAllMedicine = () => {
               />
             </div>
             <div style={{ width: '10%', margin: '0px 5px' }}>
-              <CFormSelect className="text-start" aria-label="Default select example">
-                <option color="secondary" defaultChecked>
+              <CFormSelect className="text-start" aria-label="Default select example" onChange={handleSortChange}>
+                <option color="secondary" disabled>
                   Sort By
                 </option>
-                <option value="1">Name</option>
-                <option value="2">Phone</option>
-                <option value="3">Email</option>
+                <option value="1">Medicine name</option>
+                <option value="2">Cost</option>
               </CFormSelect>
             </div>
             <div style={{ width: '10%', margin: '0px 5px' }}>
-              <CFormSelect className="text-start" aria-label="Default select example">
+              <CFormSelect className="text-start" aria-label="Default select example" onChange={handleOrderChange}>
                 <option color="secondary" disabled>
                   Order
                 </option>

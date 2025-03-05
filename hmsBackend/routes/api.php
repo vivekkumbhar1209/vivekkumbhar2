@@ -34,7 +34,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 
     // Following routes get all the data for the respective resources : only for rendering purposes
-    Route::get('/viewAllUsers', [ShowAllExistingUsers::class, 'AllExistingUsers']);
+    Route::get('/viewAllUsers', [UserRegistration::class, 'getAllUsers']);
     Route::get('/getDept', [DeptReg::class, 'getDepartments']);
     Route::get('/getMedicines', [MedicineController::class, "getMedicines"]);
     // Route::get('/getDept', function () {

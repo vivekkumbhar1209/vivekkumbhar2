@@ -8,8 +8,7 @@ use Illuminate\Support\Facades\Validator;
 
 class MedicineController extends Controller
 {
-    public function getMedicines() {
-        $medicines = Medicine::all();
+    public function getMedicines(Request $request) {
                         //Retrieves all existing medicines from medicines table.
                             // Get the params sent from the frontend fetch req. 
                             //   },
@@ -17,11 +16,12 @@ class MedicineController extends Controller
                               //   sortBy: sortBy,
                               //   order: order,
                               // },
-                            // $sortBy = $request->query("sortBy", "name");
-                            // $order = $request->query("order", "asc");
+                            $sortBy = $request->query("sortBy", "medicine_name");
+                            $order = $request->query("order", "asc");
                       
                             // second argument in the query method is a default value
-                            
+                            $medicines = Medicine::orderBy($sortBy, $order)->get();
+
                             return response()->json([
                               "status" => 200,
                               "message" => "Medicines Data",
