@@ -65,12 +65,7 @@ const _nav = [
         to: '/dashboard/addUser',
         icon: <CIcon icon={cilUserFollow} customClassName="nav-icon" />,
       },
-      {
-        component: CNavItem,
-        name: 'Update User Details',
-        to: '/dashboard/updateUserDetails',
-        icon: <CIcon icon={cilUserPlus} customClassName="nav-icon" />,
-      },
+      
       {
         component: CNavItem,
         name: 'Manage Users',
