@@ -11,6 +11,8 @@ use App\Http\Controllers\UpdateDepartment;
 use App\Http\Controllers\UserRegistration;
 use App\Models\Department;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ShowAllExistingUsers;
+
 
 Route::post('/login', [LoginController::class, 'login']);
 
@@ -28,13 +30,17 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/registeruser', [UserRegistration::class, 'registerUser']);//this will register all users
     Route::get('/patients', [PatientController::class, 'index']);
     Route::get('/patients/{id}', [PatientController::class, 'show']);
+    Route::get('/viewAllUsers', [ShowAllExistingUsers::class, 'AllExistingUsers']);
     Route::get('/getDept', function () {
         return response()->json([
             'status'   => 200,
             'message'  => 'Department Data',
             'deptData' => Department::all(),
         ]);
+
     });
+    
+
 
     //Implementation is not done for these api in the frontend
     Route::post('/addMedicineCategory', [MedicineCategoryController::class, 'addCategory']);
