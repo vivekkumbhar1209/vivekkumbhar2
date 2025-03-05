@@ -11,40 +11,35 @@ import {
 } from '@coreui/react'
 import SearchPatient from './SearchPatient'
 
-const ManageOPDPatients = ()=>{
-
-    return (
-        <>
-            <CCard>
+const ManageOPDPatients = () => {
+  return (
+    <>
+      <CCard>
         <CCardHeader>
-          <strong>Manage Patient Details</strong>
+          <strong>Manage OPD Patient</strong>
         </CCardHeader>
         <CCardBody className="mb-0">
           <p className="text-body-secondary small">
-            You can manage all the <code>patient</code> information from here.
+            You can manage all the <code>OPD patient</code> information from here.
           </p>
-          <CTabs activeItemKey={1}>
+          <CTabs activeItemKey={2}>
             <CTabList variant="underline-border">
-              <CTab itemKey={1}>Search Patients</CTab>
-              <CTab itemKey={2}>Add New Patient</CTab>
+              <CTab itemKey={2}>Add OPD Patient</CTab>
               <CTab itemKey={3}>Edit Patient Details</CTab>
             </CTabList>
             <CTabContent>
-              <CTabPanel className="py-3" itemKey={1}>
-                <SearchPatient/>
-              </CTabPanel>
               <CTabPanel className="py-3" itemKey={2}>
-                two
+                Add OPD Patient
               </CTabPanel>
               <CTabPanel className="py-3" itemKey={3}>
-                three
+                Edit OPD Patient
               </CTabPanel>
             </CTabContent>
           </CTabs>
         </CCardBody>
       </CCard>
-        </>
-    )
+    </>
+  )
 }
 
 export default ManageOPDPatients
