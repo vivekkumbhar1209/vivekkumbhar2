@@ -9,45 +9,42 @@ import {
   CTabPanel,
   CTabs,
 } from '@coreui/react'
-import ViewAllUsers from './ViewAllUsers'
+import SearchPatient from './SearchPatient'
 
-const ManageUserDetails=()=>{
+const ManageOPDPatients = ()=>{
+
     return (
         <>
-            <>
-      <CCard>
+            <CCard>
         <CCardHeader>
-          <strong>Manage User Details</strong>
+          <strong>Manage Patient Details</strong>
         </CCardHeader>
         <CCardBody className="mb-0">
           <p className="text-body-secondary small">
-            You can manage all the <code>user</code> settings from here.
+            You can manage all the <code>patient</code> information from here.
           </p>
           <CTabs activeItemKey={1}>
             <CTabList variant="underline-border">
-              <CTab itemKey={1}>Add User</CTab>
-              <CTab itemKey={2}>Edit User</CTab>
-              <CTab itemKey={3}>All users</CTab>
+              <CTab itemKey={1}>Search Patients</CTab>
+              <CTab itemKey={2}>Add New Patient</CTab>
+              <CTab itemKey={3}>Edit Patient Details</CTab>
             </CTabList>
             <CTabContent>
               <CTabPanel className="py-3" itemKey={1}>
-                {/* add department */}
-                one
+                <SearchPatient/>
               </CTabPanel>
               <CTabPanel className="py-3" itemKey={2}>
-                {/* edit department form */}
                 two
               </CTabPanel>
               <CTabPanel className="py-3" itemKey={3}>
-                <ViewAllUsers/>
+                three
               </CTabPanel>
             </CTabContent>
           </CTabs>
         </CCardBody>
       </CCard>
-    </>
         </>
     )
 }
 
-export default ManageUserDetails
+export default ManageOPDPatients

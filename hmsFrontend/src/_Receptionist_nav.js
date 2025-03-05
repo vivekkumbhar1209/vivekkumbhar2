@@ -38,20 +38,8 @@ const _nav = [
     items: [
       {
         component: CNavItem,
-        name: 'Register Patient',
-        to: '/dashboard/registerPatient',
-        icon: <CIcon icon={cilUserPlus} customClassName="nav-icon" />,
-      },
-      {
-        component: CNavItem,
-        name: 'OPD Patient Enquiry',
-        to: '/dashboard/base/breadcrumbs',
-        icon: <CIcon icon={cilMagnifyingGlass} customClassName="nav-icon" />,
-      },
-      {
-        component: CNavItem,
-        name: 'Queue',
-        to: '/dashboard/base/breadcrumbs',
+        name:'Manage Patient',
+        to: '/dashboard/manageOPDPatient',
         icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
       },
     ],

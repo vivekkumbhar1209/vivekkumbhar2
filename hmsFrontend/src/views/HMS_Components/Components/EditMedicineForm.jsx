@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import axios from 'axios'
 import Loader from '../../../components/Loader'
 
-const EditDepartmentForm = () => {
+const EditMedicineForm = () => {
   return (
     <>
       <CForm className="w-100 w-lg-50">
@@ -33,4 +33,4 @@ const EditDepartmentForm = () => {
   )
 }
 
-export default EditDepartmentForm
+export default EditMedicineForm
