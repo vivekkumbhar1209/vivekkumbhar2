@@ -3,10 +3,12 @@
 use App\Http\Controllers\AddDisease;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DeptReg;
+use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogOutController;
 use App\Http\Controllers\MedicineCategoryController;
 use App\Http\Controllers\MedicineController;
+use App\Http\Controllers\OPDController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PatientRegistration;
 use App\Http\Controllers\UpdateDepartment;
@@ -20,10 +22,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     //all team members add your post/get routes in this middleware group function since all the links are protected in this group. Only authenticated user with valid authentication token will be able to access these links
 
-    Route::post('/logout', [LogOutController::class, 'logout']);
-
     //Implementation is done for this api in the frontend
-    Route::post('/addDisease', [AddDisease::class, 'addDisease']);
+    Route::post('/logout', [LogOutController::class, 'logout']);
+    Route::post('/adddisease', [AddDisease::class, 'addDisease']);
     Route::post('/registerDepartment', [DeptReg::class, 'registerDepartment']);
     Route::get('/getDept', [DeptReg::class, 'getDept']);
     Route::post('/updateDepartment', [UpdateDepartment::class, 'updateDepartment']);
@@ -37,5 +38,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/getMedicines', [MedicineController::class, "getMedicines"]);
     Route::get('/getDept', [DepartmentController::class, 'allDepartment']);
     Route::post('/addMedicineCategory', [MedicineCategoryController::class, 'addCategory']);
+    Route::post('/getDoctorByDeparmentID', [DoctorController::class, 'getDoctorByDepartmentID']);
+    Route::post('/registerOPDPatient', [OPDController::class, 'registerOPDPatient']);
     Route::get('/getdiseases',[AddDisease::class,'getDisease']);
 });

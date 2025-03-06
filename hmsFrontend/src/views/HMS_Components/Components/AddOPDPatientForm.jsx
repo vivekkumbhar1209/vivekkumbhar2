@@ -25,6 +25,7 @@ import { FaSearch } from 'react-icons/fa'
 import axios from 'axios'
 import ReactPaginate from 'react-paginate'
 import Loader from '../../../components/Loader'
+import swal from 'sweetalert2'
 
 const ManageOPDPatients = () => {
   const [data, setData] = useState([])
@@ -36,10 +37,60 @@ const ManageOPDPatients = () => {
   const [loading, setLoading] = useState(false)
   const [modelVisibility, setModelVisibility] = useState(false)
   const [selectedPatient, setSelectedPatient] = useState(null)
+  const [selectedPatientID, setSelectedPatientID] = useState(null)
   const [departments, setDepartments] = useState([])
   const [selectedDepartment, setSelectedDepartment] = useState(null)
+  const [selectedDoctor, setSelectedDoctor] = useState(null)
   const [doctors, setDoctors] = useState([])
+  const [reason, setReason] = useState('')
   const itemsPerPage = 5
+
+  const handleSubmit = () => {
+    setLoading(true)
+    console.log(selectedDepartment + ' ' + selectedDoctor + ' ' + selectedPatientID + ' ' + reason)
+    const formData = {
+      selectedDoctor: selectedDoctor,
+      selectedPatientID: selectedPatientID,
+      reason: reason,
+    }
+
+    axios
+      .post('http://127.0.0.1:8000/api/registerOPDPatient', formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('login-token')}`,
+        },
+      })
+      .then((res) => {
+        if (res.data.status === 403) {
+          swal.fire({
+            title: 'Errors!',
+            text: res.data,
+            icon: 'error',
+            confirmButtonText: 'OK',
+          })
+          console.log(res.data)
+          setLoading(false)
+        } else {
+          swal.fire({
+            title: 'Success!',
+            text: res.data.message,
+            icon: 'success',
+            confirmButtonText: 'OK',
+          })
+          console.log(res.data)
+          setLoading(false)
+          setModelVisibility(false)
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+        setLoading(false)
+      })
+  }
+
+  const handleReason = (e) => {
+    setReason(e.target.value)
+  }
 
   useEffect(() => {
     if (!selectedPatient) {
@@ -64,6 +115,23 @@ const ManageOPDPatients = () => {
     if (!selectedDepartment) {
       return
     }
+
+    axios
+      .post(
+        'http://127.0.0.1:8000/api/getDoctorByDeparmentID',
+        { selectedDepartment },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('login-token')}`,
+          },
+        },
+      )
+      .then((res) => {
+        setDoctors(res.data.doctorData)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
 
     //apicall to get doctors with respect to the department id sent
   }, [selectedDepartment])
@@ -128,6 +196,7 @@ const ManageOPDPatients = () => {
   const handleCheckIn = (elem) => {
     setModelVisibility(true)
     setSelectedPatient(elem)
+    setSelectedPatientID(elem.id)
   }
 
   return (
@@ -238,51 +307,62 @@ const ManageOPDPatients = () => {
             <strong>OPD Registration Form</strong>
           </CModalHeader>
           <CModalBody>
-            <CForm>
-              <div className="mb-3">
-                <CFormLabel>Patient</CFormLabel>
-                <CFormInput
-                  value={selectedPatient ? selectedPatient.name : ''}
-                  type="text"
-                  disabled
-                />
+            {loading ? (
+              <div className="text-center">
+                <Loader />
               </div>
-              <div className="mb-3">
-                <CFormLabel>Select Department</CFormLabel>
-                <CFormSelect onChange={(e) => setSelectedDepartment(e.target.value)}>
-                  <option>-</option>
-                  {departments.map((elem, index) => (
-                    <option key={index} value={elem.departmentID}>
-                      {elem.department_name}
-                    </option>
-                  ))}
-                </CFormSelect>
-              </div>
-              {selectedDepartment ? (
-                <>
-                  <div className="mb-3">
-                    <CFormLabel>Select Doctor</CFormLabel>
-                    <CFormSelect>
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                    </CFormSelect>
-                  </div>
-                  <div className="mb-3">
-                    <CFormLabel>Reason</CFormLabel>
-                    <CFormInput type="text" />
-                  </div>
-                </>
-              ) : (
-                <p style={{ display: 'none' }}>Not Selected</p>
-              )}
-            </CForm>
+            ) : (
+              <CForm>
+                <div className="mb-3">
+                  <CFormLabel>Patient</CFormLabel>
+                  <CFormInput
+                    placeholder={selectedPatient ? selectedPatient.name : ''}
+                    type="text"
+                    disabled
+                  />
+                </div>
+                <div className="mb-3">
+                  <CFormLabel>Select Department</CFormLabel>
+                  <CFormSelect onChange={(e) => setSelectedDepartment(e.target.value)}>
+                    <option>-</option>
+                    {departments.map((elem, index) => (
+                      <option key={index} value={elem.departmentID}>
+                        {elem.department_name}
+                      </option>
+                    ))}
+                  </CFormSelect>
+                </div>
+                {selectedDepartment ? (
+                  <>
+                    <div className="mb-3">
+                      <CFormLabel>Select Doctor</CFormLabel>
+                      <CFormSelect onChange={(e) => setSelectedDoctor(e.target.value)}>
+                        <option>-</option>
+                        {doctors.map((elem, index) => (
+                          <option value={elem.doctorID} key={index}>
+                            {elem.name}
+                          </option>
+                        ))}
+                      </CFormSelect>
+                    </div>
+                    <div className="mb-3">
+                      <CFormLabel>Reason</CFormLabel>
+                      <CFormInput onChange={handleReason} type="text" />
+                    </div>
+                  </>
+                ) : (
+                  <p style={{ display: 'none' }}>Not Selected</p>
+                )}
+              </CForm>
+            )}
           </CModalBody>
           <CModalFooter>
             <CButton color="secondary" onClick={() => setModelVisibility(false)}>
               Close
             </CButton>
-            <CButton color="primary">Register</CButton>
+            <CButton color="primary" onClick={handleSubmit}>
+              Register
+            </CButton>
           </CModalFooter>
         </CModalContent>
       </CModal>
