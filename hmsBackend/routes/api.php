@@ -29,10 +29,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/getDept', [DeptReg::class, 'getDept']);
     Route::post('/updateDepartment', [UpdateDepartment::class, 'updateDepartment']);
     Route::post('/registerpatient', [PatientRegistration::class, 'registerPatient']);
-    Route::post('/registeruser', [UserRegistration::class, 'registerUser']); //this will register all users
+    Route::put('/updateuser/{id}', [UserRegistration::class, 'updateUser']);
+    Route::post('/registeruser', [UserRegistration::class, 'registerUser']);//this will register all users
     Route::get('/patients', [PatientController::class, 'index']);
     Route::get('/patients/{id}', [PatientController::class, 'show']);
-    Route::get('/viewAllUsers', [ShowAllExistingUsers::class, 'AllExistingUsers']);
+    
+    // Edit Users : get user data for the particular id
+    // Route::get('/')
+
+    // Following routes get all the data for the respective resources : only for rendering purposes
     Route::get('/viewAllUsers', [UserRegistration::class, 'getAllUsers']);
     Route::get('/getDept', [DeptReg::class, 'getDepartments']);
     Route::get('/getMedicines', [MedicineController::class, "getMedicines"]);

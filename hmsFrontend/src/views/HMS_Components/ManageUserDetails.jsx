@@ -36,7 +36,7 @@ const ManageUserDetails=()=>{
               </CTabPanel>
               <CTabPanel className="py-3" itemKey={2}>
                 {/* edit department form */}
-                <ViewAllUsers/>
+                <ViewAllUsers action="edit" />
                 two
               </CTabPanel>
               <CTabPanel className="py-3" itemKey={3}>
