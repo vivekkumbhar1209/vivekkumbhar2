@@ -1,96 +1,83 @@
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { CCard, CCardHeader, CInputGroup, CFormInput, CCardBody, CButton, CTable, CTableHead, CTableBody, CTableRow, CTableHeaderCell, CTableDataCell, CFormSelect } from '@coreui/react';
+import { FaSearch } from 'react-icons/fa';
+import ReactPaginate from 'react-paginate';
+import AddReceptionistForm from './AddReceptionistForm';
+import AddAdminForm from './Components/AddAdminForm';
+import AddDoctorForm from './Components/AddDoctorForm';
 
-import React from 'react'
-import {
-  CCard,
-  CCardHeader,
-  CInputGroup,
-  CFormInput,
-  CCardBody,
-  CButton,
-  CTable,
-  CTableHead,
-  CTableBody,
-  CTableRow,
-  CTableHeaderCell,
-  CTableDataCell,
-  CFormSelect,
-} from '@coreui/react'
-import { useEffect } from 'react'
-import { useState } from 'react'
-import axios from 'axios'
-import { formatDate } from '../../dateUtility'
-import { FaSearch } from 'react-icons/fa'
-import ReactPaginate from 'react-paginate'
-
-const ViewAllUsers = ({action}) => {
-  const [users, setUsers] = useState([])
-  const [searchTerm, setSearchTerm] = useState('')
-  const [filteredData, setFilteredData] = useState([])
-  const [currentPage, setCurrentPage] = useState(0)
-  const [sortBy, setSortBy] = useState('name')
-  const [order, setOrder] = useState('asc')
-  const itemsPerPage = 5
+const ViewAllUsers = ({ action }) => {
+  const [users, setUsers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredData, setFilteredData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [sortBy, setSortBy] = useState('name');
+  const [order, setOrder] = useState('asc');
+  const [editingUser, setEditingUser] = useState(null); // State to hold the user being edited
+  const itemsPerPage = 5;
 
   useEffect(() => {
-    var token = localStorage.getItem('login-token')
+    var token = localStorage.getItem('login-token');
     axios
       .get('http://127.0.0.1:8000/api/viewAllUsers', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        params: {
-          sortBy: sortBy,
-          order: order,
-        },
+        headers: { Authorization: `Bearer ${token}` },
+        params: { sortBy, order },
       })
       .then((res) => {
-        console.log(res.data)
-        setUsers(res.data.Users)
+        setUsers(res.data.Users);
       })
       .catch((err) => {
-        console.log(err)
-      })
+        console.log(err);
+      });
   }, [sortBy, order]);
 
   const handleSearch = (e) => {
-    var value = e.target.value.toLowerCase()
-    setSearchTerm(value)
-    const filtered = users.filter((user) => user.name.toLowerCase().includes(value))
-
-    setFilteredData(filtered)
-    setCurrentPage(0)
-  }
+    var value = e.target.value.toLowerCase();
+    setSearchTerm(value);
+    const filtered = users.filter((user) => user.name.toLowerCase().includes(value));
+    setFilteredData(filtered);
+    setCurrentPage(0);
+  };
 
   const handleSortChange = (e) => {
     const value = e.target.value;
     switch (value) {
-      case "1": setSortBy("name");
-      break;
-      case "2": setSortBy("phone");
-      break;
-      case "3": setSortBy("email");
-      break;
+      case "1": setSortBy("name"); break;
+      case "2": setSortBy("phone"); break;
+      case "3": setSortBy("email"); break;
       default: setSortBy("name");
     }
   };
 
   const handleOrderChange = (e) => {
     setOrder(e.target.value === '1' ? 'asc' : 'desc');
-  }
+  };
 
+  const currentData = searchTerm.length > 0
+    ? filteredData.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
+    : users.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
+  const handleEdit = (user) => {
+    setEditingUser(user); // Set the user to be edited
+  };
 
-  const currentData =
-    searchTerm.length > 0
-      ? filteredData.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
-      : users.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
+  const renderEditForm = () => {
+    if (!editingUser) return null; // If no user is being edited, don't show form
 
-  const handleEdit = (elem) => {
-    console.log(elem);
-  }
+    if (editingUser.role === "Admin") {
+      return <AddAdminForm role={editingUser.role} propAction="edit" user={editingUser} />;
+    } else if (editingUser.role === "Doctor") {
+      return <AddDoctorForm role={editingUser.role} propAction="edit" user={editingUser} />;
+    } else {
+      return <AddReceptionistForm role={editingUser.role} propAction="edit" user={editingUser} />;
+    }
+  };
 
   return (
     <>
+      {renderEditForm()} {/* Render the form when user clicks edit */}
+
       <CCard className="mb-3">
         <CCardHeader>
           <strong>Search Users</strong>
@@ -113,9 +100,7 @@ const ViewAllUsers = ({action}) => {
             </div>
             <div style={{ width: '10%', margin: '0px 5px' }}>
               <CFormSelect className="text-start" aria-label="Default select example" onChange={handleSortChange}>
-                <option color="secondary" defaultChecked>
-                  Sort By
-                </option>
+                <option color="secondary" defaultChecked>Sort By</option>
                 <option value="1">Name</option>
                 <option value="2">Phone</option>
                 <option value="3">Email</option>
@@ -123,9 +108,7 @@ const ViewAllUsers = ({action}) => {
             </div>
             <div style={{ width: '10%', margin: '0px 5px' }}>
               <CFormSelect className="text-start" aria-label="Default select example" onChange={handleOrderChange}>
-                <option color="secondary" disabled>
-                  Order
-                </option>
+                <option color="secondary" disabled>Order</option>
                 <option value="1">Asc</option>
                 <option value="2">Desc</option>
               </CFormSelect>
@@ -133,6 +116,7 @@ const ViewAllUsers = ({action}) => {
           </CInputGroup>
         </CCardBody>
       </CCard>
+
       <CCard>
         <CCardBody>
           <CTable bordered responsive hover>
@@ -156,14 +140,11 @@ const ViewAllUsers = ({action}) => {
                     <CTableDataCell>{elem.email}</CTableDataCell>
                     <CTableDataCell>{elem.gender}</CTableDataCell>
                     <CTableDataCell>{elem.mobile}</CTableDataCell>
-                    {
-                      action === "edit" ? (
-                        <CTableDataCell><CButton onClick={() => {handleEdit(elem)}}>Edit</CButton></CTableDataCell>
-                      ) : null
-                    }                   
-
-                    {/* <CTableDataCell>{formatDate(elem.created_at)}</CTableDataCell> */}
-                    {/* <CTableDataCell>{formatDate(elem.updated_at)}</CTableDataCell> */}
+                    {action === "edit" ? (
+                      <CTableDataCell>
+                        <CButton onClick={() => handleEdit(elem)}>Edit</CButton>
+                      </CTableDataCell>
+                    ) : null}
                   </CTableRow>
                 ))
               ) : (
@@ -177,6 +158,7 @@ const ViewAllUsers = ({action}) => {
           </CTable>
         </CCardBody>
       </CCard>
+
       <CCard className="mt-2">
         <CCardBody className="pb-0">
           <div className="d-flex justify-content-center">
@@ -185,7 +167,7 @@ const ViewAllUsers = ({action}) => {
               nextLabel={'>>'}
               breakLabel={'...'}
               pageCount={Math.ceil(
-                (filteredData.length > 0 ? filteredData.length : users.length) / itemsPerPage,
+                (filteredData.length > 0 ? filteredData.length : users.length) / itemsPerPage
               )}
               marginPagesDisplayed={2}
               pageRangeDisplayed={3}
@@ -205,7 +187,7 @@ const ViewAllUsers = ({action}) => {
         </CCardBody>
       </CCard>
     </>
-  )
-}
+  );
+};
 
 export default ViewAllUsers;
