@@ -21,4 +21,9 @@ class Patients extends Model
         'patient_age',
         'profilePhoto',
     ];
+
+    public function opdRegistrations()
+    {
+        return $this->hasMany(OpdRegistration::class, 'patientID', 'patientID');
+    }
 }

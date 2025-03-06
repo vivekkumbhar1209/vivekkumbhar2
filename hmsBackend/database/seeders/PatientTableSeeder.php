@@ -17,10 +17,12 @@ class PatientTableSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        // Insert 20 fake patient records
         for ($i = 0; $i < 20; $i++) {
-            $dob = $faker->dateTimeBetween('-80 years', '-18 years')->format('Y-m-d'); // Random DOB between 18 and 80 years old
-            $age = Carbon::parse($dob)->age;                                           // Calculate age based on DOB
+            $dob = $faker->dateTimeBetween('-80 years', '-18 years')->format('Y-m-d');
+            $age = Carbon::parse($dob)->age;
+
+            // Generate a random past timestamp
+            $createdAt = $faker->dateTimeBetween('-1 year', 'now');
 
             DB::table('patients')->insert([
                 'patient_name'    => $faker->name,
@@ -32,8 +34,8 @@ class PatientTableSeeder extends Seeder
                 'patient_gender'  => $faker->randomElement(['Male', 'Female', 'Others']),
                 'patient_dob'     => $dob,
                 'patient_age'     => $age,
-                'created_at'      => Carbon::now(),
-                'updated_at'      => Carbon::now(),
+                'created_at'      => $createdAt,
+                'updated_at'      => $createdAt,
             ]);
         }
     }

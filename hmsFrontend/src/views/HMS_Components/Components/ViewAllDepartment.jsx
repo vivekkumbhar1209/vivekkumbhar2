@@ -33,8 +33,7 @@ const ViewAllDepartment = () => {
     axios
       .get('http://127.0.0.1:8000/api/getDept', {
         headers: {
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`,}
       })
       .then((res) => {
         console.log(res.data)
