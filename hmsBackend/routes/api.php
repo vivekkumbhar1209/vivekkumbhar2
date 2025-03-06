@@ -36,10 +36,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     //Implementation is not done for these api in the frontend
     Route::post('/addMedicineCategory', [MedicineCategoryController::class, 'addCategory']);
+
+    // api which will send all the available diseases to the frontend
+    Route::get('/getdiseases',[AddDisease::class,'getDisease']);
+
+
     //Additionally we need to create the following api as well
     // 1. api which will send all the available medicines to the frontend
-    // 2. api which will send all the available diseases to the frontend
-    // 3. api which will send all the available departments to the frontend
+
     // 4. api which will update the entries in the disease table based on the form data accepted from the frontend (form is created for this in frontend)
     // 5. api which will add new disease in the disease table based on the form data accepted from the frontend (form is created for this in frontend)
 

@@ -100,7 +100,6 @@ const AddReceptionistForm = ({ role }) =>
             id="name"
             onChange={handleChange}
             type="text"
-            placeholder="Name"
             name="name"
             required
             value={data.name}
@@ -108,12 +107,11 @@ const AddReceptionistForm = ({ role }) =>
         </div>
 
         <div>
-          <CFormLabel htmlFor="email">Email:</CFormLabel>
+          <CFormLabel htmlFor="email" className="mt-2">Email:</CFormLabel>
           <CFormInput
             id="email"
             onChange={handleChange}
             type="email"
-            placeholder="Email"
             name="email"
             required
             value={data.email}
@@ -121,7 +119,7 @@ const AddReceptionistForm = ({ role }) =>
         </div>
 
         <div>
-          <CFormLabel htmlFor="password">Password:</CFormLabel>
+          <CFormLabel htmlFor="password" className="mt-2">Password:</CFormLabel>
           <CFormInput
             id="password"
             onChange={handleChange}
@@ -129,7 +127,6 @@ const AddReceptionistForm = ({ role }) =>
             name="password"
             required
             autoComplete="new-password"
-            placeholder='Password'
             value={data.password}
           />
         </div>
@@ -165,26 +162,24 @@ const AddReceptionistForm = ({ role }) =>
         </div>
 
         <div>
-          <CFormLabel htmlFor="mobile">Mobile:</CFormLabel>
+          <CFormLabel htmlFor="mobile" className="mt-2">Mobile:</CFormLabel>
           <CFormInput
             id="mobile"
             onChange={handleChange}
             type="text"
             name="mobile"
             required
-            placeholder='Mobile Number'
             value={data.mobile}
           />
         </div>
 
         <div>
-          <CFormLabel htmlFor="address">Address:</CFormLabel>
+          <CFormLabel htmlFor="address" className="mt-2">Address:</CFormLabel>
           <CFormTextarea 
             id="address"
             onChange={handleChange}
             name="address"
             required
-            placeholder='Enter address'
             value={data.address}
           ></CFormTextarea>
         </div>

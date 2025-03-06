@@ -7,6 +7,7 @@ use Validator;
 
 class AddDisease extends Controller
 {
+    //function to add disease
     public function addDisease(Request $request)
     {
 
@@ -34,5 +35,16 @@ class AddDisease extends Controller
                 "data"    => $disease,
             ], 200);
         }
+    }
+
+    //Function to display all diseases
+    public function getDisease(Request $request)
+    {
+        $disease = Disease::all();
+        return response()->json([
+            "status"=> 200,
+            "diseases"=>$disease,
+        ]
+        );
     }
 }

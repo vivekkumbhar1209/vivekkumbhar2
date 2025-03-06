@@ -129,7 +129,7 @@ const AddDoctorForm = ({ role }) => {
 
   return (
     <div className="container">
-      <p className="text-body-secondary fs-5">
+      <p className="text-body-secondary fs-6">
             Add Doctor
           </p>
           <CForm onSubmit={handleSubmit} className="w-100">
@@ -137,22 +137,22 @@ const AddDoctorForm = ({ role }) => {
     {/* Left Column */}
     <div className="col-md-6">
       <div>
-        <CFormLabel htmlFor="name">Name:</CFormLabel>
-        <CFormInput id="name" onChange={handleChange} type="text" name="name" required value={data.name} placeholder="Name" />
+        <CFormLabel htmlFor="name" >Name:</CFormLabel>
+        <CFormInput id="name" onChange={handleChange} type="text" name="name" required value={data.name}  />
       </div>
 
       <div>
-        <CFormLabel htmlFor="email">Email:</CFormLabel>
-        <CFormInput id="email" onChange={handleChange} type="email" name="email" required value={data.email} placeholder="Email" />
+        <CFormLabel htmlFor="email" className="mt-2">Email:</CFormLabel>
+        <CFormInput id="email" onChange={handleChange} type="email" name="email" required value={data.email}  />
       </div>
 
       <div>
-        <CFormLabel htmlFor="password">Password:</CFormLabel>
-        <CFormInput id="password" onChange={handleChange} type="password" name="password" required value={data.password} placeholder="Password" />
+        <CFormLabel htmlFor="password" className="mt-2">Password:</CFormLabel>
+        <CFormInput id="password" onChange={handleChange} type="password" name="password" required value={data.password}  />
       </div>
 
       <div>
-        <CFormLabel htmlFor="gender">Gender:</CFormLabel>
+        <CFormLabel htmlFor="gender" className="mt-2">Gender:</CFormLabel>
         <CFormSelect id="gender" name="gender" onChange={handleChange} required value={data.gender}>
           <option value="" disabled>Select Gender</option>
           <option value="Male">Male</option>
@@ -162,35 +162,37 @@ const AddDoctorForm = ({ role }) => {
       </div>
 
       <div>
-        <CFormLabel htmlFor="date_Of_Birth">Date of Birth:</CFormLabel>
+        <CFormLabel htmlFor="date_Of_Birth" className="mt-2">Date of Birth:</CFormLabel>
         <CFormInput id="date_Of_Birth" onChange={handleChange} type="date" name="date_Of_Birth" value={data.date_Of_Birth} />
       </div>
 
       <div>
-        <CFormLabel htmlFor="mobile">Mobile:</CFormLabel>
-        <CFormInput id="mobile" onChange={handleChange} type="text" name="mobile" required value={data.mobile} placeholder="Mobile Number" />
+        <CFormLabel htmlFor="address" className="mt-2">Address:</CFormLabel>
+        <CFormTextarea id="address" onChange={handleChange} name="address" required value={data.address} ></CFormTextarea>
       </div>
+
+      
     </div>
 
     {/* Right Column */}
     <div className="col-md-6">
-      <div>
-        <CFormLabel htmlFor="address">Address:</CFormLabel>
-        <CFormTextarea id="address" onChange={handleChange} name="address" required value={data.address} placeholder="Enter Address"></CFormTextarea>
+    <div>
+        <CFormLabel htmlFor="mobile">Mobile:</CFormLabel>
+        <CFormInput id="mobile" onChange={handleChange} type="text" name="mobile" required value={data.mobile} />
       </div>
 
       <div>
-        <CFormLabel htmlFor="specialization">Specialization:</CFormLabel>
-        <CFormInput id="specialization" onChange={handleChange} type="text" name="specialization" required value={data.specialization} placeholder="Specialization" />
+        <CFormLabel htmlFor="specialization" className="mt-2">Specialization:</CFormLabel>
+        <CFormInput id="specialization" onChange={handleChange} type="text" name="specialization" required value={data.specialization}  />
       </div>
 
       <div>
-        <CFormLabel htmlFor="experience">Experience (Years):</CFormLabel>
-        <CFormInput id="experience" onChange={handleChange} type="text" name="experience" required value={data.experience} placeholder="Experience in years" />
+        <CFormLabel htmlFor="experience" className="mt-2">Experience (Years):</CFormLabel>
+        <CFormInput id="experience" onChange={handleChange} type="text" name="experience" required value={data.experience}  />
       </div>
 
       <div>
-        <CFormLabel htmlFor="department">Department:</CFormLabel>
+        <CFormLabel htmlFor="department" className="mt-2">Department:</CFormLabel>
         <CFormSelect id="departmentID" name="departmentID" onChange={handleChange} required value={data.departmentID}>
           <option value="" disabled>Select Department</option>
           {departments.map((dept) => (
@@ -202,8 +204,8 @@ const AddDoctorForm = ({ role }) => {
       </div>
 
       <div>
-        <CFormLabel htmlFor="consultation_fee">Consultation Fee:</CFormLabel>
-        <CFormInput id="consultation_fee" onChange={handleChange} type="text" name="consultation_fee" required value={data.consultation_fee} placeholder="Consultation Fee"/>
+        <CFormLabel htmlFor="consultation_fee" className="mt-2">Consultation Fee:</CFormLabel>
+        <CFormInput id="consultation_fee" onChange={handleChange} type="text" name="consultation_fee" required value={data.consultation_fee} />
       </div>
     </div>
   </div>
