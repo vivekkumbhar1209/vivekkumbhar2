@@ -24,7 +24,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     //Implementation is done for this api in the frontend
     Route::post('/logout', [LogOutController::class, 'logout']);
-    Route::post('/adddisease', [AddDisease::class, 'addDisease']);
+    Route::post('/addDisease', [AddDisease::class, 'addDisease']);
     Route::post('/registerDepartment', [DeptReg::class, 'registerDepartment']);
     Route::get('/getDept', [DeptReg::class, 'getDept']);
     Route::post('/updateDepartment', [UpdateDepartment::class, 'updateDepartment']);
