@@ -13,26 +13,25 @@ const AddMedicineForm = () => {
 
     axios
       .post(
-        'http://127.0.0.1:8000/api/getMedCategory', 
+        'http://127.0.0.1:8000/api/getMedCategory',
         {}, // Empty body for POST request
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       )
       .then((res) => {
-        console.log("Categories:", res.data);
+        console.log('Categories:', res.data)
         setCategories(res.data) // Update categories state
       })
       .catch((error) => {
-        console.error("Error fetching categories:", error);
+        console.error('Error fetching categories:', error)
       })
       .finally(() => {
-        setLoading(false); // Stop loading after API call
-      });
-
-  }, []);
+        setLoading(false) // Stop loading after API call
+      })
+  }, [])
 
   return (
     <>
