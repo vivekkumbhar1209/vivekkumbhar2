@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('age');
             $table->string('mobile');
             $table->longText('address');
+            $table->string('profilePhoto')->nullable();
             $table->enum('role', ['Doctor', 'Receptionist', 'Admin']);
             $table->timestamps();
         });

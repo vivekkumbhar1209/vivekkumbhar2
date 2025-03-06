@@ -28,6 +28,30 @@ const _nav = [
   },
   {
     component: CNavTitle,
+    name: 'Patients',
+  },
+  {
+    component: CNavGroup,
+    name: 'Patients',
+    to: '/HMS_Components',
+    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Register Patient',
+        to: '/dashboard/registerPatient',
+        icon: <CIcon icon={cilUserFollow} customClassName="nav-icon" />,
+      },
+      {
+        component: CNavItem,
+        name: 'Search Patient',
+        to: '/dashboard/searchPatient',
+        icon: <CIcon icon={cilMagnifyingGlass} customClassName="nav-icon" />,
+      },
+    ],
+  },
+  {
+    component: CNavTitle,
     name: 'OPD',
   },
   {
@@ -38,20 +62,8 @@ const _nav = [
     items: [
       {
         component: CNavItem,
-        name: 'Register Patient',
-        to: '/dashboard/registerPatient',
-        icon: <CIcon icon={cilUserPlus} customClassName="nav-icon" />,
-      },
-      {
-        component: CNavItem,
-        name: 'OPD Patient Enquiry',
-        to: '/dashboard/base/breadcrumbs',
-        icon: <CIcon icon={cilMagnifyingGlass} customClassName="nav-icon" />,
-      },
-      {
-        component: CNavItem,
-        name: 'Queue',
-        to: '/dashboard/base/breadcrumbs',
+        name: 'OPD Patient',
+        to: '/dashboard/manageOPDPatient',
         icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
       },
     ],

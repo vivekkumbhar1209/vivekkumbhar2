@@ -10,7 +10,7 @@ import {
   CTabs,
 } from '@coreui/react'
 import ViewAllUsers from './ViewAllUsers'
-
+import EditUsers from './EditUsers'
 const ManageUserDetails=()=>{
     return (
         <>
@@ -23,7 +23,7 @@ const ManageUserDetails=()=>{
           <p className="text-body-secondary small">
             You can manage all the <code>user</code> settings from here.
           </p>
-          <CTabs activeItemKey={2}>
+          <CTabs activeItemKey={1}>
             <CTabList variant="underline-border">
               <CTab itemKey={1}>Add User</CTab>
               <CTab itemKey={2}>Edit User</CTab>
@@ -36,6 +36,7 @@ const ManageUserDetails=()=>{
               </CTabPanel>
               <CTabPanel className="py-3" itemKey={2}>
                 {/* edit department form */}
+                <ViewAllUsers/>
                 two
               </CTabPanel>
               <CTabPanel className="py-3" itemKey={3}>

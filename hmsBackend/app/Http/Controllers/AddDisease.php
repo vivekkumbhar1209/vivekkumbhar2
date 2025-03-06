@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 
 class AddDisease extends Controller
 {
+    //function to add disease
     public function addDisease(Request $request)
     {
         Log::info('Received Data:', $request->all());
@@ -58,6 +59,17 @@ class AddDisease extends Controller
                 "error"   => $e->getMessage(),
             ], 500);
         }
+    }
+
+    //Function to display all diseases
+    public function getDisease(Request $request)
+    {
+        $disease = Disease::all();
+        return response()->json([
+            "status"=> 200,
+            "diseases"=>$disease,
+        ]
+        );
     }
 }
 

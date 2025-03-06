@@ -6,7 +6,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class DeptReg extends Controller
-{
+{   
+    // Returns all the departments 
+    public function getDepartments() {
+        return response()->json([
+            "status" => 200,
+            "message" => "All departments",
+            "deptData" => Department::all(),
+        ]);
+    }
+
+    // Registers or creates new department
     public function registerDepartment(Request $request)
     {
         $validator = Validator::make($request->all(), [
