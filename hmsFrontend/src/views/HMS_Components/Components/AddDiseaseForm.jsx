@@ -1,7 +1,11 @@
 import React from 'react'
 
 const AddDiseaseForm = () => {
-  return <div>Add diseases form</div>
+  return (
+    <>
+    
+    </>
+  )
 }
 
 export default AddDiseaseForm
