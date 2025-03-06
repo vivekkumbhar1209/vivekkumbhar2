@@ -1,65 +1,56 @@
-import React, { useState } from "react";
-import axios from "axios";
-import swal from "sweetalert2";
-import {
-  CForm,
-  CFormSelect,
-  CFormTextarea,
-  CFormInput,
-  CButton,
-  CFormLabel,
-} from "@coreui/react";
+import React, { useState } from 'react'
+import axios from 'axios'
+import swal from 'sweetalert2'
+import { CForm, CFormSelect, CFormTextarea, CFormInput, CButton, CFormLabel } from '@coreui/react'
 
 const AddDiseaseForm = () => {
   const [data, setData] = useState({
-    diseaseName: "",
-    diseaseDescription: "",
-    isActive: "Active", // Default value
-  });
+    diseaseName: '',
+    diseaseDescription: '',
+    isActive: 'Active', // Default value
+  })
 
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({})
 
   const handleChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
-  };
+    setData({ ...data, [e.target.name]: e.target.value })
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrors({}); // Clear previous errors
-    const token = localStorage.getItem("login-token");
+    e.preventDefault()
+    setErrors({}) // Clear previous errors
+    const token = localStorage.getItem('login-token')
 
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/addDisease",
-        data,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const response = await axios.post('http://127.0.0.1:8000/api/addDisease', data, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
 
       swal.fire({
-        title: "Success!",
-        text: "Disease added successfully.",
-        icon: "success",
-        confirmButtonText: "OK",
-      });
+        title: 'Success!',
+        text: 'Disease added successfully.',
+        icon: 'success',
+        confirmButtonText: 'OK',
+      })
 
       setData({
-        diseaseName: "",
-        diseaseDescription: "",
-        isActive: "Active",
-      });
+        diseaseName: '',
+        diseaseDescription: '',
+        isActive: 'Active',
+      })
     } catch (err) {
       if (err.response && err.response.status === 422) {
-        setErrors(err.response.data.validationErrors);
+        setErrors(err.response.data.validationErrors)
       } else {
         swal.fire({
-          title: "Error!",
-          text: "Failed to add disease.",
-          icon: "error",
-          confirmButtonText: "Try Again",
-        });
+          title: 'Error!',
+          text: 'Failed to add disease.',
+          icon: 'error',
+          confirmButtonText: 'Try Again',
+        })
       }
     }
-  };
+  }
 
   return (
     <div className="container">
@@ -77,9 +68,7 @@ const AddDiseaseForm = () => {
               placeholder="Enter Disease Name"
               required
             />
-            {errors.diseaseName && (
-              <p className="text-danger">{errors.diseaseName[0]}</p>
-            )}
+            {errors.diseaseName && <p className="text-danger">{errors.diseaseName[0]}</p>}
           </div>
 
           <div className="col-md-6">
@@ -94,17 +83,13 @@ const AddDiseaseForm = () => {
               <option value="Active">Active</option>
               <option value="Inactive">Inactive</option>
             </CFormSelect>
-            {errors.isActive && (
-              <p className="text-danger">{errors.isActive[0]}</p>
-            )}
+            {errors.isActive && <p className="text-danger">{errors.isActive[0]}</p>}
           </div>
         </div>
 
         <div className="row mt-3">
           <div className="col-12">
-            <CFormLabel htmlFor="diseaseDescription">
-              Disease Description:
-            </CFormLabel>
+            <CFormLabel htmlFor="diseaseDescription">Disease Description:</CFormLabel>
             <CFormTextarea
               id="diseaseDescription"
               onChange={handleChange}
@@ -126,7 +111,7 @@ const AddDiseaseForm = () => {
         </div>
       </CForm>
     </div>
-  );
-};
+  )
+}
 
-export default AddDiseaseForm;
+export default AddDiseaseForm

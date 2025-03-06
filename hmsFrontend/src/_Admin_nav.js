@@ -27,30 +27,6 @@ const _nav = [
   },
   {
     component: CNavTitle,
-    name: 'Patients',
-  },
-  {
-    component: CNavGroup,
-    name: 'Patients',
-    to: '/HMS_Components',
-    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Register Patient',
-        to: '/dashboard/registerPatient',
-        icon: <CIcon icon={cilUserFollow} customClassName="nav-icon" />,
-      },
-      {
-        component: CNavItem,
-        name: 'Search Patient',
-        to: '/dashboard/searchPatient',
-        icon: <CIcon icon={cilMagnifyingGlass} customClassName="nav-icon" />,
-      },
-    ],
-  },
-  {
-    component: CNavTitle,
     name: 'Users',
   },
   {
@@ -65,14 +41,13 @@ const _nav = [
         to: '/dashboard/addUser',
         icon: <CIcon icon={cilUserFollow} customClassName="nav-icon" />,
       },
-      
+
       {
         component: CNavItem,
         name: 'Manage Users',
         to: '/dashboard/manageUserDetails',
         icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
       },
-
     ],
   },
   {
