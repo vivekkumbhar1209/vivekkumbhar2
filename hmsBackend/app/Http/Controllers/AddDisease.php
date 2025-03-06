@@ -74,28 +74,4 @@ class AddDisease extends Controller
 }
 
 
-        // $validator = Validator::make($request->all(), [
-        //     'diseaseName'        => ['required'],
-        //     'diseaseDescription' => ['required', 'max:200'],
-        //     'isActive'           => ['required'],
-
-        // ]);
-        // if ($validator->fails()) {
-        //     return response()->json([
-        //         "status"           => 403,
-        //         "message"          => "validation failed",
-        //         'validationErrors' => $validator->errors(),
-        //     ], 403);
-        // } else {
-        //     $disease = Disease::create([
-        //         'diseaseName'        => $request->diseaseName,
-        //         'diseaseDescription' => $request->diseaseDescription,
-        //         'isActive'           => $request->isActive,
-        //     ]);
-        //     return response()->json([
-        //         "status"  => 200,
-        //         "message" => "New Entry Added in Disease Table",
-        //         "data"    => $disease,
-        //     ], 200);
-        // }
-   
+        
