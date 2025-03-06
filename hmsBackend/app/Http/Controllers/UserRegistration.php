@@ -27,7 +27,7 @@ class UserRegistration extends Controller
         //add valiadtion if user is Receptionist
         if($request->role=='Receptionist')
         {
-            ///\Log::info("Processing receptionist");//for debugging
+            ///\Log::info("Processing receptionist");//for dadebugging
             
             $validator = Validator::make($data, [
                 'name'=>['required'],

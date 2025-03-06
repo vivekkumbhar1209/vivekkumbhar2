@@ -19,12 +19,11 @@ class PatientRegistration extends Controller
         'patient_name' => ['required', 'string', 'max:255'],
         'patient_email' => ['required', 'email', 'unique:patients,patient_email'],
         'patient_mobile' => ['required', 'digits:10', 'regex:/^[6-9]\d{9}$/'],
-        'emergency_name' => ['required', 'string', 'max:255'],
-        'emergency_no' => ['required', 'digits:10', 'regex:/^[6-9]\d{9}$/'],
+        'emergency_name' => ['nullable', 'string', 'max:255'],
+        'emergency_no' => ['nullable', 'digits:10', 'regex:/^[6-9]\d{9}$/'],
         'patient_address' => ['required', 'string', 'max:500'],
         'patient_gender' => ['required', 'in:Male,Female,Others'],
         'patient_dob' => ['required', 'date', 'before:today'],
-        'password' => ['required', 'min:8', 'max:20'],
     ]);
 
     if ($validator->fails()) {
@@ -76,8 +75,7 @@ class PatientRegistration extends Controller
                 'patient_gender' => $request->patient_gender,
                 'patient_dob' => $request->patient_dob,
                 'patient_age' => $age,
-                'password' => Hash::make($request->password), // Hash the password
-              ]);
+            ]);
               return response()->json([
                 'status' => 200,
                 'message' => 'Patient registered successfully',

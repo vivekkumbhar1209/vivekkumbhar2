@@ -9,10 +9,12 @@ import {
   CTabPanel,
   CTabs,
 } from '@coreui/react'
+import ViewAllUsers from './ViewAllUsers'
 
-const UpdateUserDetails = () => {
-  return (
-    <>
+const ManageUserDetails=()=>{
+    return (
+        <>
+            <>
       <CCard>
         <CCardHeader>
           <strong>Manage User Details</strong>
@@ -37,15 +39,15 @@ const UpdateUserDetails = () => {
                 two
               </CTabPanel>
               <CTabPanel className="py-3" itemKey={3}>
-                three
-                {/* view department */}
+                <ViewAllUsers/>
               </CTabPanel>
             </CTabContent>
           </CTabs>
         </CCardBody>
       </CCard>
     </>
-  )
+        </>
+    )
 }
 
-export default UpdateUserDetails
+export default ManageUserDetails
