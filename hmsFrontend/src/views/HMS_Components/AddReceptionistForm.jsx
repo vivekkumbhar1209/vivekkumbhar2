@@ -116,6 +116,7 @@ const AddReceptionistForm = ({ role, propAction = 'add', user }) => {
               confirmButtonText: 'Try Again',
             })
           } else {
+            console.log(data)
             swal.fire({
               title: 'Error!',
               text: 'Failed to add Receptionist.',
@@ -248,7 +249,7 @@ const AddReceptionistForm = ({ role, propAction = 'add', user }) => {
                       <option value="" disabled>Select Gender</option>
                       <option value="Male">Male</option>
                       <option value="Female">Female</option>
-                      <option value="Other">Other</option>
+                      <option value="Others">Other</option>
                     </CFormSelect>
                   </div>
 
@@ -268,7 +269,7 @@ const AddReceptionistForm = ({ role, propAction = 'add', user }) => {
                     <CFormInput
                       id="mobile"
                       onChange={handleChange}
-                      type="text"
+                      type="tel"
                       name="mobile"
                       required
                       placeholder='Mobile Number'
@@ -365,7 +366,7 @@ const AddReceptionistForm = ({ role, propAction = 'add', user }) => {
                   <option value="" disabled>Select Gender</option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
-                  <option value="Other">Other</option>
+                  <option value="Others">Other</option>
                 </CFormSelect>
               </div>
 

@@ -86,7 +86,7 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
           console.log(res)
           swal.fire({
             title: 'Success!',
-            text: 'Receptionist added successfully.',
+            text: 'Admin added successfully.',
             icon: 'success',
             confirmButtonText: 'OK',
           })
@@ -118,7 +118,7 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
           } else {
             swal.fire({
               title: 'Error!',
-              text: 'Failed to add Receptionist.',
+              text: 'Failed to add Admin.',
               icon: 'error',
               confirmButtonText: 'Try Again',
             })
@@ -136,7 +136,7 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
           console.log(res)
           swal.fire({
             title: 'Success!',
-            text: 'Receptionist updated successfully.',
+            text: 'Admin updated successfully.',
             icon: 'success',
             confirmButtonText: 'OK',
           })
@@ -158,7 +158,7 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
           } else {
             swal.fire({
               title: 'Error!',
-              text: 'Failed to update Receptionist.',
+              text: 'Failed to update Admin.',
               icon: 'error',
               confirmButtonText: 'Try Again',
             })
@@ -188,7 +188,7 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
       {propAction === 'edit' ? (
         <CModal visible={modalVisible} onClose={closeModal} backdrop="static" size="lg">
           <CModalHeader closeButton={true}>
-            <CModalTitle>Edit Receptionist</CModalTitle>
+            <CModalTitle>Edit Admin</CModalTitle>
           </CModalHeader>
 
           <CModalBody>
@@ -248,7 +248,7 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
                       <option value="" disabled>Select Gender</option>
                       <option value="Male">Male</option>
                       <option value="Female">Female</option>
-                      <option value="Other">Other</option>
+                      <option value="Others">Other</option>
                     </CFormSelect>
                   </div>
 
@@ -365,7 +365,7 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
                   <option value="" disabled>Select Gender</option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
-                  <option value="Other">Other</option>
+                  <option value="Others">Other</option>
                 </CFormSelect>
               </div>
 
@@ -385,7 +385,7 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
                 <CFormInput
                   id="mobile"
                   onChange={handleChange}
-                  type="text"
+                  type="tel"
                   name="mobile"
                   required
                   placeholder='Mobile Number'

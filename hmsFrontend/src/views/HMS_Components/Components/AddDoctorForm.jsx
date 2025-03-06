@@ -270,7 +270,7 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
                       <option value="" disabled>Select Gender</option>
                       <option value="Male">Male</option>
                       <option value="Female">Female</option>
-                      <option value="Other">Other</option>
+                      <option value="Others">Other</option>
                     </CFormSelect>
                   </div>
 
@@ -281,7 +281,7 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
 
                   <div>
                     <CFormLabel htmlFor="mobile">Mobile:</CFormLabel>
-                    <CFormInput id="mobile" onChange={handleChange} type="text" name="mobile" required value={data.mobile} placeholder='Mobile Number' />
+                    <CFormInput id="mobile" onChange={handleChange} type="tel" name="mobile" required value={data.mobile} placeholder='Mobile Number' />
                   </div>
                 </div>
 
@@ -362,7 +362,7 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
                   <option value="" disabled>Select Gender</option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
-                  <option value="Other">Other</option>
+                  <option value="Others">Other</option>
                 </CFormSelect>
               </div>
 
@@ -373,7 +373,7 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
 
               <div>
                 <CFormLabel htmlFor="mobile">Mobile:</CFormLabel>
-                <CFormInput id="mobile" onChange={handleChange} type="text" name="mobile" required value={data.mobile} placeholder='Mobile Number' />
+                <CFormInput id="mobile" onChange={handleChange} type="tel" name="mobile" required value={data.mobile} placeholder='Mobile Number' />
               </div>
             </div>
 
