@@ -7,12 +7,13 @@ import {
   CCard,
   CCardHeader,
   CCardBody,
+  CAccordionButton,
 } from '@coreui/react'
 import AddReceptionistForm from './AddReceptionistForm'
 import AddAdminForm from './Components/AddAdminForm'
 import AddDoctorForm from './Components/AddDoctorForm'
-
-const EditUsers = () => {
+ 
+const EditUsers = ({formAction}) => {
   const [selectedRole, setSelectedRole] = useState('')
 
   // Function to render form based on selected role
@@ -21,11 +22,11 @@ const EditUsers = () => {
 
     switch (selectedRole) {
       case 'Admin':
-        return <AddAdminForm role={selectedRole} />
+        return <AddAdminForm role={selectedRole}  />
       case 'Receptionist':
-        return <AddReceptionistForm role={selectedRole} />
+        return <AddReceptionistForm role={selectedRole} propAction={formAction} />
       case 'Doctor':
-        return <AddDoctorForm role={selectedRole} />
+        return <AddDoctorForm role={selectedRole}  />
       default:
         return null
     }
