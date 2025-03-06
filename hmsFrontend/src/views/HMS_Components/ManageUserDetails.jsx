@@ -23,7 +23,7 @@ const ManageUserDetails=()=>{
           <p className="text-body-secondary small">
             You can manage all the <code>user</code> settings from here.
           </p>
-          <CTabs activeItemKey={2}>
+          <CTabs activeItemKey={1}>
             <CTabList variant="underline-border">
               <CTab itemKey={1}>Add User</CTab>
               <CTab itemKey={2}>Edit User</CTab>

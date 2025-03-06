@@ -16,7 +16,15 @@ class UserRegistration extends Controller
     {
         //Retrieves all existing medicines from medicines table.
         // Get the params sent from the frontend fetch req.
+    public function getAllUsers(Request $request)
+    {
+        //Retrieves all existing medicines from medicines table.
+        // Get the params sent from the frontend fetch req.
         //   },
+        // params: {
+        //   sortBy: sortBy,
+        //   order: order,
+        // },
         // params: {
         //   sortBy: sortBy,
         //   order: order,
@@ -24,12 +32,17 @@ class UserRegistration extends Controller
         $sortBy = $request->query("sortBy", "name");
         $order  = $request->query("order", "asc");
 
+        $order  = $request->query("order", "asc");
+
         // second argument in the query method is a default value
         $users = User::orderBy($sortBy, $order)->get();
 
         return response()->json([
             "status"  => 200,
+            "status"  => 200,
             "message" => "Users Data",
+            "Users"   => $users,
+            //   "params" => $requestParams,
             "Users"   => $users,
             //   "params" => $requestParams,
         ]);

@@ -15,7 +15,6 @@ return new class extends Migration
             $table->bigIncrements('doctorID');
             $table->unsignedBigInteger('userID');
             $table->foreign('userID')->references('id')->on('users')->onDelete('cascade');
-            $table->string('specialization');
             $table->integer('experience');
             $table->unsignedBigInteger('departmentID');
             $table->foreign('departmentID')->references('departmentID')->on('departments')->onDelete('cascade');

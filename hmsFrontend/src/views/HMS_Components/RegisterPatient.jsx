@@ -1,6 +1,17 @@
-import React, { useState } from 'react'
-import axios from 'axios'
-import Swal from 'sweetalert2'
+
+import React, { useState } from "react";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { CCard,
+   CCardHeader, 
+   CCardBody, 
+   CForm, 
+   CFormLabel, 
+   CFormInput, 
+   CFormSelect, 
+   CButton, 
+   CRow, 
+   CCol } from '@coreui/react'
 
 const RegisterPatient = () => {
   const [data, setData] = useState({
@@ -52,16 +63,16 @@ const RegisterPatient = () => {
       })
 
       setData({
-        patient_name: '',
-        patient_email: '',
-        patient_mobile: '',
-        emergency_name: '',
-        emergency_no: '',
-        patient_address: '',
-        patient_gender: '',
-        patient_dob: '',
-        password: '',
-      })
+        patient_name: "",
+        patient_email: "",
+        patient_mobile: "",
+        emergency_name: "",
+        emergency_no: "",
+        patient_address: "",
+        patient_gender: "",
+        patient_dob: "",
+      });
+  
     } catch (err) {
       console.error('Error Response:', err.response ? err.response.data : err.message)
 
@@ -95,141 +106,51 @@ const RegisterPatient = () => {
   }
 
   return (
-    <div className="max-w-2xl mx-auto bg-gray-100 p-6 rounded-lg shadow-lg">
-      <h2 className="text-center text-2xl font-semibold mb-4">Register Patient</h2>
-
-      <form className="grid grid-cols-1 md:grid-cols-2 gap-4" onSubmit={handleSubmit}>
-        <div className="flex flex-col">
-          <label className="font-medium">Full Name</label>
-          <input
-            type="text"
-            name="patient_name"
-            value={data.patient_name}
-            onChange={handleChange}
-            required
-            className="border rounded p-2"
-          />
-        </div>
-
-        <div className="flex flex-col">
-          <label className="font-medium">Email</label>
-          <input
-            type="email"
-            name="patient_email"
-            value={data.patient_email}
-            onChange={handleChange}
-            required
-            className="border rounded p-2"
-          />
-        </div>
-
-        <div className="flex flex-col">
-          <label className="font-medium">Mobile</label>
-          <input
-            type="tel"
-            name="patient_mobile"
-            value={data.patient_mobile}
-            onChange={handleChange}
-            required
-            className="border rounded p-2"
-          />
-        </div>
-
-        <div className="flex flex-col">
-          <label className="font-medium">Emergency Contact Name</label>
-          <input
-            type="text"
-            name="emergency_name"
-            value={data.emergency_name}
-            onChange={handleChange}
-            required
-            className="border rounded p-2"
-          />
-        </div>
-
-        <div className="flex flex-col">
-          <label className="font-medium">Emergency Contact Mobile</label>
-          <input
-            type="tel"
-            name="emergency_no"
-            value={data.emergency_no}
-            onChange={handleChange}
-            required
-            className="border rounded p-2"
-          />
-        </div>
-
-        <div className="flex flex-col">
-          <label className="font-medium">Address</label>
-          <input
-            type="text"
-            name="patient_address"
-            value={data.patient_address}
-            onChange={handleChange}
-            required
-            className="border rounded p-2"
-          />
-        </div>
-
-        <div className="flex flex-col">
-          <label className="font-medium">Gender</label>
-          <select
-            name="patient_gender"
-            value={data.patient_gender}
-            onChange={handleChange}
-            required
-            className="border rounded p-2"
-          >
+    <CCard className="mx-auto" style={{ maxWidth: '1100px', minHeight: '500px', backgroundColor: '#f8f9fa' }}>
+  <CCardHeader>
+    <strong>Patient Registration</strong>
+  </CCardHeader>
+   <CCardBody className="mb-0">
+       <p className="text-body-secondary small">
+         You can register new <code>patients</code> from here.
+       </p>
+      <CForm onSubmit={handleSubmit}>
+        <CRow className="mb-3">
+        <CCol md={6}><CFormLabel>Full Name</CFormLabel><CFormInput type="text" name="patient_name" value={data.patient_name} onChange={handleChange} required /></CCol>
+        <CCol md={6}><CFormLabel>Email</CFormLabel><CFormInput type="email" name="patient_email" value={data.patient_email} onChange={handleChange} required /></CCol>
+        </CRow>
+        <CRow className="mb-3">
+        <CCol md={6}><CFormLabel>Mobile</CFormLabel><CFormInput type="tel" name="patient_mobile" value={data.patient_mobile} onChange={handleChange} required /></CCol>
+        <CCol md={6}><CFormLabel>Emergency Contact Name</CFormLabel><CFormInput type="text" name="emergency_name" value={data.emergency_name} onChange={handleChange} required /></CCol>
+        </CRow>
+        <CRow className="mb-3">
+        <CCol md={6}><CFormLabel>Emergency Contact Mobile</CFormLabel><CFormInput type="tel" name="emergency_no" value={data.emergency_no} onChange={handleChange} required /></CCol>
+        <CCol md={6}><CFormLabel>Address</CFormLabel><CFormInput type="text" name="patient_address" value={data.patient_address} onChange={handleChange} required /></CCol>
+        </CRow>
+        <CRow className="mb-3">
+        <CCol md={6}>
+          <CFormLabel>Gender</CFormLabel>
+          <CFormSelect name="patient_gender" value={data.patient_gender} onChange={handleChange} required>
             <option value="">Select Gender</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
             <option value="Others">Others</option>
-          </select>
+          </CFormSelect>
+        </CCol>
+        <CCol md={6}><CFormLabel>Date of Birth</CFormLabel><CFormInput type="date" name="patient_dob" value={data.patient_dob} onChange={handleChange} required /></CCol>
+        </CRow>
+        <div className="d-flex justify-content-start gap-2">
+        <CButton color="secondary" className="px-4 py-2 text-white" onClick={() => setData({ patient_name: '', patient_email: '', patient_mobile: '', emergency_name: '', emergency_no: '', patient_address: '', patient_gender: '', patient_dob: '' })}>
+          Reset
+        </CButton>
+        <CButton color="primary" className="px-4 py-2">
+          Submit
+        </CButton>
         </div>
-
-        <div className="flex flex-col">
-          <label className="font-medium">Date of Birth</label>
-          <input
-            type="date"
-            name="patient_dob"
-            value={data.patient_dob}
-            onChange={handleChange}
-            required
-            className="border rounded p-2"
-          />
-        </div>
-
-
-        <div className="md:col-span-2 flex justify-center">
-          <button
-            type="reset"
-            onClick={() =>
-              setData({
-                patient_name: '',
-                patient_email: '',
-                patient_mobile: '',
-                emergency_name: '',
-                emergency_no: '',
-                patient_address: '',
-                patient_gender: '',
-                patient_dob: '',
-                password: '',
-              })
-            }
-            className="w-1/2 bg-red-500 text-black font-semibold py-2 rounded-md hover:bg-red-600 transition mr-2"
-          >
-            Reset
-          </button>
-          <button
-            type="submit"
-            className="w-full bg-gray-200 text-black font-semibold py-2 rounded-md hover:bg-gray-300 transition"
-          >
-            Submit
-          </button>
-        </div>
-      </form>
-    </div>
-  )
-}
+      </CForm>
+    </CCardBody>
+    </CCard>
+  );
+};
 
 export default RegisterPatient
