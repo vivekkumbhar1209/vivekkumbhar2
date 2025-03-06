@@ -14,8 +14,8 @@ class AddDisease extends Controller
         Log::info('Received Data:', $request->all());
 
         $validator = Validator::make($request->all(), [
-            'diseaseName'        => ['required', 'string', 'max:255', 'regex:/^[A-Za-z\s]+$/'],
-            'diseaseDescription' => ['required', 'string', 'max:500', 'regex:/^[A-Za-z0-9\s.,!?]+$/'],
+            'diseaseName'        => ['required', 'string', 'max:255'],
+            'diseaseDescription' => ['required', 'string', 'max:500'],
             'isActive'           => ['required', 'in:Active,Inactive'],
         ], [
             'diseaseName.required'        => 'Disease name is required.',
