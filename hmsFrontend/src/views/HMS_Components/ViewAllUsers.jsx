@@ -22,7 +22,7 @@ import { formatDate } from '../../dateUtility'
 import { FaSearch } from 'react-icons/fa'
 import ReactPaginate from 'react-paginate'
 
-const ViewAllUsers = () => {
+const ViewAllUsers = ({action}) => {
   const [users, setUsers] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredData, setFilteredData] = useState([])
@@ -78,10 +78,16 @@ const ViewAllUsers = () => {
     setOrder(e.target.value === '1' ? 'asc' : 'desc');
   }
 
+
+
   const currentData =
     searchTerm.length > 0
       ? filteredData.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
       : users.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
+
+  const handleEdit = (elem) => {
+    console.log(elem);
+  }
 
   return (
     <>
@@ -150,6 +156,11 @@ const ViewAllUsers = () => {
                     <CTableDataCell>{elem.email}</CTableDataCell>
                     <CTableDataCell>{elem.gender}</CTableDataCell>
                     <CTableDataCell>{elem.mobile}</CTableDataCell>
+                    {
+                      action === "edit" ? (
+                        <CTableDataCell><CButton onClick={() => {handleEdit(elem)}}>Edit</CButton></CTableDataCell>
+                      ) : null
+                    }                   
 
                     {/* <CTableDataCell>{formatDate(elem.created_at)}</CTableDataCell> */}
                     {/* <CTableDataCell>{formatDate(elem.updated_at)}</CTableDataCell> */}
