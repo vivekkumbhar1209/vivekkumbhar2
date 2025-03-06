@@ -51,7 +51,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     //Additionally we need to create the following api as well
     // 1. api which will send all the available medicines to the frontend
-    // 3. api which will send all the available departments to the frontend
+
     // 4. api which will update the entries in the disease table based on the form data accepted from the frontend (form is created for this in frontend)
     // 5. api which will add new disease in the disease table based on the form data accepted from the frontend (form is created for this in frontend)
 
