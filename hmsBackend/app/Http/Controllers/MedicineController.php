@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Medicine;
 use Illuminate\Support\Facades\Validator;
-
+use App\Models\MedicineCategory;
 class MedicineController extends Controller
 {
     public function getMedicines(Request $request) {
@@ -33,13 +33,11 @@ class MedicineController extends Controller
 
     public function addMedicine(Request $request)
     {
-        // Validate input
         $validator = Validator::make($request->all(), [
-            'categoryID' => 'required|integer|exists:category,id',
+            'categoryID' => 'required|integer|exists:medicine_categories,id',
             'medicine_name' => 'required|string|max:255',
-            'cost' => 'required|numeric|min:0'
+            'cost' => 'required|numeric|min:0',
         ]);
-
         if ($validator->fails()) {
             return response()->json([
                 "status" => 400,
@@ -47,9 +45,7 @@ class MedicineController extends Controller
                 "errors" => $validator->errors()
             ], 400);
         }
-
         try {
-            // Insert into the database
             $medicine = Medicine::create([
                 'categoryID' => $request->categoryID,
                 'medicine_name' => $request->medicine_name,
@@ -61,6 +57,41 @@ class MedicineController extends Controller
                 "message" => "Medicine added successfully",
                 "data" => $medicine
             ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                "status" => 500,
+                "message" => "Internal Server Error",
+                "error" => $e->getMessage()
+            ], 500);
+        }
+    }
+    public function addMedicineCategory(Request $request)
+    {
+        // Validate input
+        $validator = Validator::make($request->all(), [
+            'categoryID' => 'required|integer|exists:categories,id',
+            'medicine_name' => 'required|string|max:255'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                "status" => 400,
+                "message" => "Validation failed",
+                "errors" => $validator->errors()
+            ], 400);
+        }
+        try {
+            // Insert into the database
+            $medicineCategory = MedicineCategory::create([
+                'categoryID' => $request->categoryID,
+                'medicine_name' => $request->medicine_name
+            ]);
+
+            return response()->json([
+                "status" => 200,
+                "message" => "Medicine Category added successfully",
+                "data" => $medicineCategory
+            ], 200);
 
         } catch (\Exception $e) {
             return response()->json([
@@ -70,4 +101,5 @@ class MedicineController extends Controller
             ], 500);
         }
     }
+    
 }
