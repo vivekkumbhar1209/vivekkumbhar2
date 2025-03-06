@@ -18,6 +18,7 @@ class OpdRegistration extends Model
         'patientID',
         'doctorID',
         'reason_For_Visit',
+        'status',
     ];
 
     // Define relationships

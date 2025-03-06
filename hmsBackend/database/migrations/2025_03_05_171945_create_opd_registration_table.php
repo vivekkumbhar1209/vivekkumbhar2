@@ -16,6 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('patientID');
             $table->unsignedBigInteger('doctorID');
             $table->string('reason_For_Visit');
+            $table->enum('status', ['pending', 'registered', 'completed'])
+                ->default('pending'); // Default status is pending
             $table->timestamps();
 
             $table->foreign('patientID')->references('patientID')->on('patients')->onDelete('cascade');

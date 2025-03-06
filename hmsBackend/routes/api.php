@@ -15,7 +15,6 @@ use App\Http\Controllers\UpdateDepartment;
 use App\Http\Controllers\UserRegistration;
 use Illuminate\Support\Facades\Route;
 
-
 Route::post('/login', [LoginController::class, 'login']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -32,7 +31,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/registeruser', [UserRegistration::class, 'registerUser']); //this will register all users
     Route::get('/patients', [PatientController::class, 'index']);
     Route::get('/patients/{id}', [PatientController::class, 'show']);
-    Route::get('/viewAllUsers', [ShowAllExistingUsers::class, 'AllExistingUsers']);
     Route::get('/viewAllUsers', [UserRegistration::class, 'getAllUsers']);
     Route::get('/getDept', [DeptReg::class, 'getDepartments']);
     Route::get('/getMedicines', [MedicineController::class, "getMedicines"]);
@@ -40,5 +38,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/addMedicineCategory', [MedicineCategoryController::class, 'addCategory']);
     Route::post('/getDoctorByDeparmentID', [DoctorController::class, 'getDoctorByDepartmentID']);
     Route::post('/registerOPDPatient', [OPDController::class, 'registerOPDPatient']);
-    Route::get('/getdiseases',[AddDisease::class,'getDisease']);
+    Route::get('/getdiseases', [AddDisease::class, 'getDisease']);
+
+    Route::get('/getPatientsWithOPDStatus', [OPDController::class, 'getPatientsWithOPDStatus']);
 });
