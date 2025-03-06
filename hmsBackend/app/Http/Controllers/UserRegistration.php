@@ -12,8 +12,7 @@ use Illuminate\Support\Facades\Log;
 
 class UserRegistration extends Controller
 {
-    public function getAllUsers(Request $request)
-    {
+    
         //Retrieves all existing medicines from medicines table.
         // Get the params sent from the frontend fetch req.
     public function getAllUsers(Request $request)
