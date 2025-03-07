@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import swal from 'sweetalert2'
+import Loader from '../../../components/Loader'
 import {
   CCard,
   CForm,
@@ -14,11 +15,12 @@ import {
   CModalHeader,
   CModalTitle,
   CModalBody,
-  CModalFooter
+  CModalFooter,
 } from '@coreui/react'
 
 const AddDoctorForm = ({ role, propAction = 'add', user }) => {
-  const [departments, setDepartments] = useState([]); // Store departments
+  const [loading, setLoading] = useState(false)
+  const [departments, setDepartments] = useState([]) // Store departments
   const [data, setData] = useState({
     name: '',
     email: '',
@@ -28,13 +30,13 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
     mobile: '',
     address: '',
     role: role, // This gets set only on the first render
-    specialization: '',
+    // specialization: '',
     experience: '',
     departmentID: '',
     consultation_fee: '',
-  });
+  })
 
-  const [modalVisible, setModalVisible] = useState(false); // State for modal visibility
+  const [modalVisible, setModalVisible] = useState(false) // State for modal visibility
 
   // Update the role in state when the prop changes
   useEffect(() => {
@@ -47,18 +49,18 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
   // Fetch departments from backend
   useEffect(() => {
     const fetchDepartments = async () => {
-      const token = localStorage.getItem("login-token");
+      const token = localStorage.getItem('login-token')
       try {
-        const response = await axios.get("http://127.0.0.1:8000/api/getDept", {
+        const response = await axios.get('http://127.0.0.1:8000/api/getDept', {
           headers: { Authorization: `Bearer ${token}` },
-        });
-        setDepartments(response.data.deptData);
+        })
+        setDepartments(response.data.deptData)
       } catch (error) {
-        console.error("Error fetching departments:", error);
+        console.error('Error fetching departments:', error)
       }
-    };
-    fetchDepartments();
-  }, []);
+    }
+    fetchDepartments()
+  }, [])
 
   // Populate form fields with user data when editing
   useEffect(() => {
@@ -72,12 +74,12 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
         mobile: user.mobile,
         address: user.address,
         role: user.role,
-        specialization: user.specialization || '',
+        // specialization: user.specialization || '',
         experience: user.experience || '',
         departmentID: user.departmentID || '',
         consultation_fee: user.consultation_fee || '',
       })
-      setModalVisible(true); // Open the modal
+      setModalVisible(true) // Open the modal
     } else {
       setData({
         name: '',
@@ -88,13 +90,13 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
         mobile: '',
         address: '',
         role: role,
-        specialization: '',
+        // specialization: '',
         experience: '',
         departmentID: '',
         consultation_fee: '',
       })
     }
-  }, [propAction, user, role]) // Runs whenever `propAction`, `user`, or `role` changes
+  }, [propAction, user, role, loading]) // Runs whenever `propAction`, `user`, or `role` changes
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value })
@@ -102,41 +104,41 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const token = localStorage.getItem("login-token")
-    
+    setLoading(true)
+    const token = localStorage.getItem('login-token')
+
     if (propAction === 'add') {
+
       try {
-        const response = await axios.post(
-          "http://127.0.0.1:8000/api/registeruser",
-          data,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        const response = await axios.post('http://127.0.0.1:8000/api/registeruser', data, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
 
         // Check if API response contains validation errors
         if (response.data.errors) {
           let errorMessages = Object.values(response.data.errors)
             .flat()
             .map((msg) => `<li>${msg}</li>`)
-            .join("");
+            .join('')
 
           swal.fire({
-            title: "Validation Error",
+            title: 'Validation Error',
             html: `<ul style="text-align: left;">${errorMessages}</ul>`,
-            icon: "error",
-            confirmButtonText: "Try Again",
-          });
+            icon: 'error',
+            confirmButtonText: 'Try Again',
+          })
+          setLoading(false)
 
           // Stop execution if there are validation errors
-          return; 
+          return
         }
 
         swal.fire({
-          title: "Success!",
-          text: "Doctor added successfully.",
-          icon: "success",
-          confirmButtonText: "OK",
-        });
-
+          title: 'Success!',
+          text: 'Doctor added successfully.',
+          icon: 'success',
+          confirmButtonText: 'OK',
+        })
         setData({
           name: '',
           email: '',
@@ -146,80 +148,87 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
           mobile: '',
           address: '',
           role: role,
-          specialization: '',
+          // specialization: '',
           experience: '',
           departmentID: '',
           consultation_fee: '',
-        });
+        })
+
+        setLoading(false)
       } catch (err) {
-        console.error("Error:", err);
+        console.error('Error:', err)
 
         if (err.response && err.response.status === 422) {
           let errorMessages = Object.values(err.response.data.errors)
             .flat()
             .map((msg) => `<li>${msg}</li>`)
-            .join("");
+            .join('')
 
           swal.fire({
-            title: "Validation Error",
+            title: 'Validation Error',
             html: `<ul style="text-align: left;">${errorMessages}</ul>`,
-            icon: "error",
-            confirmButtonText: "Try Again",
-          });
+            icon: 'error',
+            confirmButtonText: 'Try Again',
+          })
+
+          setLoading(false)
         } else {
           swal.fire({
-            title: "Error!",
-            text: "Failed to add doctor.",
-            icon: "error",
-            confirmButtonText: "Try Again",
-          });
+            title: 'Error!',
+            text: 'Failed to add doctor.',
+            icon: 'error',
+            confirmButtonText: 'Try Again',
+          })
         }
+        setLoading(false)
       }
     } else if (propAction === 'edit') {
+
       // Update user endpoint
       try {
-        const response = await axios.put(
-          `http://127.0.0.1:8000/api/updateuser/${user.id}`,
-          data,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        const response = await axios.put(`http://127.0.0.1:8000/api/updateuser/${user.id}`, data, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
 
         swal.fire({
-          title: "Success!",
-          text: "Doctor updated successfully.",
-          icon: "success",
-          confirmButtonText: "OK",
-        });
-        setModalVisible(false); // Close the modal after editing
+          title: 'Success!',
+          text: 'Doctor updated successfully.',
+          icon: 'success',
+          confirmButtonText: 'OK',
+        })
+        setModalVisible(false) // Close the modal after editing
+        setLoading(false)
       } catch (err) {
-        console.error("Error:", err);
+        console.error('Error:', err)
 
         if (err.response && err.response.status === 422) {
           let errorMessages = Object.values(err.response.data.errors)
             .flat()
             .map((msg) => `<li>${msg}</li>`)
-            .join("");
+            .join('')
 
           swal.fire({
-            title: "Validation Error",
+            title: 'Validation Error',
             html: `<ul style="text-align: left;">${errorMessages}</ul>`,
-            icon: "error",
-            confirmButtonText: "Try Again",
-          });
+            icon: 'error',
+            confirmButtonText: 'Try Again',
+          })
         } else {
           swal.fire({
-            title: "Error!",
-            text: "Failed to update doctor.",
-            icon: "error",
-            confirmButtonText: "Try Again",
-          });
+            title: 'Error!',
+            text: 'Failed to update doctor.',
+            icon: 'error',
+            confirmButtonText: 'Try Again',
+          }).finally(() => {
+            setLoading(false)
+          })
         }
       }
     }
-  };
+  }
 
   const closeModal = () => {
-    setModalVisible(false); // Close the modal
+    setModalVisible(false) // Close the modal
     setData({
       name: '',
       email: '',
@@ -229,16 +238,30 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
       mobile: '',
       address: '',
       role: role,
-      specialization: '',
+      // specialization: '',
       experience: '',
       departmentID: '',
       consultation_fee: '',
-    });
-  };
+    })
+  }
 
   return (
     <>
-      {propAction === 'edit' ? (
+  {loading ? (
+          <div className='d-flex justify-content-center align-items-center' style={{
+            position: 'fixed',
+            top: 0,
+            left:0,
+            width: '100vw',
+            height: '100vh',
+            backgroundColor: 'rgba(255,255,255, 0.8)',
+            zIndex: 9999
+          }}>
+            <Loader/>
+          </div>
+        ) :
+      propAction === 'edit' ? (
+         
         <CModal visible={modalVisible} onClose={closeModal} backdrop="static" size="lg">
           <CModalHeader closeButton={true}>
             <CModalTitle>Edit Doctor</CModalTitle>
@@ -251,23 +274,57 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
                 <div className="col-md-6">
                   <div>
                     <CFormLabel htmlFor="name">Name:</CFormLabel>
-                    <CFormInput id="name" onChange={handleChange} type="text" name="name" required value={data.name} placeholder="Name" />
+                    <CFormInput
+                      id="name"
+                      onChange={handleChange}
+                      type="text"
+                      name="name"
+                      required
+                      value={data.name}
+                      placeholder="Name"
+                    />
                   </div>
 
                   <div>
                     <CFormLabel htmlFor="email">Email:</CFormLabel>
-                    <CFormInput id="email" onChange={handleChange} type="email" name="email" required value={data.email} placeholder="Email" />
+                    <CFormInput
+                      id="email"
+                      onChange={handleChange}
+                      type="email"
+                      name="email"
+                      required
+                      value={data.email}
+                      placeholder="Email"
+                    />
                   </div>
 
                   <div>
                     <CFormLabel htmlFor="password">Password:</CFormLabel>
-                    <CFormInput id="password" onChange={handleChange} type="password" name="password" required={propAction === 'add'} value={data.password} placeholder={propAction === 'add' ? 'Password' : 'Leave blank to keep current password'} />
+                    <CFormInput
+                      id="password"
+                      onChange={handleChange}
+                      type="password"
+                      name="password"
+                      required={propAction === 'add'}
+                      value={data.password}
+                      placeholder={
+                        propAction === 'add' ? 'Password' : 'Leave blank to keep current password'
+                      }
+                    />
                   </div>
 
                   <div>
                     <CFormLabel htmlFor="gender">Gender:</CFormLabel>
-                    <CFormSelect id="gender" name="gender" onChange={handleChange} required value={data.gender}>
-                      <option value="" disabled>Select Gender</option>
+                    <CFormSelect
+                      id="gender"
+                      name="gender"
+                      onChange={handleChange}
+                      required
+                      value={data.gender}
+                    >
+                      <option value="" disabled>
+                        Select Gender
+                      </option>
                       <option value="Male">Male</option>
                       <option value="Female">Female</option>
                       <option value="Others">Other</option>
@@ -276,12 +333,26 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
 
                   <div>
                     <CFormLabel htmlFor="date_Of_Birth">Date of Birth:</CFormLabel>
-                    <CFormInput id="date_Of_Birth" onChange={handleChange} type="date" name="date_Of_Birth" value={data.date_Of_Birth || ''} />
+                    <CFormInput
+                      id="date_Of_Birth"
+                      onChange={handleChange}
+                      type="date"
+                      name="date_Of_Birth"
+                      value={data.date_Of_Birth || ''}
+                    />
                   </div>
 
                   <div>
                     <CFormLabel htmlFor="mobile">Mobile:</CFormLabel>
-                    <CFormInput id="mobile" onChange={handleChange} type="tel" name="mobile" required value={data.mobile} placeholder='Mobile Number' />
+                    <CFormInput
+                      id="mobile"
+                      onChange={handleChange}
+                      type="tel"
+                      name="mobile"
+                      required
+                      value={data.mobile}
+                      placeholder="Mobile Number"
+                    />
                   </div>
                 </div>
 
@@ -289,23 +360,46 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
                 <div className="col-md-6">
                   <div>
                     <CFormLabel htmlFor="address">Address:</CFormLabel>
-                    <CFormTextarea id="address" onChange={handleChange} name="address" required value={data.address} placeholder="Enter Address"></CFormTextarea>
+                    <CFormTextarea
+                      id="address"
+                      onChange={handleChange}
+                      name="address"
+                      required
+                      value={data.address}
+                      placeholder="Enter Address"
+                    ></CFormTextarea>
                   </div>
 
-                  <div>
+                  {/* {<div>
                     <CFormLabel htmlFor="specialization">Specialization:</CFormLabel>
                     <CFormInput id="specialization" onChange={handleChange} type="text" name="specialization" required value={data.specialization} placeholder="Specialization" />
-                  </div>
+                  </div>} */}
 
                   <div>
                     <CFormLabel htmlFor="experience">Experience (Years):</CFormLabel>
-                    <CFormInput id="experience" onChange={handleChange} type="text" name="experience" required value={data.experience} placeholder="Experience in years" />
+                    <CFormInput
+                      id="experience"
+                      onChange={handleChange}
+                      type="text"
+                      name="experience"
+                      required
+                      value={data.experience}
+                      placeholder="Experience in years"
+                    />
                   </div>
 
                   <div>
                     <CFormLabel htmlFor="department">Department:</CFormLabel>
-                    <CFormSelect id="departmentID" name="departmentID" onChange={handleChange} required value={data.departmentID}>
-                      <option value="" disabled>Select Department</option>
+                    <CFormSelect
+                      id="departmentID"
+                      name="departmentID"
+                      onChange={handleChange}
+                      required
+                      value={data.departmentID}
+                    >
+                      <option value="" disabled>
+                        Select Department
+                      </option>
                       {departments.map((dept) => (
                         <option key={dept.departmentID} value={dept.departmentID}>
                           {dept.department_name}
@@ -316,7 +410,15 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
 
                   <div>
                     <CFormLabel htmlFor="consultation_fee">Consultation Fee:</CFormLabel>
-                    <CFormInput id="consultation_fee" onChange={handleChange} type="text" name="consultation_fee" required value={data.consultation_fee} placeholder="Consultation Fee"/>
+                    <CFormInput
+                      id="consultation_fee"
+                      onChange={handleChange}
+                      type="number"
+                      name="consultation_fee"
+                      required
+                      value={data.consultation_fee}
+                      placeholder="Consultation Fee"
+                    />
                   </div>
                 </div>
               </div>
@@ -332,9 +434,7 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
             </CForm>
           </CModalBody>
 
-          <CModalFooter>
-            {/* Footer buttons are already handled in the form */}
-          </CModalFooter>
+          <CModalFooter>{/* Footer buttons are already handled in the form */}</CModalFooter>
         </CModal>
       ) : (
         <CForm onSubmit={handleSubmit} className="w-100">
@@ -343,23 +443,55 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
             <div className="col-md-6">
               <div>
                 <CFormLabel htmlFor="name">Name:</CFormLabel>
-                <CFormInput id="name" onChange={handleChange} type="text" name="name" required value={data.name} placeholder="Name" />
+                <CFormInput
+                  id="name"
+                  onChange={handleChange}
+                  type="text"
+                  name="name"
+                  required
+                  value={data.name}
+                  placeholder="Name"
+                />
               </div>
 
               <div>
                 <CFormLabel htmlFor="email">Email:</CFormLabel>
-                <CFormInput id="email" onChange={handleChange} type="email" name="email" required value={data.email} placeholder="Email" />
+                <CFormInput
+                  id="email"
+                  onChange={handleChange}
+                  type="email"
+                  name="email"
+                  required
+                  value={data.email}
+                  placeholder="Email"
+                />
               </div>
 
               <div>
                 <CFormLabel htmlFor="password">Password:</CFormLabel>
-                <CFormInput id="password" onChange={handleChange} type="password" name="password" required value={data.password} placeholder="Password" />
+                <CFormInput
+                  id="password"
+                  onChange={handleChange}
+                  type="password"
+                  name="password"
+                  required
+                  value={data.password}
+                  placeholder="Password"
+                />
               </div>
 
               <div>
                 <CFormLabel htmlFor="gender">Gender:</CFormLabel>
-                <CFormSelect id="gender" name="gender" onChange={handleChange} required value={data.gender}>
-                  <option value="" disabled>Select Gender</option>
+                <CFormSelect
+                  id="gender"
+                  name="gender"
+                  onChange={handleChange}
+                  required
+                  value={data.gender}
+                >
+                  <option value="" disabled>
+                    Select Gender
+                  </option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
                   <option value="Others">Other</option>
@@ -368,12 +500,26 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
 
               <div>
                 <CFormLabel htmlFor="date_Of_Birth">Date of Birth:</CFormLabel>
-                <CFormInput id="date_Of_Birth" onChange={handleChange} type="date" name="date_Of_Birth" value={data.date_Of_Birth || ''} />
+                <CFormInput
+                  id="date_Of_Birth"
+                  onChange={handleChange}
+                  type="date"
+                  name="date_Of_Birth"
+                  value={data.date_Of_Birth || ''}
+                />
               </div>
 
               <div>
                 <CFormLabel htmlFor="mobile">Mobile:</CFormLabel>
-                <CFormInput id="mobile" onChange={handleChange} type="tel" name="mobile" required value={data.mobile} placeholder='Mobile Number' />
+                <CFormInput
+                  id="mobile"
+                  onChange={handleChange}
+                  type="tel"
+                  name="mobile"
+                  required
+                  value={data.mobile}
+                  placeholder="Mobile Number"
+                />
               </div>
             </div>
 
@@ -381,23 +527,46 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
             <div className="col-md-6">
               <div>
                 <CFormLabel htmlFor="address">Address:</CFormLabel>
-                <CFormTextarea id="address" onChange={handleChange} name="address" required value={data.address} placeholder="Enter Address"></CFormTextarea>
+                <CFormTextarea
+                  id="address"
+                  onChange={handleChange}
+                  name="address"
+                  required
+                  value={data.address}
+                  placeholder="Enter Address"
+                ></CFormTextarea>
               </div>
 
-              <div>
+              {/* {<div>
                 <CFormLabel htmlFor="specialization">Specialization:</CFormLabel>
                 <CFormInput id="specialization" onChange={handleChange} type="text" name="specialization" required value={data.specialization} placeholder="Specialization" />
-              </div>
+              </div>} */}
 
               <div>
                 <CFormLabel htmlFor="experience">Experience (Years):</CFormLabel>
-                <CFormInput id="experience" onChange={handleChange} type="text" name="experience" required value={data.experience} placeholder="Experience in years" />
+                <CFormInput
+                  id="experience"
+                  onChange={handleChange}
+                  type="text"
+                  name="experience"
+                  required
+                  value={data.experience}
+                  placeholder="Experience in years"
+                />
               </div>
 
               <div>
                 <CFormLabel htmlFor="department">Department:</CFormLabel>
-                <CFormSelect id="departmentID" name="departmentID" onChange={handleChange} required value={data.departmentID}>
-                  <option value="" disabled>Select Department</option>
+                <CFormSelect
+                  id="departmentID"
+                  name="departmentID"
+                  onChange={handleChange}
+                  required
+                  value={data.departmentID}
+                >
+                  <option value="" disabled>
+                    Select Department
+                  </option>
                   {departments.map((dept) => (
                     <option key={dept.departmentID} value={dept.departmentID}>
                       {dept.department_name}
@@ -408,7 +577,15 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
 
               <div>
                 <CFormLabel htmlFor="consultation_fee">Consultation Fee:</CFormLabel>
-                <CFormInput id="consultation_fee" onChange={handleChange} type="text" name="consultation_fee" required value={data.consultation_fee} placeholder="Consultation Fee"/>
+                <CFormInput
+                  id="consultation_fee"
+                  onChange={handleChange}
+                  type="number"
+                  name="consultation_fee"
+                  required
+                  value={data.consultation_fee}
+                  placeholder="Consultation Fee"
+                />
               </div>
             </div>
           </div>
@@ -421,7 +598,7 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
         </CForm>
       )}
     </>
-  );
-};
+  )
+}
 
-export default AddDoctorForm;
+export default AddDoctorForm

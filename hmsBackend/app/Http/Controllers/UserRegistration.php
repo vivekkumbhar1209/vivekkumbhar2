@@ -134,7 +134,7 @@ else if ($request->role == 'Doctor') {
       'experience'       => ['required', 'integer', 'min:0'],
       'departmentID'     => ['required', 'integer'],
       'consultation_fee' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/', 'min:0'],
-      'specialization'   => ['required', 'string', 'max:255'],  // Added validation for specialization
+    //   'specialization'   => ['required', 'string', 'max:255'],  // Added validation for specialization
   ]);
 
   if ($validator->fails()) {
@@ -275,7 +275,7 @@ public function updateUser(Request $request, $id)
             'date_Of_Birth' => ['nullable','date', 'before:today'],
             'mobile'=>['required', 'regex:/^[789][0-9]{9}$/', 'unique:users,mobile,'.$id],
             'address'=>['required', 'string', 'min:5', 'max:255'],
-            'specialization'=>['required', 'string', 'min:3', 'max:100', 'regex:/^[a-zA-Z\s]+$/'],
+            // 'specialization'=>['required', 'string', 'min:3', 'max:100', 'regex:/^[a-zA-Z\s]+$/'],
             'experience'=>['required', 'integer', 'min:0'],
             'departmentID'=>['required','integer'],
             'consultation_fee'=>['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/', 'min:0'],
@@ -319,7 +319,7 @@ public function updateUser(Request $request, $id)
         ]);
 
         Doctor::where('userID', $id)->update([
-            'specialization' => $request->specialization,
+            // 'specialization' => $request->specialization,
             'experience' => $request->experience,
             'departmentID' => $request->departmentID,
             'consultation_fee' => $request->consultation_fee,
