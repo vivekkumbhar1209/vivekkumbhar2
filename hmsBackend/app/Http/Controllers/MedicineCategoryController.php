@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Validator;
 
 class MedicineCategoryController extends Controller
 {
-    public function addCategory(Request $request)
+    public function addMedicineCategory(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'category_name' => ['required'],
@@ -31,5 +31,14 @@ class MedicineCategoryController extends Controller
                 "message" => "Medicine category added successfully",
             ], 200);
         }
+               
     }
+
+
+    public function getMedCategory(){
+
+        return response()->json(MedicineCategory::all(), 200);
+    }
+
+
 }

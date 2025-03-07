@@ -21,11 +21,11 @@ const AddUser = () => {
 
     switch (selectedRole) {
       case 'Admin':
-        return <AddAdminForm role={selectedRole} />
+        return <AddAdminForm role={selectedRole} propAction="add" />
       case 'Receptionist':
-        return <AddReceptionistForm role={selectedRole} />
+        return <AddReceptionistForm role={selectedRole} propAction="add" />
       case 'Doctor':
-        return <AddDoctorForm role={selectedRole} />
+        return <AddDoctorForm role={selectedRole} propAction="add" />
       default:
         return null
     }
@@ -57,4 +57,4 @@ const AddUser = () => {
   )
 }
 
-export default AddUser
+export default AddUser;

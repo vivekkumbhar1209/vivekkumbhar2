@@ -1,25 +1,23 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    public function up(): void
+    public function up()
     {
-        Schema::create('medicine', function (Blueprint $table) {
-            $table->id('medicineID');  // Auto-generated primary key
-            $table->unsignedBigInteger('categoryID'); // Foreign key
+        Schema::create('medicines', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('categoryID');
             $table->string('medicine_name');
-            $table->decimal('cost', 8, 2); // Cost with precision
+            $table->decimal('cost', 10, 2);
             $table->timestamps();
 
-            // Foreign key constraint
-            $table->foreign('categoryID')->references('categoryID')->on('medicine_category')->onDelete('cascade');
+            $table->foreign('categoryID')->references('id')->on('medicine_categories')->onDelete('cascade');
         });
     }
 
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('medicines');
     }

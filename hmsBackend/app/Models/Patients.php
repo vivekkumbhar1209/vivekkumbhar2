@@ -19,5 +19,11 @@ class Patients extends Model
         'patient_gender',
         'patient_dob',
         'patient_age',
+        'profilePhoto',
     ];
+
+    public function opdRegistrations()
+    {
+        return $this->hasMany(OpdRegistration::class, 'patientID', 'patientID');
+    }
 }

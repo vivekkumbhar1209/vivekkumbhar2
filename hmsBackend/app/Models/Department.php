@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,7 +8,6 @@ class Department extends Model
 {
     use HasFactory;
 
-
     // Define the table name (optional if Laravel follows naming convention)
     protected $table = 'departments';
 
@@ -18,4 +16,9 @@ class Department extends Model
 
     // Allow mass assignment for these fields
     protected $fillable = ['department_name', 'hod'];
+
+    public function doctors()
+    {
+        return $this->hasMany(Doctor::class, 'departmentID', 'departmentID');
+    }
 }

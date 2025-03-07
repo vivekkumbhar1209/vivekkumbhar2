@@ -1,14 +1,11 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use HasFactory;
-
 
 class Doctor extends Model
 {
-    
+
     protected $table = 'doctors';
 
     protected $primaryKey = 'doctorID'; // Primary key
@@ -17,10 +14,10 @@ class Doctor extends Model
 
     protected $fillable = [
         'userID',
-        'specialization',
         'experience',
         'departmentID',
         'consultation_fee',
+        'profilePhoto',
     ];
 
     // Define relationships
