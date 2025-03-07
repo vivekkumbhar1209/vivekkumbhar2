@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('consultationID');
             $table->foreign('consultationID')->references('consultationID')->on('opd_consultation')->onDelete('cascade');
             $table->unsignedBigInteger('medicineID');
-            $table->foreign('medicineID')->references('medicineID')->on('medicine')->onDelete('cascade');
+            $table->foreign('medicineID')->references('medicineID')->on('medicines')->onDelete('cascade');
             $table->text('dosage');
             $table->integer('days');
             $table->integer('total_quantity');
