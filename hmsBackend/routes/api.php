@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AddDisease;
+use App\Http\Controllers\DiseaseController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DeptReg;
 use App\Http\Controllers\LoginController;
@@ -33,7 +34,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/getDept', [DeptReg::class, 'getDepartments']);
     Route::get('/getMedicines', [MedicineController::class, "getMedicines"]);
     Route::get('/getDept', [DepartmentController::class, 'allDepartment']);
-
+    
     //Implementation is not done for these api in the frontend
     Route::post('/addMedicineCategory', [MedicineCategoryController::class, 'addCategory']);
     //Additionally we need to create the following api as well
