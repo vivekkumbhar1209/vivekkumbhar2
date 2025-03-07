@@ -69,7 +69,7 @@ class OPDController extends Controller
             'created_at',
             'updated_at',
             DB::raw("(SELECT COUNT(*) FROM opd_registration WHERE opd_registration.patientID = patients.patientID) as opdRegistered")
-        )
+        )->orderBy('created_at', 'desc')
             ->get();
 
         // Transform numeric value to 'registered'/'not registered'
