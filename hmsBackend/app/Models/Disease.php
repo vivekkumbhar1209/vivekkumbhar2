@@ -10,9 +10,9 @@ class Disease extends Model
     use HasFactory;
 
     protected $table = 'diseases';
-    //protected $primaryKey = 'diseaseID';
+    protected $primaryKey = 'diseaseID';
     public $incrementing = true;
-    //protected $keyType = 'bigint';
+    protected $keyType = 'bigint';
 
     protected $fillable = [
         'diseaseName',

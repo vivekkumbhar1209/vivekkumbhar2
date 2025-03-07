@@ -143,7 +143,7 @@ const RegisterPatient = () => {
         <CButton color="secondary" className="px-4 py-2 text-white" onClick={() => setData({ patient_name: '', patient_email: '', patient_mobile: '', emergency_name: '', emergency_no: '', patient_address: '', patient_gender: '', patient_dob: '' })}>
           Reset
         </CButton>
-        <CButton color="primary" className="px-4 py-2">
+        <CButton type="submit" color="primary" className="px-4 py-2">
           Submit
         </CButton>
         </div>

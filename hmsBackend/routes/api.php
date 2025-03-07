@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AddDisease;
+use App\Http\Controllers\DiseaseController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DeptReg;
 use App\Http\Controllers\DoctorController;
