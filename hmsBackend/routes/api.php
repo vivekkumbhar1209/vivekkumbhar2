@@ -48,5 +48,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/getOpdQueue', [OPDController::class, 'getOpdQueue']);
     Route::post('/dequeue', [OPDController::class, 'deQueue']);
+    Route::post('/updatePatientQueueStatus', [OPDController::class, 'updatePatientQueueStatus']);
 
 });

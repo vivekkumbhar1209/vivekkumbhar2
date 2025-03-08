@@ -137,4 +137,30 @@ class OPDController extends Controller
 
     }
 
+    public function updatePatientQueueStatus(Request $request)
+    {
+        $request->validate([
+            'queueID' => 'required',
+        ]);
+
+        $updated = OpdQueue::where('queueID', $request->queueID)->update(['status' => 'In Consultation']);
+
+        if ($updated) {
+
+            $data = DB::table('opd_queue')->join('patients', 'opd_queue.patientID', '=', 'patients.patientID')->join('doctors', 'opd_queue.doctorID', '=', 'doctors.doctorID')->join('users', 'doctors.userID', '=', 'users.id')->select('patients.patient_name', 'patients.patientID', 'users.name', 'patients.patient_age', 'patients.patient_gender', 'opd_queue.status', 'opd_queue.queueID', 'users.id')->orderBy('opd_queue.created_at', 'desc')->get();
+
+            broadcast(new QueueUpdated($data))->toOthers();
+
+            return response()->json([
+                'status'  => 200,
+                'message' => 'Status updated successfully',
+            ]);
+        } else {
+            return response()->json([
+                'status'  => 409,
+                'message' => 'Database Error Encountered',
+            ]);
+        }
+    }
+
 }

@@ -125,7 +125,22 @@ const ViewQueue = () => {
       })
       .then((res) => {
         if (res.isConfirmed) {
-          navigator('/dashboard/opdConsultation', { state: { data: elem } })
+          axios
+            .post(
+              'http://localhost:8000/api/updatePatientQueueStatus',
+              { queueID: elem.queueID },
+              {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem('login-token')}`,
+                },
+              },
+            )
+            .then((res) => {
+              if (res.data.status === 200) {
+                var newElem = { ...elem, status: 'In Consultation' }
+                navigator('/dashboard/opdConsultation', { state: { data: newElem } })
+              }
+            })
         }
       })
   }
