@@ -34,7 +34,7 @@ const AppHeader = () => {
   const dispatch = useDispatch()
   const sidebarShow = useSelector((state) => state.sidebarShow)
 
-  const userName = JSON.parse(localStorage.getItem('userData')).name.split(' ')[0]
+  const userName = JSON.parse(localStorage.getItem('userData')).name
 
   useEffect(() => {
     document.addEventListener('scroll', () => {
@@ -71,6 +71,9 @@ const AppHeader = () => {
         <CHeaderNav className="ms-auto">
           <CNavItem>
             <CNavLink className="mx-3">{time.toLocaleTimeString()}</CNavLink>
+          </CNavItem>
+          <CNavItem>
+            <CNavLink>{localStorage.getItem('login-token')}</CNavLink>
           </CNavItem>
           <CNavItem>
             <CNavLink>
