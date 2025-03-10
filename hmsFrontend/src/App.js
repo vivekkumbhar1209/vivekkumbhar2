@@ -7,11 +7,11 @@ import './scss/style.scss'
 import './scss/examples.scss'
 import PrivateRoute from './PrivateRoute'
 
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+// import { ToastContainer } from 'react-toastify'
+// import 'react-toastify/dist/ReactToastify.css'
 
 // Inside your JSX tree (e.g. end of return block):
-<ToastContainer position="top-right" autoClose={3000} />
+{/* <ToastContainer position="top-right" autoClose={3000} /> */}
 
 // Containers
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
