@@ -42,6 +42,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/registerOPDPatient', [OPDController::class, 'registerOPDPatient']);
     Route::get('/getdiseases', [AddDisease::class, 'getDisease']);
     Route::get('/getPatientsWithOPDStatus', [OPDController::class, 'getPatientsWithOPDStatus']);
+    Route::get('/getMedicines', [MedicineController::class, 'getMedicines']);
     //done by vivek 
     Route::post('/getMedCategory', [MedicineCategoryController::class, 'getMedCategory']);
     Route::post('/addMedicine', [MedicineController::class, 'addMedicine']);
