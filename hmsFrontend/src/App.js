@@ -6,10 +6,9 @@ import { CSpinner, useColorModes } from '@coreui/react'
 import './scss/style.scss'
 import './scss/examples.scss'
 import PrivateRoute from './PrivateRoute'
-import ViewAllDiseases from './views/HMS_Components/Components/ViewAllDiseases'//dhanu
-import EditDiseaseForm from './views/HMS_Components/Components/EditDiseaseForm'//dhanu
-import { ToastContainer } from 'react-toastify'//dhanu
-import 'react-toastify/dist/ReactToastify.css'//dhanu
+
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 // Inside your JSX tree (e.g. end of return block):
 <ToastContainer position="top-right" autoClose={3000} />
@@ -55,15 +54,11 @@ const App = () => {
           <Route exact path="/register" name="Register Page" element={<Register />} />
           <Route exact path="/404" name="Page 404" element={<Page404 />} />
           <Route exact path="/500" name="Page 500" element={<Page500 />} />
-          {/* 🔸 Manage Disease Routes done by dhanu*/}
-        <Route path="/dashboard/manageDiseases/edit" element={<EditDiseaseForm />} />
-
           <Route element={<PrivateRoute />}>
             <Route path="/dashboard/*" name="Home" element={<DefaultLayout />} />
           </Route>
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
-         
       </Suspense>
     </HashRouter>
   )
