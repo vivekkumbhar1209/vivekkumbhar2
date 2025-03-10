@@ -12,6 +12,7 @@ import { CCard,
    CButton, 
    CRow, 
    CCol } from '@coreui/react'
+import Loader from '../../components/Loader'
 
 const RegisterPatient = () => {
   const [data, setData] = useState({
@@ -24,15 +25,16 @@ const RegisterPatient = () => {
     patient_gender: "",
     patient_dob: "",
   });
-
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value })
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault()   
     const token = localStorage.getItem('login-token')
+    setLoading(true); // Show loader
 
     console.log('Submitting Data:', JSON.stringify(data, null, 2)) // Log request payload
 
@@ -96,16 +98,35 @@ const RegisterPatient = () => {
           text: 'Failed to register patient. Please try again.',
           icon: 'error',
           confirmButtonText: 'Try Again',
-        })
+        });
       }
+    }finally {
+      setLoading(false); // Hide loader
     }
-  }
+  };
 
   const formatFieldName = (field) => {
     return field.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())
   }
 
   return (
+    <>
+    {loading && (
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          zIndex: 9999,
+        }}
+      >
+        <Loader />
+      </div>
+    )}
     <CCard className="mx-auto" style={{ maxWidth: '1100px', minHeight: '500px', backgroundColor: '#f8f9fa' }}>
   <CCardHeader>
     <strong>Patient Registration</strong>
@@ -150,7 +171,9 @@ const RegisterPatient = () => {
       </CForm>
     </CCardBody>
     </CCard>
-  );
+    </>
+);
+  
 };
 
 export default RegisterPatient
