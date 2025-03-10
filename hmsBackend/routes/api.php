@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\AddDisease;
-use App\Http\Controllers\DiseaseController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DeptReg;
 use App\Http\Controllers\DoctorController;
@@ -30,7 +29,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/updateDepartment', [UpdateDepartment::class, 'updateDepartment']);
     Route::post('/registerpatient', [PatientRegistration::class, 'registerPatient']);
     Route::put('/updateuser/{id}', [UserRegistration::class, 'updateUser']);
-    Route::post('/registeruser', [UserRegistration::class, 'registerUser']);//this will register all users
+    Route::post('/registeruser', [UserRegistration::class, 'registerUser']); //this will register all users
     Route::get('/patients', [PatientController::class, 'index']);
     Route::get('/patients/{id}', [PatientController::class, 'show']);
     Route::get('/viewAllUsers', [UserRegistration::class, 'getAllUsers']);
@@ -50,11 +49,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/getdiseases', [AddDisease::class, 'getDisease']);
     Route::put('/updatedisease/{id}', [DiseaseController::class, 'updateDisease']);//dhanu
     Route::apiResource('disease', DiseaseController::class);//dhanu
-
     Route::get('/getPatientsWithOPDStatus', [OPDController::class, 'getPatientsWithOPDStatus']);
 
-    //done by vivek 
     Route::post('/getMedCategory', [MedicineCategoryController::class, 'getMedCategory']);
     Route::post('/addMedicine', [MedicineController::class, 'addMedicine']);
+
+    Route::get('/getOpdQueue', [OPDController::class, 'getOpdQueue']);
+    Route::post('/dequeue', [OPDController::class, 'deQueue']);
+    Route::post('/updatePatientQueueStatus', [OPDController::class, 'updatePatientQueueStatus']);
 
 });

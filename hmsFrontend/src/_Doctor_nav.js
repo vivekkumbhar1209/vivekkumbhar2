@@ -29,8 +29,14 @@ const _nav = [
     items: [
       {
         component: CNavItem,
-        name: 'OPD Queue',
+        name: 'Queue',
         to: '/dashboard/viewQueue',
+        icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+      },
+      {
+        component: CNavItem,
+        name: 'Consultation',
+        to: '/dashboard/opdConsultation',
         icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
       },
     ],

@@ -64,6 +64,8 @@ const ManageOPDPatients = React.lazy(() => import('./views/HMS_Components/Manage
 const Settings = React.lazy(() => import('./views/HMS_Components/Settings'))
 const Profile = React.lazy(() => import('./views/HMS_Components/Profile'))
 const ViewQueue = React.lazy(() => import('./views/HMS_Components/ViewQueue'))
+const OpdConsultation = React.lazy(() => import('./views/HMS_Components/OpdConsultation'))
+const ViewStats = React.lazy(() => import('./views/HMS_Components/ViewStatistics'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -72,6 +74,16 @@ const routes = [
     path: '/userSettings',
     name: 'Settings',
     element: Settings,
+  },
+  {
+    path: '/viewStatistics',
+    name: 'Statictics',
+    element: ViewStats,
+  },
+  {
+    path: '/opdConsultation',
+    name: 'OPD Consultation',
+    element: OpdConsultation,
   },
   {
     path: '/viewQueue',
