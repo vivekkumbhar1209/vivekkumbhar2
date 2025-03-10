@@ -9,13 +9,12 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogOutController;
 use App\Http\Controllers\MedicineCategoryController;
 use App\Http\Controllers\MedicineController;
+use App\Http\Controllers\OPDController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PatientRegistration;
 use App\Http\Controllers\UpdateDepartment;
 use App\Http\Controllers\UserRegistration;
 use Illuminate\Support\Facades\Route;
-
-
 
 Route::post('/login', [LoginController::class, 'login']);
 
@@ -44,16 +43,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/medicines', [MedicineController::class, 'getMedicines']);
     Route::post('/add-medicine', [MedicineController::class, 'addMedicine']);
 
-
     Route::get('/getDept', [DepartmentController::class, 'allDepartment']);
 
     //Implementation is not done for these api in the frontend
     Route::post('/addMedicineCategory', [MedicineCategoryController::class, 'addCategory']);
 
-    
     Route::post('/getMedCategory', [MedicineCategoryController::class, 'getMedCategory']);
     Route::post('/addMedicine', [MedicineController::class, 'addMedicine']);
-    
 
     Route::post('/getDoctorByDeparmentID', [DoctorController::class, 'getDoctorByDepartmentID']);
     Route::post('/registerOPDPatient', [OPDController::class, 'registerOPDPatient']);
