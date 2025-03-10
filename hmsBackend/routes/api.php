@@ -3,6 +3,7 @@
 use App\Http\Controllers\AddDisease;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DeptReg;
+use App\Http\Controllers\DiseaseController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogOutController;
@@ -38,17 +39,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/getDept', [DepartmentController::class, 'allDepartment']);
     Route::post('/addMedicine', [MedicineController::class, 'addMedicine']);
 
-
-
-    
-    
     //Implementation is not done for these api in the frontend
     Route::post('/addMedicineCategory', [MedicineCategoryController::class, 'addCategory']);
     Route::post('/getDoctorByDeparmentID', [DoctorController::class, 'getDoctorByDepartmentID']);
     Route::post('/registerOPDPatient', [OPDController::class, 'registerOPDPatient']);
     Route::get('/getdiseases', [AddDisease::class, 'getDisease']);
-    Route::put('/updatedisease/{id}', [DiseaseController::class, 'updateDisease']);//dhanu
-    Route::apiResource('disease', DiseaseController::class);//dhanu
+    Route::put('/updatedisease/{id}', [DiseaseController::class, 'updateDisease']); //dhanu
     Route::get('/getPatientsWithOPDStatus', [OPDController::class, 'getPatientsWithOPDStatus']);
 
     Route::post('/getMedCategory', [MedicineCategoryController::class, 'getMedCategory']);
