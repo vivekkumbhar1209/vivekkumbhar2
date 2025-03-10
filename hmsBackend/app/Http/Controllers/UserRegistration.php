@@ -208,7 +208,7 @@ public function updateUser(Request $request, $id)
     }
 
     //add validation if user is Receptionist
-    if($request->role=='Receptionist')
+    if($request->role=='Receptionist' || $request->role=='Admin')
     {
         $validator = Validator::make($data, [
             'name'=>['required'],

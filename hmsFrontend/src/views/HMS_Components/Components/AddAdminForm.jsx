@@ -17,6 +17,8 @@ import {
   CModalFooter
 } from '@coreui/react'
 
+// Assuming Loader is imported or defined somewhere
+import Loader from '../../../components/Loader'
 const AddAdminForm = ({ role, propAction = 'add', user }) => {
   const [data, setData] = useState({
     name: '',
@@ -30,6 +32,7 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
   })
 
   const [modalVisible, setModalVisible] = useState(false); // State for modal visibility
+  const [loading, setLoading] = useState(false); // Loading state for the loader
 
   // Update the role in state when the prop changes
   useEffect(() => {
@@ -74,7 +77,10 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
   const handleSubmit = (e) => {
     e.preventDefault()
     const token = localStorage.getItem('login-token')
-    
+
+    // Start loading
+    setLoading(true);
+
     if (propAction === 'add') {
       axios
         .post('http://127.0.0.1:8000/api/registeruser', data, {
@@ -124,6 +130,11 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
             })
           }
         })
+        .finally(() => {
+          // End loading
+          setLoading(false);
+          console.log("Request finished (either success or failure)");
+        });
     } else if (propAction === 'edit') {
       // Update user endpoint
       axios
@@ -164,6 +175,11 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
             })
           }
         })
+        .finally(() => {
+          // End loading
+          setLoading(false);
+          console.log("Request finished (either success or failure)");
+        });
     }
 
     console.log("Final Data Sent to API:", data);
@@ -185,6 +201,24 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
 
   return (
     <>
+      {/* Loader */}
+      {loading ? (
+        <div
+          className="d-flex justify-content-center align-items-center"
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
+            zIndex: 9999,
+          }}
+        >
+          <Loader />
+        </div>
+      ) : null}
+
       {propAction === 'edit' ? (
         <CModal visible={modalVisible} onClose={closeModal} backdrop="static" size="lg">
           <CModalHeader closeButton={true}>

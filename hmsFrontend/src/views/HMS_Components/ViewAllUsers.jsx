@@ -61,7 +61,7 @@ const ViewAllUsers = ({ action }) => {
         setSortBy('name')
         break
       case '2':
-        setSortBy('phone')
+        setSortBy('mobile')
         break
       case '3':
         setSortBy('email')
@@ -160,6 +160,12 @@ const ViewAllUsers = ({ action }) => {
                 <CTableHeaderCell>Email</CTableHeaderCell>
                 <CTableHeaderCell>Gender</CTableHeaderCell>
                 <CTableHeaderCell>Contact Number</CTableHeaderCell>
+                { action === "edit" ? 
+                  (<>
+                  <CTableHeaderCell>Last Updated</CTableHeaderCell>
+                  <CTableHeaderCell>Action</CTableHeaderCell>
+                  </>) : null
+                }
               </CTableRow>
             </CTableHead>
             <CTableBody>
@@ -173,9 +179,14 @@ const ViewAllUsers = ({ action }) => {
                     <CTableDataCell>{elem.gender}</CTableDataCell>
                     <CTableDataCell>{elem.mobile}</CTableDataCell>
                     {action === 'edit' ? (
+                        <> 
+                      <CTableDataCell>
+                        {new Date(elem.updated_at).toLocaleString()}
+                      </CTableDataCell>
                       <CTableDataCell>
                         <CButton onClick={() => handleEdit(elem)}>Edit</CButton>
                       </CTableDataCell>
+                        </>
                     ) : null}
                   </CTableRow>
                 ))
