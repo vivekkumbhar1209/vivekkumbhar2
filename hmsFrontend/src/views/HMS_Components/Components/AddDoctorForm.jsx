@@ -499,6 +499,19 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
               </div>
 
               <div>
+                <CFormLabel htmlFor="address">Address:</CFormLabel>
+                <CFormTextarea id="address" onChange={handleChange} name="address" required value={data.address} placeholder="Enter Address"></CFormTextarea>
+              </div>
+              
+
+             
+            </div>
+
+            {/* Right Column */}
+
+            <div className="col-md-6">
+
+            <div>
                 <CFormLabel htmlFor="date_Of_Birth">Date of Birth:</CFormLabel>
                 <CFormInput
                   id="date_Of_Birth"
@@ -509,8 +522,10 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
                 />
               </div>
 
-              <div>
+            <div>
                 <CFormLabel htmlFor="mobile">Mobile:</CFormLabel>
+                <CFormInput id="mobile" onChange={handleChange} type="tel" name="mobile" required value={data.mobile} placeholder='Mobile Number' />
+              </div>   
                 <CFormInput
                   id="mobile"
                   onChange={handleChange}

@@ -31,17 +31,14 @@ class UserRegistration extends Controller
         $sortBy = $request->query("sortBy", "name");
         $order  = $request->query("order", "asc");
 
-        $order  = $request->query("order", "asc");
+        
 
         // second argument in the query method is a default value
         $users = User::orderBy($sortBy, $order)->get();
 
         return response()->json([
             "status"  => 200,
-            "status"  => 200,
             "message" => "Users Data",
-            "Users"   => $users,
-            //   "params" => $requestParams,
             "Users"   => $users,
             //   "params" => $requestParams,
         ]);
@@ -62,7 +59,7 @@ class UserRegistration extends Controller
 
         //add valiadtion if user is Receptionist
         if ($request->role == 'Receptionist' || $request->role=="Admin") {
-            Log::info("Processing receptionist ----------------------------------------------------------------------------------------------");//for dadebugging
+            //Log::info("Processing receptionist ----------------------------------------------------------------------------------------------");//for dadebugging
 
             $validator = Validator::make($data, [
                 'name'          => ['required'],
@@ -72,6 +69,7 @@ class UserRegistration extends Controller
                 'date_Of_Birth' => ['nullable', 'date', 'before:today'],
                 'mobile'        => ['required', 'regex:/^[789][0-9]{9}$/', 'unique:users,mobile'],
                 'address'       => ['required', 'string', 'min:5', 'max:255'],
+               'profilePhoto' => ['nullable'],
             ]);
 
             if ($validator->fails()) {
@@ -99,6 +97,18 @@ class UserRegistration extends Controller
 
             }
 
+            //file is storing at storage/app/public  folder
+
+            if ($request->hasFile('profilePhoto')) {
+                $image = $request->file('profilePhoto');
+                $formattedUsername = preg_replace('/\s+/', '_', strtolower($request->name));
+                $imageName = $formattedUsername . '_' . now()->format('Y-m-d_H-i-s') . '.' . $image->getClientOriginalExtension();
+                $path = $image->storeAs('profile_photos', $imageName, 'public');
+            } else {
+                $path = null;
+            }
+            
+            //Log::info("Profile Photo Path: " . $path); // Debugging
             //Add receptionist data into database
             $user = User::create([
                 'name'          => $request->name,
@@ -110,6 +120,9 @@ class UserRegistration extends Controller
                 'age'           => $age, // Save calculated age
                 'mobile'        => $request->mobile,
                 'address'       => $request->address,
+                'profilePhoto' => $path,
+                
+                
             ]);
 
             return response()->json([
@@ -134,7 +147,9 @@ else if ($request->role == 'Doctor') {
       'experience'       => ['required', 'integer', 'min:0'],
       'departmentID'     => ['required', 'integer'],
       'consultation_fee' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/', 'min:0'],
-    //   'specialization'   => ['required', 'string', 'max:255'],  // Added validation for specialization
+      'profilePhoto' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+
+      
   ]);
 
   if ($validator->fails()) {
@@ -174,10 +189,9 @@ else if ($request->role == 'Doctor') {
       'address'       => $request->address,
   ]);
 
-  // Now, include specialization in the doctor record
+  
   $doctor = Doctor::create([
       'userID'           => $user->id,
-      'specialization'   => $request->specialization,  // Add specialization field
       'experience'       => $request->experience,
       'departmentID'     => $request->departmentID,
       'consultation_fee' => $request->consultation_fee,
@@ -218,6 +232,7 @@ public function updateUser(Request $request, $id)
             'date_Of_Birth' => ['nullable','date', 'before:today'],
             'mobile'=>['required', 'regex:/^[789][0-9]{9}$/', 'unique:users,mobile,'.$id],
             'address'=>['required', 'string', 'min:5', 'max:255'],
+            'profilePhoto' => ['nullable|image|mimes:jpeg,png,jpg,gif|max:2048'],
         ]);
 
         if($validator->fails())
@@ -275,10 +290,10 @@ public function updateUser(Request $request, $id)
             'date_Of_Birth' => ['nullable','date', 'before:today'],
             'mobile'=>['required', 'regex:/^[789][0-9]{9}$/', 'unique:users,mobile,'.$id],
             'address'=>['required', 'string', 'min:5', 'max:255'],
-            // 'specialization'=>['required', 'string', 'min:3', 'max:100', 'regex:/^[a-zA-Z\s]+$/'],
             'experience'=>['required', 'integer', 'min:0'],
             'departmentID'=>['required','integer'],
             'consultation_fee'=>['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/', 'min:0'],
+            'profilePhoto' => ['nullable|image|mimes:jpeg,png,jpg,gif|max:2048'],
         ]);
 
         if($validator->fails())
@@ -319,7 +334,6 @@ public function updateUser(Request $request, $id)
         ]);
 
         Doctor::where('userID', $id)->update([
-            // 'specialization' => $request->specialization,
             'experience' => $request->experience,
             'departmentID' => $request->departmentID,
             'consultation_fee' => $request->consultation_fee,
@@ -333,12 +347,5 @@ public function updateUser(Request $request, $id)
         ]);
     }
 }
-//end of function
-    /*public function demo( Request $request){
-        return response()->json([
-            'status'=> 200,
-            'message'=>'data reached backend',
-            'formData'=>$request->all()
-        ]);
-    }*/
+
 }
