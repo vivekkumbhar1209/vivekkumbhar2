@@ -156,12 +156,16 @@ const ViewAllUsers = ({ action }) => {
               <CTableRow>
                 <CTableHeaderCell>Profile Photo</CTableHeaderCell>
                 <CTableHeaderCell>User ID</CTableHeaderCell>
-                <CTableHeaderCell>Users Name</CTableHeaderCell>
+                <CTableHeaderCell>Name</CTableHeaderCell>
                 <CTableHeaderCell>Role</CTableHeaderCell>
                 <CTableHeaderCell>Email</CTableHeaderCell>
                 <CTableHeaderCell>Gender</CTableHeaderCell>
                 <CTableHeaderCell>Contact Number</CTableHeaderCell>
-                
+                {action === 'edit' ? (
+                  <CTableHeaderCell>Actions</CTableHeaderCell>
+                ) : (
+                  <></>
+                )}
               </CTableRow>
             </CTableHead>
             <CTableBody>
@@ -169,45 +173,45 @@ const ViewAllUsers = ({ action }) => {
                 currentData.map((elem, index) => (
                   <CTableRow key={index}>
                     <CTableDataCell  >
-                    {elem.profilePhoto ? (
-    <img
-      src={`http://127.0.0.1:8000/storage/${elem.profilePhoto}`}
-      alt="Profile"
-      style={{
-        width: '60px',
-        height: '60px',
-        borderRadius: '50%',
-        objectFit: 'cover',
-        
-      }}
-    />
-  ) : (
-    <div
-      style={{
-        width: '60px',
-        height: '60px',
-        borderRadius: '50%',
-        backgroundColor: '#ccc',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: '12px',
-        color: '#fff',
-        fontWeight: 'bold',
-      }}
-    >
-      No Image
-    </div>
-  )}
+                      {elem.profilePhoto ? (
+                        <img
+                          src={`http://127.0.0.1:8000/storage/${elem.profilePhoto}`}
+                          alt="Profile"
+                          style={{
+                            width: '60px',
+                            height: '60px',
+                            borderRadius: '50%',
+                            objectFit: 'cover',
+
+                          }}
+                        />
+                      ) : (
+                        <div
+                          style={{
+                            width: '60px',
+                            height: '60px',
+                            borderRadius: '50%',
+                            backgroundColor: '#ccc',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            fontSize: '12px',
+                            color: '#fff',
+                            fontWeight: 'bold',
+                          }}
+                        >
+                          No Image
+                        </div>
+                      )}
                     </CTableDataCell>
-                    <CTableDataCell style={{ verticalAlign: 'middle' }}>{elem.id}</CTableDataCell>
+                    <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>{elem.id}</CTableDataCell>
                     <CTableDataCell style={{ verticalAlign: 'middle' }}>{elem.name}</CTableDataCell>
-                    <CTableDataCell style={{ verticalAlign: 'middle' }}>{elem.role}</CTableDataCell>
+                    <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>{elem.role}</CTableDataCell>
                     <CTableDataCell style={{ verticalAlign: 'middle' }}>{elem.email}</CTableDataCell>
-                    <CTableDataCell style={{ verticalAlign: 'middle' }}>{elem.gender}</CTableDataCell>
-                    <CTableDataCell style={{ verticalAlign: 'middle' }}>{elem.mobile}</CTableDataCell>
+                    <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>{elem.gender}</CTableDataCell>
+                    <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>{elem.mobile}</CTableDataCell>
                     {action === 'edit' ? (
-                      <CTableDataCell>
+                      <CTableDataCell style={{ verticalAlign: 'middle' }}>
                         <CButton onClick={() => handleEdit(elem)}>Edit</CButton>
                       </CTableDataCell>
                     ) : null}

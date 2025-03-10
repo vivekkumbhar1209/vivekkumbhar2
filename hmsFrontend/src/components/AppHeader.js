@@ -70,7 +70,9 @@ const AppHeader = () => {
 
         <CHeaderNav className="ms-auto">
           <CNavItem>
-            <CNavLink className="mx-3">{time.toLocaleTimeString()}</CNavLink>
+            <CNavLink className="mx-3">
+              <strong>{time.toLocaleTimeString()}</strong>
+            </CNavLink>
           </CNavItem>
           <CNavItem>
             <CNavLink>{localStorage.getItem('login-token')}</CNavLink>
