@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Log;
 
 class DiseaseController extends Controller
 {
-    public function getAllDiseases()
+        public function getAllDiseases()
     {
         $diseases = Disease::all();
         return response()->json(['diseases' => $diseases]);

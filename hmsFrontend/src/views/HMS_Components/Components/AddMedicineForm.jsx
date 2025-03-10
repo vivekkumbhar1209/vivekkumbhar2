@@ -1,80 +1,110 @@
-import React, { useState, useEffect } from 'react'
-import { CButton, CForm, CFormInput, CFormLabel, CFormSelect } from '@coreui/react'
-import axios from 'axios'
+import React, { useState, useEffect } from 'react';
+import { CButton, CForm, CFormInput, CFormLabel, CFormSelect } from '@coreui/react';
+import axios from 'axios';
+import Swal from 'sweetalert2'; // Import SweetAlert2
 
 const AddMedicineForm = () => {
-  const [categories, setCategories] = useState([]) // Store medicine categories
-  const [selectedCategory, setSelectedCategory] = useState('') // Selected category
-  const [loading, setLoading] = useState(false) // Loading state
+  const [categories, setCategories] = useState([]); // Store medicine categories
+  const [selectedCategory, setSelectedCategory] = useState(''); // Selected category ID
+  const [medicineName, setMedicineName] = useState('');
+  const [cost, setCost] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true) // Start loading before API call
-    const token = localStorage.getItem('login-token') // Get token from local storage
+    setLoading(true);
+    const token = localStorage.getItem('login-token');
 
     axios
-      .post(
-        'http://127.0.0.1:8000/api/getMedCategory',
-        {}, // Empty body for POST request
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      )
+      .get('http://127.0.0.1:8000/api/getMedicineCategory', {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
-        console.log('Categories:', res.data)
-        setCategories(res.data) // Update categories state
+        console.log("API Response:", res.data);
+        setCategories(res.data); // Correctly storing categories
       })
       .catch((error) => {
-        console.error('Error fetching categories:', error)
+        console.error("Error fetching categories:", error);
+        setCategories([]);
       })
-      .finally(() => {
-        setLoading(false) // Stop loading after API call
-      })
-  }, [])
+      .finally(() => setLoading(false));
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!selectedCategory) {
+      Swal.fire({
+        title: "Error",
+        text: "Please select a category.",
+        icon: "warning",
+        confirmButtonText: "OK"
+      });
+      return;
+    }
+
+    const token = localStorage.getItem('login-token');
+    const medicineData = {
+      categoryID: selectedCategory,
+      medicine_name: medicineName,
+      cost: cost,
+    };
+
+    try {
+      await axios.post('http://127.0.0.1:8000/api/addMedicine', medicineData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      // Success SweetAlert
+      Swal.fire({
+        title: "Success!",
+        text: "Medicine added successfully!",
+        icon: "success",
+        confirmButtonText: "OK"
+      });
+
+      // Reset form fields
+      setSelectedCategory('');
+      setMedicineName('');
+      setCost('');
+    } catch (error) {
+      console.error('Error adding medicine:', error.response?.data || error);
+
+      // Error SweetAlert
+      Swal.fire({
+        title: "Error",
+        text: "Failed to add medicine. Please try again.",
+        icon: "error",
+        confirmButtonText: "OK"
+      });
+    }
+  };
 
   return (
-    <>
-      <CForm className="w-100 w-lg-50">
-        <div className="mb-3">
-          <CFormLabel htmlFor="category">Category</CFormLabel>
-          <CFormSelect
-            className="text-start"
-            aria-label="Select a category"
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            disabled={loading} // Disable while loading
-          >
-            {loading ? (
-              <option>Loading categories...</option>
-            ) : categories.length === 0 ? (
-              <option value="">No Categories Available</option>
-            ) : (
-              categories.map((category) => (
-                <option key={category.medicineID} value={category.medicineID}>
-                  {category.category_name}
-                </option>
-              ))
-            )}
-          </CFormSelect>
-        </div>
+    <CForm className="w-100 w-lg-50" onSubmit={handleSubmit}>
+      <div className="mb-3">
+        <CFormLabel>Category</CFormLabel>
+        <CFormSelect value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} disabled={loading}>
+          <option value="">Select Category</option>
+          {categories.map((category) => (
+            <option key={category.categoryID} value={category.categoryID}>
+              {category.category_name}
+            </option>
+          ))}
+        </CFormSelect>
+      </div>
 
-        <div className="mb-3">
-          <CFormLabel htmlFor="medicineName">Medicine</CFormLabel>
-          <CFormInput type="text" id="medicineName" name="medicineName" />
-        </div>
+      <CFormLabel>Medicine Name</CFormLabel>
+      <CFormInput type="text" value={medicineName} onChange={(e) => setMedicineName(e.target.value)} required />
 
-        <div className="mb-3">
-          <CFormLabel htmlFor="cost">Cost</CFormLabel>
-          <CFormInput type="text" id="cost" name="cost" />
-        </div>
+      <CFormLabel>Cost</CFormLabel>
+      <CFormInput type="number" value={cost} onChange={(e) => setCost(e.target.value)} required />
+        
+      <CButton color="primary" type="submit">Add Medicine</CButton>
+    </CForm>
+  );
+};
 
-        <div className="mb-3 d-flex gap-3">
-          <CButton color="primary">Add Medicine</CButton>
-        </div>
-      </CForm>
-    </>
-  )
-}
-
-export default AddMedicineForm
+export default AddMedicineForm;
