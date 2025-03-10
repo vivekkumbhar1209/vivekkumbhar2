@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { CButton, CForm, CFormInput, CFormLabel, CFormSelect } from '@coreui/react';
 import axios from 'axios';
+import Swal from 'sweetalert2'; // Import SweetAlert2
 
 const AddMedicineForm = () => {
   const [categories, setCategories] = useState([]); // Store medicine categories
@@ -32,7 +33,12 @@ const AddMedicineForm = () => {
     e.preventDefault();
 
     if (!selectedCategory) {
-      alert("Please select a category.");
+      Swal.fire({
+        title: "Error",
+        text: "Please select a category.",
+        icon: "warning",
+        confirmButtonText: "OK"
+      });
       return;
     }
 
@@ -51,13 +57,28 @@ const AddMedicineForm = () => {
         },
       });
 
-      alert('Medicine added successfully!');
+      // Success SweetAlert
+      Swal.fire({
+        title: "Success!",
+        text: "Medicine added successfully!",
+        icon: "success",
+        confirmButtonText: "OK"
+      });
+
+      // Reset form fields
       setSelectedCategory('');
       setMedicineName('');
       setCost('');
     } catch (error) {
       console.error('Error adding medicine:', error.response?.data || error);
-      alert('Failed to add medicine');
+
+      // Error SweetAlert
+      Swal.fire({
+        title: "Error",
+        text: "Failed to add medicine. Please try again.",
+        icon: "error",
+        confirmButtonText: "OK"
+      });
     }
   };
 
