@@ -59,10 +59,13 @@ const ManageMedicines = React.lazy(() => import('./views/HMS_Components/ManageMe
 const SearchPatient = React.lazy(() => import('./views/HMS_Components/SearchPatient'))
 const ViewAllUsers = React.lazy(() => import('./views/HMS_Components/ViewAllUsers'))
 const ManageDisease = React.lazy(() => import('./views/HMS_Components/ManageDisease'))
-const ManageUserDetails = React.lazy(()=>import('./views/HMS_Components/ManageUserDetails'))
-const ManageOPDPatients = React.lazy(()=>import('./views/HMS_Components/ManageOPDPatients'))
-const Settings = React.lazy(()=>import('./views/HMS_Components/Settings'))
-const Profile = React.lazy(()=>import('./views/HMS_Components/Profile'))
+const ManageUserDetails = React.lazy(() => import('./views/HMS_Components/ManageUserDetails'))
+const ManageOPDPatients = React.lazy(() => import('./views/HMS_Components/ManageOPDPatients'))
+const Settings = React.lazy(() => import('./views/HMS_Components/Settings'))
+const Profile = React.lazy(() => import('./views/HMS_Components/Profile'))
+const ViewQueue = React.lazy(() => import('./views/HMS_Components/ViewQueue'))
+const OpdConsultation = React.lazy(() => import('./views/HMS_Components/OpdConsultation'))
+const ViewStats = React.lazy(() => import('./views/HMS_Components/ViewStatistics'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -70,7 +73,22 @@ const routes = [
   {
     path: '/userSettings',
     name: 'Settings',
-    element: Settings
+    element: Settings,
+  },
+  {
+    path: '/viewStatistics',
+    name: 'Statictics',
+    element: ViewStats,
+  },
+  {
+    path: '/opdConsultation',
+    name: 'OPD Consultation',
+    element: OpdConsultation,
+  },
+  {
+    path: '/viewQueue',
+    name: 'Queue',
+    element: ViewQueue,
   },
   {
     path: '/userProfile',
@@ -86,7 +104,7 @@ const routes = [
   {
     path: '/manageOPDPatient',
     name: 'Manage OPD Patient',
-    element: ManageOPDPatients
+    element: ManageOPDPatients,
   },
 
   {
@@ -120,7 +138,6 @@ const routes = [
     name: 'Search Patient',
     element: SearchPatient,
   },
- 
 
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/dashboard/theme/colors', name: 'Colors', element: Colors },

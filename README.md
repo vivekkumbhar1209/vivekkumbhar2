@@ -11,6 +11,23 @@ Backend Setup:-
 7. php artisan db:seed - run this to insert demo data the database.
 8. php artisan serve - start the development server
 
+Add the following lines to .env file to configure Pusher for real time notification feature
+
+BROADCAST_DRIVER=pusher
+PUSHER_APP_ID=1953989
+PUSHER_APP_KEY=4f0d3f536163be9e540c
+PUSHER_APP_SECRET=18e37a7cb2804cdc0267
+PUSHER_APP_CLUSTER=ap2
+
+VITE_APP_NAME="${APP_NAME}"
+VITE_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
+VITE_PUSHER_HOST="${PUSHER_HOST}"
+VITE_PUSHER_PORT="${PUSHER_PORT}"
+VITE_PUSHER_SCHEME="${PUSHER_SCHEME}"
+VITE_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
+
+---
+
 Frontend Setup
 
 1. cd ./hmsFrontend - change directory to frontend directory

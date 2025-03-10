@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   CCard,
   CCardHeader,
@@ -46,6 +47,7 @@ const ManageOPDPatients = () => {
   const [reason, setReason] = useState('')
   const [checkInButtonText, changeCheckInButtonText] = useState('CheckIn')
   const itemsPerPage = 5
+  const navigator = useNavigate()
 
   const handleSubmit = () => {
     setLoading(true)
@@ -82,6 +84,7 @@ const ManageOPDPatients = () => {
           console.log(res.data)
           setLoading(false)
           setModelVisibility(false)
+          navigator('/dashboard/viewQueue')
         } else if (res.data.status === 409) {
           swal.fire({
             title: 'Error!',
