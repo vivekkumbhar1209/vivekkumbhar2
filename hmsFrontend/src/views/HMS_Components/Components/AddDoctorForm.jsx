@@ -28,7 +28,6 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
     mobile: '',
     address: '',
     role: role, // This gets set only on the first render
-    specialization: '',
     experience: '',
     departmentID: '',
     consultation_fee: '',
@@ -72,7 +71,6 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
         mobile: user.mobile,
         address: user.address,
         role: user.role,
-        specialization: user.specialization || '',
         experience: user.experience || '',
         departmentID: user.departmentID || '',
         consultation_fee: user.consultation_fee || '',
@@ -88,7 +86,6 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
         mobile: '',
         address: '',
         role: role,
-        specialization: '',
         experience: '',
         departmentID: '',
         consultation_fee: '',
@@ -146,7 +143,6 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
           mobile: '',
           address: '',
           role: role,
-          specialization: '',
           experience: '',
           departmentID: '',
           consultation_fee: '',
@@ -229,7 +225,6 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
       mobile: '',
       address: '',
       role: role,
-      specialization: '',
       experience: '',
       departmentID: '',
       consultation_fee: '',
@@ -290,11 +285,6 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
                   <div>
                     <CFormLabel htmlFor="address">Address:</CFormLabel>
                     <CFormTextarea id="address" onChange={handleChange} name="address" required value={data.address} placeholder="Enter Address"></CFormTextarea>
-                  </div>
-
-                  <div>
-                    <CFormLabel htmlFor="specialization">Specialization:</CFormLabel>
-                    <CFormInput id="specialization" onChange={handleChange} type="text" name="specialization" required value={data.specialization} placeholder="Specialization" />
                   </div>
 
                   <div>
@@ -367,27 +357,27 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
               </div>
 
               <div>
+                <CFormLabel htmlFor="address">Address:</CFormLabel>
+                <CFormTextarea id="address" onChange={handleChange} name="address" required value={data.address} placeholder="Enter Address"></CFormTextarea>
+              </div>
+              
+
+             
+            </div>
+
+            {/* Right Column */}
+
+            <div className="col-md-6">
+
+            <div>
                 <CFormLabel htmlFor="date_Of_Birth">Date of Birth:</CFormLabel>
                 <CFormInput id="date_Of_Birth" onChange={handleChange} type="date" name="date_Of_Birth" value={data.date_Of_Birth || ''} />
               </div>
 
-              <div>
+            <div>
                 <CFormLabel htmlFor="mobile">Mobile:</CFormLabel>
                 <CFormInput id="mobile" onChange={handleChange} type="tel" name="mobile" required value={data.mobile} placeholder='Mobile Number' />
-              </div>
-            </div>
-
-            {/* Right Column */}
-            <div className="col-md-6">
-              <div>
-                <CFormLabel htmlFor="address">Address:</CFormLabel>
-                <CFormTextarea id="address" onChange={handleChange} name="address" required value={data.address} placeholder="Enter Address"></CFormTextarea>
-              </div>
-
-              <div>
-                <CFormLabel htmlFor="specialization">Specialization:</CFormLabel>
-                <CFormInput id="specialization" onChange={handleChange} type="text" name="specialization" required value={data.specialization} placeholder="Specialization" />
-              </div>
+              </div>   
 
               <div>
                 <CFormLabel htmlFor="experience">Experience (Years):</CFormLabel>
