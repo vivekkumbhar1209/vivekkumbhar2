@@ -43,7 +43,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/getdiseases', [AddDisease::class, 'getDisease']);
     Route::put('/updatedisease/{id}', [DiseaseController::class, 'updateDisease']);//dhanu
     Route::apiResource('disease', DiseaseController::class);//dhanu
-
     Route::get('/getPatientsWithOPDStatus', [OPDController::class, 'getPatientsWithOPDStatus']);
 
     //done by vivek 
