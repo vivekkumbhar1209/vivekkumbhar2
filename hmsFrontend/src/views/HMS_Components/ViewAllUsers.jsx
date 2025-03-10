@@ -154,24 +154,58 @@ const ViewAllUsers = ({ action }) => {
           <CTable bordered responsive hover>
             <CTableHead color="light">
               <CTableRow>
+                <CTableHeaderCell>Profile Photo</CTableHeaderCell>
                 <CTableHeaderCell>User ID</CTableHeaderCell>
                 <CTableHeaderCell>Users Name</CTableHeaderCell>
                 <CTableHeaderCell>Role</CTableHeaderCell>
                 <CTableHeaderCell>Email</CTableHeaderCell>
                 <CTableHeaderCell>Gender</CTableHeaderCell>
                 <CTableHeaderCell>Contact Number</CTableHeaderCell>
+                
               </CTableRow>
             </CTableHead>
             <CTableBody>
               {currentData.length > 0 ? (
                 currentData.map((elem, index) => (
                   <CTableRow key={index}>
-                    <CTableDataCell>{elem.id}</CTableDataCell>
-                    <CTableDataCell>{elem.name}</CTableDataCell>
-                    <CTableDataCell>{elem.role}</CTableDataCell>
-                    <CTableDataCell>{elem.email}</CTableDataCell>
-                    <CTableDataCell>{elem.gender}</CTableDataCell>
-                    <CTableDataCell>{elem.mobile}</CTableDataCell>
+                    <CTableDataCell  >
+                    {elem.profilePhoto ? (
+    <img
+      src={`http://127.0.0.1:8000/storage/${elem.profilePhoto}`}
+      alt="Profile"
+      style={{
+        width: '60px',
+        height: '60px',
+        borderRadius: '50%',
+        objectFit: 'cover',
+        
+      }}
+    />
+  ) : (
+    <div
+      style={{
+        width: '60px',
+        height: '60px',
+        borderRadius: '50%',
+        backgroundColor: '#ccc',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontSize: '12px',
+        color: '#fff',
+        fontWeight: 'bold',
+      }}
+    >
+      No Image
+    </div>
+  )}
+                    </CTableDataCell>
+                    <CTableDataCell style={{ verticalAlign: 'middle' }}>{elem.id}</CTableDataCell>
+                    <CTableDataCell style={{ verticalAlign: 'middle' }}>{elem.name}</CTableDataCell>
+                    <CTableDataCell style={{ verticalAlign: 'middle' }}>{elem.role}</CTableDataCell>
+                    <CTableDataCell style={{ verticalAlign: 'middle' }}>{elem.email}</CTableDataCell>
+                    <CTableDataCell style={{ verticalAlign: 'middle' }}>{elem.gender}</CTableDataCell>
+                    <CTableDataCell style={{ verticalAlign: 'middle' }}>{elem.mobile}</CTableDataCell>
                     {action === 'edit' ? (
                       <CTableDataCell>
                         <CButton onClick={() => handleEdit(elem)}>Edit</CButton>
