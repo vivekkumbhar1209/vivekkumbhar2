@@ -11,15 +11,19 @@ import {
   CTableHeaderCell,
   CTableDataCell,
   CButton,
+  CInputGroup,
+  CFormInput,
 } from '@coreui/react'
 import axios from 'axios'
 import Pusher from 'pusher-js'
 import Loader from '../../components/Loader'
 import swal from 'sweetalert2'
+import { FaSearch } from 'react-icons/fa'
 
 const ViewQueue = () => {
   const [queue, setQueue] = useState([])
   const [loading, setLoading] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('')
   const role = JSON.parse(localStorage.getItem('userData')).role
   const navigator = useNavigate()
   const statusColors = {
@@ -31,6 +35,8 @@ const ViewQueue = () => {
   useEffect(() => {
     setLoading(true)
     // Pusher.logToConsole = true
+
+    // console.log(JSON.parse(localStorage.getItem('userData')).email)
 
     const pusher = new Pusher('4f0d3f536163be9e540c', {
       cluster: 'ap2',
@@ -145,6 +151,11 @@ const ViewQueue = () => {
       })
   }
 
+  const handleSearch = (e) => {
+    console.log(e.target.value)
+    setSearchTerm(e.target.value)
+  }
+
   return (
     <>
       <CCard className="my-2">
@@ -157,6 +168,29 @@ const ViewQueue = () => {
           </p>
         </CCardBody>
       </CCard>
+
+      <CCard>
+        <CCardHeader>
+          <strong>Search Patient</strong>
+        </CCardHeader>
+        <CCardBody>
+          <p className="text-body-secondary small">
+            Search patients by their <code>name</code>.
+          </p>
+          <CInputGroup>
+            <CButton color='primary' id="addon-wrapping">
+              <FaSearch />
+            </CButton>
+            <CFormInput
+              placeholder='Search'
+              aria-label="Search"
+              style={{ margin: '0px 5px' }}
+              onChange={handleSearch}
+            />
+          </CInputGroup>
+        </CCardBody>
+      </CCard>
+
 
       {loading ? (
         <div
