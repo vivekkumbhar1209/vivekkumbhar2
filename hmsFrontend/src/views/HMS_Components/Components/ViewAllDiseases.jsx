@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 import {
   CCard,
   CCardHeader,
@@ -14,25 +14,46 @@ import {
   CTableHeaderCell,
   CTableDataCell,
   CFormSelect,
-} from '@coreui/react';
-import { FaSearch } from 'react-icons/fa';
-import ReactPaginate from 'react-paginate';
+} from '@coreui/react'
+import { FaSearch } from 'react-icons/fa'
+import ReactPaginate from 'react-paginate'
 
 const ViewAllDiseases = () => {
-  const [disease, setDisease] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState('');
-  const [sortOrder, setSortOrder] = useState('asc');
-  const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 5;
+  const [disease, setDisease] = useState([])
+  const [searchTerm, setSearchTerm] = useState('')
+  const [sortBy, setSortBy] = useState('')
+  const [sortOrder, setSortOrder] = useState('asc')
+  const [currentPage, setCurrentPage] = useState(0)
+  const itemsPerPage = 5
 
   // Format date function
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString();
-  };
+    return new Date(dateString).toLocaleDateString()
+  }
+// ✅ NEW: Separated disease fetch logic into refreshDiseases()
+const refreshDiseases = () => {
+  const token = localStorage.getItem('login-token')
+  axios
+    .get('http://127.0.0.1:8000/api/getdiseases', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => {
+      setDisease(res.data.diseases)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+}
 
-  useEffect(() => {
-    var token = localStorage.getItem('login-token');
+// ✅ Load data once on component mount using refreshDiseases()
+useEffect(() => {
+  refreshDiseases()
+}, [])
+
+  /*useEffect(() => {
+    var token = localStorage.getItem('login-token')
     axios
       .get('http://127.0.0.1:8000/api/getdiseases', {
         headers: {
@@ -40,65 +61,68 @@ const ViewAllDiseases = () => {
         },
       })
       .then((res) => {
-        console.log(res.data);
-        setDisease(res.data.diseases);
+        console.log(res.data)
+        setDisease(res.data.diseases)
       })
       .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+        console.log(err)
+      })
+  }, [])*/
 
   // Handle search input
   const handleSearch = (e) => {
-    setSearchTerm(e.target.value.toLowerCase());
-    setCurrentPage(0);
-  };
+    setSearchTerm(e.target.value.toLowerCase())
+    setCurrentPage(0)
+  }
 
   // Handle sorting selection
   const handleSortChange = (e) => {
-    setSortBy(e.target.value);
-    setCurrentPage(0);
-  };
+    setSortBy(e.target.value)
+    setCurrentPage(0)
+  }
 
   // Handle order selection
   const handleOrderChange = (e) => {
-    setSortOrder(e.target.value);
-    setCurrentPage(0);
-  };
+    setSortOrder(e.target.value)
+    setCurrentPage(0)
+  }
 
   // Filtering and sorting data dynamically
   const getProcessedData = () => {
-    let filteredData = disease;
+    let filteredData = disease
 
     // Apply search filter
     if (searchTerm) {
-      filteredData = filteredData.filter((dis) =>{
-        const namematch=dis.diseaseName.toLowerCase().includes(searchTerm);
-        const status=dis.isActive.toLowerCase();
-        let statusMatch=false;
+      filteredData = filteredData.filter((dis) => {
+        const namematch = dis.diseaseName.toLowerCase().includes(searchTerm)
+        const status = dis.isActive.toLowerCase()
+        let statusMatch = false
         if (searchTerm === 'active' || searchTerm === 'inactive') {
-          statusMatch = status === searchTerm;
+          statusMatch = status === searchTerm
         }
-        return namematch || statusMatch;
-      });
+        return namematch || statusMatch
+      })
     }
 
     // Apply sorting
     if (sortBy) {
       filteredData = [...filteredData].sort((a, b) => {
-        let fieldA = a[sortBy]?.toString().toLowerCase() || '';
-        let fieldB = b[sortBy]?.toString().toLowerCase() || '';
+        let fieldA = a[sortBy]?.toString().toLowerCase() || ''
+        let fieldB = b[sortBy]?.toString().toLowerCase() || ''
 
-        return sortOrder === 'asc' ? fieldA.localeCompare(fieldB) : fieldB.localeCompare(fieldA);
-      });
+        return sortOrder === 'asc' ? fieldA.localeCompare(fieldB) : fieldB.localeCompare(fieldA)
+      })
     }
 
-    return filteredData;
-  };
+    return filteredData
+  }
 
-  const processedData = getProcessedData();
-  const pageCount = Math.ceil(processedData.length / itemsPerPage);
-  const currentData = processedData.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+  const processedData = getProcessedData()
+  const pageCount = Math.ceil(processedData.length / itemsPerPage)
+  const currentData = processedData.slice(
+    currentPage * itemsPerPage,
+    (currentPage + 1) * itemsPerPage,
+  )
 
   return (
     <>
@@ -198,7 +222,7 @@ const ViewAllDiseases = () => {
         </CCardBody>
       </CCard>
     </>
-  );
-};
+  )
+}
 
-export default ViewAllDiseases;
+export default ViewAllDiseases

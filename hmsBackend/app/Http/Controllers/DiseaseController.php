@@ -7,6 +7,16 @@ use Illuminate\Support\Facades\Log;
 
 class DiseaseController extends Controller
 {
+    public function getDiseaseById($id)
+   {
+    $disease = Disease::find($id);
+
+    if (! $disease) {
+        return response()->json(['message' => 'Disease not found'], 404);
+    }
+
+    return response()->json($disease);
+    }
     public function getAllDiseases()
     {
         $diseases = Disease::all();
