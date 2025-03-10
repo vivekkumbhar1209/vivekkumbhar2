@@ -105,7 +105,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'View Statistics',
-        to: '/dashboard/addMedicines',
+        to: '/dashboard/viewStatistics',
         icon: <CIcon icon={cilChartLine} customClassName="nav-icon" />,
         badge: {
           color: 'danger',

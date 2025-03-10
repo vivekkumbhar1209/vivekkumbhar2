@@ -17,8 +17,7 @@ return new class extends Migration
             $table->foreign('patientID')->references('patientID')->on('patients')->onDelete('cascade');
             $table->unsignedBigInteger('doctorID');
             $table->foreign('doctorID')->references('doctorID')->on('doctors')->onDelete('cascade');
-            $table->enum('status',['Waiting','In progress','Completed','Expired']);
-            $table->integer('token_no');
+            $table->enum('status', ['Waiting', 'In Consultation', 'Completed', 'Cancelled']);
             $table->timestamps();
         });
     }
