@@ -19,6 +19,7 @@ import {
 
 // Assuming Loader is imported or defined somewhere
 import Loader from '../../../components/Loader'
+import PhotoCapture from '../../../components/photo/photoCapture'
 const AddAdminForm = ({ role, propAction = 'add', user }) => {
   const [data, setData] = useState({
     name: '',
@@ -346,7 +347,7 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
         <CForm onSubmit={handleSubmit} className="w-100">
           <div className="row">
             {/* Left Column */}
-            <div className="col-md-6">
+            <div className="col-md-4">
               <div>
                 <CFormLabel htmlFor="name">Name:</CFormLabel>
                 <CFormInput
@@ -402,7 +403,9 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
                   <option value="Others">Other</option>
                 </CFormSelect>
               </div>
-
+              </div>
+              
+                <div className="col-md-4">
               <div>
                 <CFormLabel htmlFor="date_Of_Birth">Date of Birth:</CFormLabel>
                 <CFormInput
@@ -426,10 +429,8 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
                   value={data.mobile}
                 />
               </div>
-            </div>
 
             {/* Right Column */}
-            <div className="col-md-6">
               <div>
                 <CFormLabel htmlFor="address">Address:</CFormLabel>
                 <CFormTextarea 
@@ -441,7 +442,13 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
                   value={data.address}
                 ></CFormTextarea>
               </div>
+
             </div>
+              {/* {photo upload section} */}
+              <div className='col-md-4 d-flex flex-column align-items-center'>
+
+              <PhotoCapture data={data} setData={setData}/>
+              </div>
           </div>
 
           <div className="text-left mt-3">
