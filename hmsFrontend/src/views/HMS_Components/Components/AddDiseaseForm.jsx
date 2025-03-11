@@ -11,7 +11,7 @@ const AddDiseaseForm = () => {
     diseaseDescription: '',
     isActive: 'Active', // Default value
   })
-  const [loading, setLoading] = useState(false)
+  
   const [errors, setErrors] = useState({})
 
   const handleChange = (e) => {

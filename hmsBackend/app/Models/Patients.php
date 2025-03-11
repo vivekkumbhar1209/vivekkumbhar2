@@ -20,6 +20,8 @@ class Patients extends Model
         'patient_dob',
         'patient_age',
         'profilePhoto',
+        'patient_adhar',
+        'registration_fee',
     ];
 
     public function opdRegistrations()
