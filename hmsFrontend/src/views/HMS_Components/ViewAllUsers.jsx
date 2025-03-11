@@ -1,5 +1,5 @@
-
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 import {
   CCard,
   CCardHeader,
@@ -15,67 +15,64 @@ import {
   CTableDataCell,
   CFormSelect,
 } from '@coreui/react'
-import { useEffect } from 'react'
-import { useState } from 'react'
-import axios from 'axios'
-import { formatDate } from '../../dateUtility'
 import { FaSearch } from 'react-icons/fa'
 import ReactPaginate from 'react-paginate'
+import AddReceptionistForm from './AddReceptionistForm'
+import AddAdminForm from './Components/AddAdminForm'
+import AddDoctorForm from './Components/AddDoctorForm'
 
-const ViewAllUsers = () => {
+const ViewAllUsers = ({ action }) => {
   const [users, setUsers] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredData, setFilteredData] = useState([])
   const [currentPage, setCurrentPage] = useState(0)
   const [sortBy, setSortBy] = useState('name')
   const [order, setOrder] = useState('asc')
+  const [editingUser, setEditingUser] = useState(null) // State to hold the user being edited
   const itemsPerPage = 5
 
   useEffect(() => {
     var token = localStorage.getItem('login-token')
     axios
       .get('http://127.0.0.1:8000/api/viewAllUsers', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        params: {
-          sortBy: sortBy,
-          order: order,
-        },
+        headers: { Authorization: `Bearer ${token}` },
+        params: { sortBy, order },
       })
       .then((res) => {
-        console.log(res.data)
         setUsers(res.data.Users)
       })
       .catch((err) => {
         console.log(err)
       })
-  }, [sortBy, order]);
+  }, [sortBy, order])
 
   const handleSearch = (e) => {
     var value = e.target.value.toLowerCase()
     setSearchTerm(value)
     const filtered = users.filter((user) => user.name.toLowerCase().includes(value))
-
     setFilteredData(filtered)
     setCurrentPage(0)
   }
 
   const handleSortChange = (e) => {
-    const value = e.target.value;
+    const value = e.target.value
     switch (value) {
-      case "1": setSortBy("name");
-      break;
-      case "2": setSortBy("phone");
-      break;
-      case "3": setSortBy("email");
-      break;
-      default: setSortBy("name");
+      case '1':
+        setSortBy('name')
+        break
+      case '2':
+        setSortBy('phone')
+        break
+      case '3':
+        setSortBy('email')
+        break
+      default:
+        setSortBy('name')
     }
-  };
+  }
 
   const handleOrderChange = (e) => {
-    setOrder(e.target.value === '1' ? 'asc' : 'desc');
+    setOrder(e.target.value === '1' ? 'asc' : 'desc')
   }
 
   const currentData =
@@ -83,8 +80,25 @@ const ViewAllUsers = () => {
       ? filteredData.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
       : users.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
 
+  const handleEdit = (user) => {
+    setEditingUser(user) // Set the user to be edited
+  }
+
+  const renderEditForm = () => {
+    if (!editingUser) return null // If no user is being edited, don't show form
+
+    if (editingUser.role === 'Admin') {
+      return <AddAdminForm role={editingUser.role} propAction="edit" user={editingUser} />
+    } else if (editingUser.role === 'Doctor') {
+      return <AddDoctorForm role={editingUser.role} propAction="edit" user={editingUser} />
+    } else {
+      return <AddReceptionistForm role={editingUser.role} propAction="edit" user={editingUser} />
+    }
+  }
+
   return (
     <>
+      {renderEditForm()} {/* Render the form when user clicks edit */}
       <CCard className="mb-3">
         <CCardHeader>
           <strong>Search Users</strong>
@@ -106,7 +120,11 @@ const ViewAllUsers = () => {
               />
             </div>
             <div style={{ width: '10%', margin: '0px 5px' }}>
-              <CFormSelect className="text-start" aria-label="Default select example" onChange={handleSortChange}>
+              <CFormSelect
+                className="text-start"
+                aria-label="Default select example"
+                onChange={handleSortChange}
+              >
                 <option color="secondary" defaultChecked>
                   Sort By
                 </option>
@@ -116,7 +134,11 @@ const ViewAllUsers = () => {
               </CFormSelect>
             </div>
             <div style={{ width: '10%', margin: '0px 5px' }}>
-              <CFormSelect className="text-start" aria-label="Default select example" onChange={handleOrderChange}>
+              <CFormSelect
+                className="text-start"
+                aria-label="Default select example"
+                onChange={handleOrderChange}
+              >
                 <option color="secondary" disabled>
                   Order
                 </option>
@@ -132,27 +154,67 @@ const ViewAllUsers = () => {
           <CTable bordered responsive hover>
             <CTableHead color="light">
               <CTableRow>
+                <CTableHeaderCell>Profile Photo</CTableHeaderCell>
                 <CTableHeaderCell>User ID</CTableHeaderCell>
-                <CTableHeaderCell>Users Name</CTableHeaderCell>
+                <CTableHeaderCell>Name</CTableHeaderCell>
                 <CTableHeaderCell>Role</CTableHeaderCell>
                 <CTableHeaderCell>Email</CTableHeaderCell>
                 <CTableHeaderCell>Gender</CTableHeaderCell>
                 <CTableHeaderCell>Contact Number</CTableHeaderCell>
+                {action === 'edit' ? (
+                  <CTableHeaderCell>Actions</CTableHeaderCell>
+                ) : (
+                  <></>
+                )}
               </CTableRow>
             </CTableHead>
             <CTableBody>
               {currentData.length > 0 ? (
                 currentData.map((elem, index) => (
                   <CTableRow key={index}>
-                    <CTableDataCell>{elem.id}</CTableDataCell>
-                    <CTableDataCell>{elem.name}</CTableDataCell>
-                    <CTableDataCell>{elem.role}</CTableDataCell>
-                    <CTableDataCell>{elem.email}</CTableDataCell>
-                    <CTableDataCell>{elem.gender}</CTableDataCell>
-                    <CTableDataCell>{elem.mobile}</CTableDataCell>
+                    <CTableDataCell  >
+                      {elem.profilePhoto ? (
+                        <img
+                          src={`http://127.0.0.1:8000/storage/${elem.profilePhoto}`}
+                          alt="Profile"
+                          style={{
+                            width: '60px',
+                            height: '60px',
+                            borderRadius: '50%',
+                            objectFit: 'cover',
 
-                    {/* <CTableDataCell>{formatDate(elem.created_at)}</CTableDataCell> */}
-                    {/* <CTableDataCell>{formatDate(elem.updated_at)}</CTableDataCell> */}
+                          }}
+                        />
+                      ) : (
+                        <div
+                          style={{
+                            width: '60px',
+                            height: '60px',
+                            borderRadius: '50%',
+                            backgroundColor: '#ccc',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            fontSize: '12px',
+                            color: '#fff',
+                            fontWeight: 'bold',
+                          }}
+                        >
+                          No Image
+                        </div>
+                      )}
+                    </CTableDataCell>
+                    <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>{elem.id}</CTableDataCell>
+                    <CTableDataCell style={{ verticalAlign: 'middle' }}>{elem.name}</CTableDataCell>
+                    <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>{elem.role}</CTableDataCell>
+                    <CTableDataCell style={{ verticalAlign: 'middle' }}>{elem.email}</CTableDataCell>
+                    <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>{elem.gender}</CTableDataCell>
+                    <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>{elem.mobile}</CTableDataCell>
+                    {action === 'edit' ? (
+                      <CTableDataCell style={{ verticalAlign: 'middle' }}>
+                        <CButton onClick={() => handleEdit(elem)}>Edit</CButton>
+                      </CTableDataCell>
+                    ) : null}
                   </CTableRow>
                 ))
               ) : (
@@ -197,4 +259,4 @@ const ViewAllUsers = () => {
   )
 }
 
-export default ViewAllUsers;
+export default ViewAllUsers

@@ -1,19 +1,12 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
 import {
-  cilCursor,
   cilSpeedometer,
-  cilUser,
   cilUserFollow,
-  cilMagnifyingGlass,
   cilPeople,
-  cilUserPlus,
-  cilSettings,
-  cilBuilding,
-  cilLibraryAdd,
-  cilApplicationsSettings,
+  cilHospital,
+  cilSearch,
   cilMedicalCross,
-  cilList,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -26,25 +19,57 @@ const _nav = [
   },
   {
     component: CNavTitle,
-    name: 'Patients',
+    name: 'OPD',
   },
   {
     component: CNavGroup,
-    name: 'Patients',
+    name: 'OPD Department',
     to: '/base',
-    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilMedicalCross} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
-        name: 'Register Patient',
-        to: '/dashboard/registerPatient',
-        icon: <CIcon icon={cilUserFollow} customClassName="nav-icon" />,
+        name: 'Queue',
+        to: '/dashboard/viewQueue',
+        icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
       },
       {
         component: CNavItem,
-        name: 'Search Patient',
+        name: 'Consultation',
+        to: '/dashboard/opdConsultation',
+        icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+      },
+    ],
+  },
+  {
+    component: CNavTitle,
+    name: 'IPD',
+  },
+  {
+    component: CNavGroup,
+    name: 'IPD Department',
+    to: '/base',
+    icon: <CIcon icon={cilHospital} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Admit Patient',
+        to: '/dashboard/registerPatient',
+        icon: <CIcon icon={cilUserFollow} customClassName="nav-icon" />,
+        badge: {
+          color: 'danger',
+          text: 'PRO',
+        },
+      },
+      {
+        component: CNavItem,
+        name: 'Patient Enquiry',
         to: '/dashboard/base/breadcrumbs',
-        icon: <CIcon icon={cilMagnifyingGlass} customClassName="nav-icon" />,
+        icon: <CIcon icon={cilSearch} customClassName="nav-icon" />,
+        badge: {
+          color: 'danger',
+          text: 'PRO',
+        },
       },
     ],
   },

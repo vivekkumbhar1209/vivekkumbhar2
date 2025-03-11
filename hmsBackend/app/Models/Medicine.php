@@ -9,18 +9,12 @@ class Medicine extends Model
 {
     use HasFactory;
 
-    protected $table = 'medicine';
-
+    protected $table = 'medicines';
     protected $primaryKey = 'medicineID';
-
-    protected $fillable = [
-        'categoryID',
-        'medicine_name',
-        'cost'
-    ];
+    protected $fillable = ['categoryID', 'medicine_name', 'cost'];
 
     public function category()
     {
-        return $this->belongsTo(MedicineCategory::class, 'categoryID', 'id');
+        return $this->belongsTo(MedicineCategory::class, 'categoryID', 'categoryID');
     }
 }

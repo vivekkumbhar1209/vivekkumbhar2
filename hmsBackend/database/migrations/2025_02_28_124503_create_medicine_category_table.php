@@ -1,28 +1,21 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
         Schema::create('medicine_category', function (Blueprint $table) {
             $table->bigIncrements('categoryID');
-            $table->text('category_name');
-            $table->text('description')->nullable();
+            $table->string('category_name');
+            $table->string('description');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('medicine_category');
     }

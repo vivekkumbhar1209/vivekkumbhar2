@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   CCard,
   CCardHeader,
@@ -26,6 +27,7 @@ import axios from 'axios'
 import ReactPaginate from 'react-paginate'
 import Loader from '../../../components/Loader'
 import swal from 'sweetalert2'
+import { formatDate } from '../../../dateUtility'
 
 const ManageOPDPatients = () => {
   const [data, setData] = useState([])
@@ -43,7 +45,9 @@ const ManageOPDPatients = () => {
   const [selectedDoctor, setSelectedDoctor] = useState(null)
   const [doctors, setDoctors] = useState([])
   const [reason, setReason] = useState('')
+  const [checkInButtonText, changeCheckInButtonText] = useState('CheckIn')
   const itemsPerPage = 5
+  const navigator = useNavigate()
 
   const handleSubmit = () => {
     setLoading(true)
@@ -70,7 +74,7 @@ const ManageOPDPatients = () => {
           })
           console.log(res.data)
           setLoading(false)
-        } else {
+        } else if (res.data.status === 200) {
           swal.fire({
             title: 'Success!',
             text: res.data.message,
@@ -80,6 +84,16 @@ const ManageOPDPatients = () => {
           console.log(res.data)
           setLoading(false)
           setModelVisibility(false)
+          navigator('/dashboard/viewQueue')
+        } else if (res.data.status === 409) {
+          swal.fire({
+            title: 'Error!',
+            text: res.data.message,
+            icon: 'error',
+            confirmButtonText: 'OK',
+          })
+          console.log(res.data)
+          setLoading(false)
         }
       })
       .catch((err) => {
@@ -140,30 +154,17 @@ const ManageOPDPatients = () => {
     setLoading(true)
     const token = localStorage.getItem('login-token')
     axios
-      .get('http://127.0.0.1:8000/api/patients', {
+      .get('http://127.0.0.1:8000/api/getPatientsWithOPDStatus', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
         setData(res.data.data)
+        console.log(res.data.data)
         setLoading(false)
       })
   }, [])
-
-  // Sorting function
-  const sortData = (list) => {
-    return [...list].sort((a, b) => {
-      let valueA = a[sortColumn]?.toString().toLowerCase() || ''
-      let valueB = b[sortColumn]?.toString().toLowerCase() || ''
-
-      if (sortOrder === 'asc') {
-        return valueA.localeCompare(valueB)
-      } else {
-        return valueB.localeCompare(valueA)
-      }
-    })
-  }
 
   // Apply filtering and sorting
   useEffect(() => {
@@ -178,7 +179,7 @@ const ManageOPDPatients = () => {
       )
     }
 
-    setFilteredData(sortData(updatedData))
+    setFilteredData(updatedData)
   }, [data, searchTerm, sortColumn, sortOrder])
 
   // Handle search input change
@@ -196,7 +197,7 @@ const ManageOPDPatients = () => {
   const handleCheckIn = (elem) => {
     setModelVisibility(true)
     setSelectedPatient(elem)
-    setSelectedPatientID(elem.id)
+    setSelectedPatientID(elem.patientID)
   }
 
   return (
@@ -239,22 +240,28 @@ const ManageOPDPatients = () => {
                   <CTableHeaderCell>Mobile</CTableHeaderCell>
                   <CTableHeaderCell>Gender</CTableHeaderCell>
                   <CTableHeaderCell>Age</CTableHeaderCell>
-                  <CTableHeaderCell className="text-center">Check In</CTableHeaderCell>
+                  <CTableHeaderCell>Entry Date</CTableHeaderCell>
+                  <CTableHeaderCell className="text-center">Status</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
                 {currentData.length > 0 ? (
                   currentData.map((elem, index) => (
                     <CTableRow key={index}>
-                      <CTableDataCell>{elem.id}</CTableDataCell>
-                      <CTableDataCell>{elem.name}</CTableDataCell>
-                      <CTableDataCell>{elem.mobile}</CTableDataCell>
-                      <CTableDataCell>{elem.gender}</CTableDataCell>
-                      <CTableDataCell>{elem.age}</CTableDataCell>
+                      <CTableDataCell>{elem.patientID}</CTableDataCell>
+                      <CTableDataCell>{elem.patient_name}</CTableDataCell>
+                      <CTableDataCell>{elem.patient_mobile}</CTableDataCell>
+                      <CTableDataCell>{elem.patient_gender}</CTableDataCell>
+                      <CTableDataCell>{elem.patient_age}</CTableDataCell>
+                      <CTableDataCell>{formatDate(elem.created_at)}</CTableDataCell>
                       <CTableDataCell className="text-center">
-                        <CButton onClick={() => handleCheckIn(elem)} color="primary">
-                          Check In
-                        </CButton>
+                        {elem.opdRegistered === 'registered' ? (
+                          <CButton>Registered</CButton>
+                        ) : (
+                          <CButton onClick={() => handleCheckIn(elem)} color="primary">
+                            Check In
+                          </CButton>
+                        )}
                       </CTableDataCell>
                     </CTableRow>
                   ))
@@ -316,7 +323,7 @@ const ManageOPDPatients = () => {
                 <div className="mb-3">
                   <CFormLabel>Patient</CFormLabel>
                   <CFormInput
-                    placeholder={selectedPatient ? selectedPatient.name : ''}
+                    placeholder={selectedPatient ? selectedPatient.patient_name : ''}
                     type="text"
                     disabled
                   />
