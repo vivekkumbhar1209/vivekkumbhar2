@@ -5,9 +5,10 @@ use App\Events\QueueUpdated;
 use App\Models\OpdQueue;
 use App\Models\OpdRegistration;
 use App\Models\Patients;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use Validator;
+use Illuminate\Support\Facades\Validator;
+
 
 class OPDController extends Controller
 {
@@ -105,6 +106,7 @@ class OPDController extends Controller
         return response()->json([
             'status'  => 200,
             'message' => 'Queue request successful',
+            'data'=>$queue
         ]);
     }
 
