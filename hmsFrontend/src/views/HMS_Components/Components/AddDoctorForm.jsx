@@ -16,6 +16,7 @@ import {
   CModalBody,
   CModalFooter
 } from '@coreui/react'
+import Loader from '../../../components/Loader'
 
 const AddDoctorForm = ({ role, propAction = 'add', user }) => {
   const [departments, setDepartments] = useState([]); // Store departments
@@ -31,10 +32,11 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
     experience: '',
     departmentID: '',
     consultation_fee: '',
+    profiePhoto:null,
   });
 
   const [modalVisible, setModalVisible] = useState(false); // State for modal visibility
-
+  const[loading,setLoading]=useState(false)
   // Update the role in state when the prop changes
   useEffect(() => {
     setData((prevData) => ({
@@ -99,6 +101,7 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setLoading(true)
     const token = localStorage.getItem("login-token")
     
     if (propAction === 'add') {
@@ -171,6 +174,9 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
           });
         }
       }
+      finally{
+        setLoading(false);
+      }
     } else if (propAction === 'edit') {
       // Update user endpoint
       try {
@@ -233,7 +239,24 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
 
   return (
     <>
-      {propAction === 'edit' ? (
+      {loading?(
+        <div
+        className="d-flex justify-content-center align-items-center"
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          zIndex: 9999,
+        }}
+      >
+        <Loader />
+      </div>
+    ):
+     (
+      propAction === 'edit' ? (
         <CModal visible={modalVisible} onClose={closeModal} backdrop="static" size="lg">
           <CModalHeader closeButton={true}>
             <CModalTitle>Edit Doctor</CModalTitle>
@@ -409,7 +432,8 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
             </CButton>
           </div>
         </CForm>
-      )}
+      )
+    )}
     </>
   );
 };
