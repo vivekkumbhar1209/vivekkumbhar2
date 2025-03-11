@@ -52,12 +52,10 @@ const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 const RegisterPatient = React.lazy(() => import('./views/HMS_Components/RegisterPatient'))
-const AddMedicines = React.lazy(() => import('./views/HMS_Components/AddMedicines'))
 const AddUser = React.lazy(() => import('./views/HMS_Components/AddUser'))
 const ManageDepartment = React.lazy(() => import('./views/HMS_Components/ManageDepartment'))
 const ManageMedicines = React.lazy(() => import('./views/HMS_Components/ManageMedicines'))
 const SearchPatient = React.lazy(() => import('./views/HMS_Components/SearchPatient'))
-const ViewAllUsers = React.lazy(() => import('./views/HMS_Components/ViewAllUsers'))
 const ManageDisease = React.lazy(() => import('./views/HMS_Components/ManageDisease'))
 const ManageUserDetails = React.lazy(() => import('./views/HMS_Components/ManageUserDetails'))
 const ManageOPDPatients = React.lazy(() => import('./views/HMS_Components/ManageOPDPatients'))
@@ -67,13 +65,45 @@ const ViewQueue = React.lazy(() => import('./views/HMS_Components/ViewQueue'))
 const OpdConsultation = React.lazy(() => import('./views/HMS_Components/OpdConsultation'))
 const ViewStats = React.lazy(() => import('./views/HMS_Components/ViewStatistics'))
 
+//website content element
+const Reviews = React.lazy(() => import('./views/HMS_Components/Reviews'))
+const Blogs = React.lazy(() => import('./views/HMS_Components/Blogs'))
+const Doctors = React.lazy(() => import('./views/HMS_Components/Doctors'))
+const Specialities = React.lazy(() => import('./views/HMS_Components/Specialities'))
+const Services = React.lazy(() => import('./views/HMS_Components/Services'))
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   {
+    path: '/services',
+    name: 'Services',
+    element: Services,
+  },
+  {
+    path: '/specialities',
+    name: 'Specialities',
+    element: Specialities,
+  },
+  {
+    path: '/doctors',
+    name: 'Doctors',
+    element: Doctors,
+  },
+  {
     path: '/userSettings',
     name: 'Settings',
     element: Settings,
+  },
+  {
+    path: '/reviews',
+    name: 'Reviews',
+    element: Reviews,
+  },
+  {
+    path: '/blogs',
+    name: 'Blogs',
+    element: Blogs,
   },
   {
     path: '/viewStatistics',

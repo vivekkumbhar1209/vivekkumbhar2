@@ -9,20 +9,40 @@ use Illuminate\Support\Facades\Validator;
 
 class MedicineController extends Controller
 {
-    // Get all medicines with sorting
-    public function getMedicines(Request $request) 
-    {
-        $sortBy = $request->query("sortBy", "medicine_name");
-        $order = $request->query("order", "asc");
+    public function getMedicines(Request $request) {
+                        
+                            $sortBy = $request->query("sortBy", "medicine_name");
+                            $order = $request->query("order", "asc");
+                      
+                            // second argument in the query method is a default value
+                            $medicines = Medicine::orderBy($sortBy, $order)->get();
 
-        $medicines = Medicine::orderBy($sortBy, $order)->get();
-
+                            return response()->json([
+                              "status" => 200,
+                              "message" => "Medicines Data",
+                              "medicines" => $medicines,
+                            //   "params" => $requestParams,
+                            ]);
+                            
+        }
+        public function getMedicine($id)
+{
+    $medicine = Medicine::find($id);
+    
+    if (!$medicine) {
         return response()->json([
-            "status" => 200,
-            "message" => "Medicines Data",
-            "medicines" => $medicines,
-        ]);
+            "status" => 404,
+            "message" => "Medicine not found"
+        ], 404);
     }
+
+    return response()->json([
+        "status" => 200,
+        "medicine" => $medicine
+    ], 200);
+}
+        
+                          
 
     // Add a new medicine
     public function addMedicine(Request $request)
@@ -62,4 +82,41 @@ class MedicineController extends Controller
             ], 500);
         }
     }
+
+    public function updateMedicine(Request $request, $id)
+{
+    $validator = Validator::make($request->all(), [
+        'medicine_name' => 'required|string|max:255',
+        'cost' => 'required|numeric|min:0'
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            "status" => 400,
+            "message" => "Validation failed",
+            "errors" => $validator->errors()
+        ], 400);
+    }
+
+    $medicine = Medicine::find($id);
+
+    if (!$medicine) {
+        return response()->json([
+            "status" => 404,
+            "message" => "Medicine not found"
+        ], 404);
+    }
+
+    $medicine->update([
+        'medicine_name' => $request->medicine_name,
+        'cost' => $request->cost
+    ]);
+
+    return response()->json([
+        "status" => 200,
+        "message" => "Medicine updated successfully",
+        "data" => $medicine
+    ], 200);
+}
+
 }

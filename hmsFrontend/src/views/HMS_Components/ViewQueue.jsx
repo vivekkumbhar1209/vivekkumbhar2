@@ -19,11 +19,16 @@ import Pusher from 'pusher-js'
 import Loader from '../../components/Loader'
 import swal from 'sweetalert2'
 import { FaSearch } from 'react-icons/fa'
+import ReactPaginate from 'react-paginate'
 
 const ViewQueue = () => {
   const [queue, setQueue] = useState([])
+  const [filteredData, setFilteredData] = useState([])
+  const [doctorFilteredData, setDoctorFilteredData] = useState([])
   const [loading, setLoading] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
+  const [currentPage, setCurrentPage] = useState(0)
+  const itemsPerPage = 4
   const role = JSON.parse(localStorage.getItem('userData')).role
   const navigator = useNavigate()
   const statusColors = {
@@ -59,9 +64,30 @@ const ViewQueue = () => {
       })
   }, [])
 
-  const filteredQueueForDoctor = queue.filter(
-    (item) => item.id === JSON.parse(localStorage.getItem('userData')).id,
-  )
+
+  //used for searching patients on receptionist side 
+  useEffect(() => {
+    if (!searchTerm) {
+      setFilteredData(queue)
+      return
+    }
+    const filteredReception = queue.filter((elem) => elem.patient_name.toLowerCase().includes(searchTerm.toLowerCase()))
+    setFilteredData(filteredReception)
+  }, [queue, searchTerm])
+
+  //used for searching patients on doctors side 
+  useEffect(() => {
+    if (!searchTerm) {
+      setDoctorFilteredData(queue)
+    }
+
+    const filteredQueueForDoctor = queue.filter(
+      (item) => item.id === JSON.parse(localStorage.getItem('userData')).id,
+    )
+    const filteredData = filteredQueueForDoctor.filter((elem) => elem.patient_name.toLowerCase().includes(searchTerm.toLowerCase()))
+    setDoctorFilteredData(filteredData)
+  }, [queue, searchTerm])
+
 
   const handleDelete = (elem) => {
     swal
@@ -152,9 +178,17 @@ const ViewQueue = () => {
   }
 
   const handleSearch = (e) => {
-    console.log(e.target.value)
     setSearchTerm(e.target.value)
   }
+
+  const receptionPaginatedData = filteredData.slice(
+    currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage
+  )
+
+  const doctorPaginatedData = doctorFilteredData.slice(
+    currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage
+  )
+
 
   return (
     <>
@@ -221,7 +255,7 @@ const ViewQueue = () => {
               </CTableHead>
               {role === 'Receptionist' ? (
                 <CTableBody>
-                  {queue.map((elem, index) => (
+                  {receptionPaginatedData.map((elem, index) => (
                     <CTableRow color={statusColors[elem.status] || 'light'} key={index}>
                       <CTableDataCell>{elem.queueID}</CTableDataCell>
                       <CTableDataCell>{elem.patientID}</CTableDataCell>
@@ -244,7 +278,7 @@ const ViewQueue = () => {
                 </CTableBody>
               ) : (
                 <CTableBody>
-                  {filteredQueueForDoctor.map((elem, index) => (
+                  {doctorPaginatedData.map((elem, index) => (
                     <CTableRow color={statusColors[elem.status] || 'light'} key={index}>
                       <CTableDataCell>{elem.queueID}</CTableDataCell>
                       <CTableDataCell>{elem.patientID}</CTableDataCell>
@@ -274,6 +308,61 @@ const ViewQueue = () => {
                 </CTableBody>
               )}
             </CTable>
+          </CCardBody>
+        </CCard>
+      )}
+
+      {role === 'Receptionist' ? (
+        <CCard className="mt-2">
+          <CCardBody className="pb-0">
+            <div className="d-flex justify-content-center">
+              <ReactPaginate
+                previousLabel={'<<'}
+                nextLabel={'>>'}
+                breakLabel={'...'}
+                pageCount={Math.ceil(filteredData.length / itemsPerPage)}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={3}
+                onPageChange={(e) => setCurrentPage(e.selected)}
+                containerClassName="pagination justify-content-center"
+                pageClassName="page-item"
+                pageLinkClassName="page-link"
+                previousClassName="page-item"
+                previousLinkClassName="page-link"
+                nextClassName="page-item"
+                nextLinkClassName="page-link"
+                breakClassName="page-item disabled"
+                breakLinkClassName="page-link"
+                activeClassName="active"
+              />
+            </div>
+          </CCardBody>
+        </CCard>
+
+      ) : (
+        <CCard className="mt-2">
+          <CCardBody className="pb-0">
+            <div className="d-flex justify-content-center">
+              <ReactPaginate
+                previousLabel={'<<'}
+                nextLabel={'>>'}
+                breakLabel={'...'}
+                pageCount={Math.ceil(doctorFilteredData.length / itemsPerPage)}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={3}
+                onPageChange={(e) => setCurrentPage(e.selected)}
+                containerClassName="pagination justify-content-center"
+                pageClassName="page-item"
+                pageLinkClassName="page-link"
+                previousClassName="page-item"
+                previousLinkClassName="page-link"
+                nextClassName="page-item"
+                nextLinkClassName="page-link"
+                breakClassName="page-item disabled"
+                breakLinkClassName="page-link"
+                activeClassName="active"
+              />
+            </div>
           </CCardBody>
         </CCard>
       )}

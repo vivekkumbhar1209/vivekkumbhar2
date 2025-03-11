@@ -2,9 +2,7 @@ import React from 'react'
 import CIcon from '@coreui/icons-react'
 import {
   cilSpeedometer,
-  cilUser,
   cilUserFollow,
-  cilMagnifyingGlass,
   cilPeople,
   cilUserPlus,
   cilSettings,
@@ -15,6 +13,10 @@ import {
   cilGraph,
   cilChartLine,
   cilMonitor,
+  cilNotes,
+  cilLayers,
+  cilCommentBubble,
+  cilNewspaper,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -70,7 +72,7 @@ const _nav = [
   },
   {
     component: CNavTitle,
-    name: 'Medicines',
+    name: 'System',
   },
   {
     component: CNavGroup,
@@ -89,6 +91,48 @@ const _nav = [
         name: 'Manage Medicines',
         to: '/dashboard/manageMedicines',
         icon: <CIcon icon={cilList} customClassName="nav-icon" />,
+      },
+    ],
+  },
+  {
+    component: CNavTitle,
+    name: 'Website',
+  },
+  {
+    component: CNavGroup,
+    name: 'Website Content',
+    to: '/HMS_Components',
+    icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Services',
+        to: '/dashboard/services',
+        icon: <CIcon icon={cilLayers} customClassName="nav-icon" />,
+      },
+      {
+        component: CNavItem,
+        name: 'Specialities',
+        to: '/dashboard/specialities',
+        icon: <CIcon icon={cilMedicalCross} customClassName="nav-icon" />,
+      },
+      {
+        component: CNavItem,
+        name: 'Doctors',
+        to: '/dashboard/doctors',
+        icon: <CIcon icon={cilUserPlus} customClassName="nav-icon" />,
+      },
+      {
+        component: CNavItem,
+        name: 'Reviews',
+        to: '/dashboard/reviews',
+        icon: <CIcon icon={cilCommentBubble} customClassName="nav-icon" />,
+      },
+      {
+        component: CNavItem,
+        name: 'Blogs',
+        to: '/dashboard/blogs',
+        icon: <CIcon icon={cilNewspaper} customClassName="nav-icon" />,
       },
     ],
   },
