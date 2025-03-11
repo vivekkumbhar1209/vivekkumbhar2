@@ -40,7 +40,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/getMedicineCategory', [MedicineCategoryController::class, 'getMedicineCategory']);
     Route::get('/getMedicineCategories', [MedicineController::class, 'getMedicineCategories']);
     Route::post('/addMedicine', [MedicineController::class, 'addMedicine']);
-    Route::get('/medicines', [MedicineController::class, 'getMedicines']);
+    Route::get('/getMedicines', [MedicineController::class, 'getMedicines']);
     Route::post('/add-medicine', [MedicineController::class, 'addMedicine']);
 
     Route::get('/getDept', [DepartmentController::class, 'allDepartment']);
