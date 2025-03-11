@@ -6,12 +6,7 @@ import { CSpinner, useColorModes } from '@coreui/react'
 import './scss/style.scss'
 import './scss/examples.scss'
 import PrivateRoute from './PrivateRoute'
-
-// import { ToastContainer } from 'react-toastify'
-// import 'react-toastify/dist/ReactToastify.css'
-
-// Inside your JSX tree (e.g. end of return block):
-{/* <ToastContainer position="top-right" autoClose={3000} /> */}
+import Website from './website/WebsiteComponent'
 
 // Containers
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
@@ -54,10 +49,11 @@ const App = () => {
           <Route exact path="/register" name="Register Page" element={<Register />} />
           <Route exact path="/404" name="Page 404" element={<Page404 />} />
           <Route exact path="/500" name="Page 500" element={<Page500 />} />
+          <Route exact path="/web" name="Website" element={<Website />} />
           <Route element={<PrivateRoute />}>
             <Route path="/dashboard/*" name="Home" element={<DefaultLayout />} />
           </Route>
-          <Route path="*" element={<Navigate to="/login" />} />
+          <Route path="*" element={<Navigate to="/web" />} />
         </Routes>
       </Suspense>
     </HashRouter>

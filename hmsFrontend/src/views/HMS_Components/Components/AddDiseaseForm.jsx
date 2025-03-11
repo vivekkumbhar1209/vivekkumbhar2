@@ -5,6 +5,7 @@ import { CForm, CFormSelect, CFormTextarea, CFormInput, CButton, CFormLabel } fr
 import Loader from '../../../components/Loader'
 
 const AddDiseaseForm = () => {
+  const[loading,setLoading]=useState(false)
   const [data, setData] = useState({
     diseaseName: '',
     diseaseDescription: '',
@@ -20,6 +21,7 @@ const AddDiseaseForm = () => {
   const handleSubmit = async (e) => {
     setLoading(true)
     e.preventDefault()
+    setLoading(true)
     setErrors({}) // Clear previous errors
     const token = localStorage.getItem('login-token')
 
@@ -55,9 +57,22 @@ const AddDiseaseForm = () => {
         setLoading(false)
       }
     }
+    finally{
+      setLoading(false)
+    }
   }
 
   return (
+    <>
+    { loading ? (
+      <div
+            className="d-flex justify-content-center align-items-center"
+            style={{position: 'fixed',top: 0,left: 0,width: '100vw',height: '100vh',backgroundColor: 'rgba(255, 255, 255, 0.8)',zIndex: 9999, 
+            }}
+        >
+          <Loader />
+      </div>
+    ):(
     <div className="container">
       {loading ? (
         <div className="text-center">
@@ -121,6 +136,8 @@ const AddDiseaseForm = () => {
         </CForm>
       )}
     </div>
+    )}
+    </>
   )
 }
 

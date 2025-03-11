@@ -36,12 +36,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/patients', [PatientController::class, 'index']);
     Route::get('/patients/{id}', [PatientController::class, 'show']);
     Route::get('/viewAllUsers', [UserRegistration::class, 'getAllUsers']);
+
+    Route::get('/getMedicines', [MedicineController::class, "getMedicines"]);
+
     Route::get('/getDept', [DeptReg::class, 'getDepartments']);
     Route::get('/getMedicineCategory', [MedicineCategoryController::class, 'getMedicineCategory']);
     Route::get('/getMedicineCategories', [MedicineController::class, 'getMedicineCategories']);
     Route::post('/addMedicine', [MedicineController::class, 'addMedicine']);
     Route::get('/getMedicines', [MedicineController::class, 'getMedicines']);
     Route::post('/add-medicine', [MedicineController::class, 'addMedicine']);
+
 
     Route::get('/getDept', [DepartmentController::class, 'allDepartment']);
 
@@ -53,6 +57,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('/getDoctorByDeparmentID', [DoctorController::class, 'getDoctorByDepartmentID']);
     Route::post('/registerOPDPatient', [OPDController::class, 'registerOPDPatient']);
+
+    Route::get('/getdiseases',[AddDisease::class,'getDisease']);
+    Route::get('/getMedicine/{medicineId}', [MedicineController::class, 'getMedicine']);
+    Route::post('/updateMedicine/{medicineId}', [MedicineController::class, 'updateMedicine']);
+
+
+
     Route::get('/getdiseases', [AddDisease::class, 'getDisease']);
     Route::put('/updatedisease/{id}', [DiseaseController::class, 'updateDisease']); //dhanu
     Route::get('/getPatientsWithOPDStatus', [OPDController::class, 'getPatientsWithOPDStatus']);
@@ -63,4 +74,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/getOpdQueue', [OPDController::class, 'getOpdQueue']);
     Route::post('/dequeue', [OPDController::class, 'deQueue']);
     Route::post('/updatePatientQueueStatus', [OPDController::class, 'updatePatientQueueStatus']);
+
 });

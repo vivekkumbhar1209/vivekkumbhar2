@@ -29,14 +29,14 @@ const AddUser = () => {
       default:
         return null
     }
-}
+  }
 
 
   return (
     <div>
       <CCard>
         <CCardHeader>
-          <strong>User Management</strong>
+          <strong>Add Users</strong>
         </CCardHeader>
         <CCardBody>
           <p className="text-body-secondary small">
