@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->timestamps();
 
             // Foreign key constraint
-            $table->foreign('categoryID')->references('categoryID')->on('medicine_category')->onDelete('cascade');
+            $table->foreign('categoryID')->references('id')->on('medicine_category')->onDelete('cascade');
         });
     }
 

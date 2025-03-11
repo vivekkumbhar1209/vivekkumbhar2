@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import swal from 'sweetalert2'
 import { CForm, CFormSelect, CFormTextarea, CFormInput, CButton, CFormLabel } from '@coreui/react'
+import Loader from '../../../components/Loader'
 
 const AddDiseaseForm = () => {
+  const[loading,setLoading]=useState(false)
   const [data, setData] = useState({
     diseaseName: '',
     diseaseDescription: '',
@@ -18,6 +20,7 @@ const AddDiseaseForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setLoading(true)
     setErrors({}) // Clear previous errors
     const token = localStorage.getItem('login-token')
 
@@ -50,9 +53,22 @@ const AddDiseaseForm = () => {
         })
       }
     }
+    finally{
+      setLoading(false)
+    }
   }
 
   return (
+    <>
+    { loading ? (
+      <div
+            className="d-flex justify-content-center align-items-center"
+            style={{position: 'fixed',top: 0,left: 0,width: '100vw',height: '100vh',backgroundColor: 'rgba(255, 255, 255, 0.8)',zIndex: 9999, 
+            }}
+        >
+          <Loader />
+      </div>
+    ):(
     <div className="container">
       <p className="text-body-secondary fs-5">Add Disease</p>
       <CForm onSubmit={handleSubmit} className="w-100">
@@ -111,6 +127,8 @@ const AddDiseaseForm = () => {
         </div>
       </CForm>
     </div>
+    )}
+    </>
   )
 }
 

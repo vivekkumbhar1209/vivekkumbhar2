@@ -9,13 +9,7 @@ use Illuminate\Support\Facades\Validator;
 class MedicineController extends Controller
 {
     public function getMedicines(Request $request) {
-                        //Retrieves all existing medicines from medicines table.
-                            // Get the params sent from the frontend fetch req. 
-                            //   },
-                              // params: {
-                              //   sortBy: sortBy,
-                              //   order: order,
-                              // },
+                        
                             $sortBy = $request->query("sortBy", "medicine_name");
                             $order = $request->query("order", "asc");
                       
@@ -29,7 +23,25 @@ class MedicineController extends Controller
                             //   "params" => $requestParams,
                             ]);
                             
-                          }
+        }
+        public function getMedicine($id)
+{
+    $medicine = Medicine::find($id);
+    
+    if (!$medicine) {
+        return response()->json([
+            "status" => 404,
+            "message" => "Medicine not found"
+        ], 404);
+    }
+
+    return response()->json([
+        "status" => 200,
+        "medicine" => $medicine
+    ], 200);
+}
+        
+                          
 
     public function addMedicine(Request $request)
     {
@@ -70,4 +82,41 @@ class MedicineController extends Controller
             ], 500);
         }
     }
+
+    public function updateMedicine(Request $request, $id)
+{
+    $validator = Validator::make($request->all(), [
+        'medicine_name' => 'required|string|max:255',
+        'cost' => 'required|numeric|min:0'
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            "status" => 400,
+            "message" => "Validation failed",
+            "errors" => $validator->errors()
+        ], 400);
+    }
+
+    $medicine = Medicine::find($id);
+
+    if (!$medicine) {
+        return response()->json([
+            "status" => 404,
+            "message" => "Medicine not found"
+        ], 404);
+    }
+
+    $medicine->update([
+        'medicine_name' => $request->medicine_name,
+        'cost' => $request->cost
+    ]);
+
+    return response()->json([
+        "status" => 200,
+        "message" => "Medicine updated successfully",
+        "data" => $medicine
+    ], 200);
+}
+
 }
