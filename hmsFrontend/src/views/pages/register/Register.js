@@ -13,6 +13,8 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
+import '../../../scss/style.scss'
+import '../../../scss/examples.scss'
 
 const Register = () => {
   return (

@@ -1,10 +1,7 @@
 import React, { Suspense, useEffect } from 'react'
 import { HashRouter, Route, Routes, Navigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-
 import { CSpinner, useColorModes } from '@coreui/react'
-import './scss/style.scss'
-import './scss/examples.scss'
 import PrivateRoute from './PrivateRoute'
 import Website from './website/WebsiteComponent'
 import AboutUs from './website/src/assets/pages/About'
@@ -27,20 +24,6 @@ const App = () => {
   const { isColorModeSet, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
   const storedTheme = useSelector((state) => state.theme)
 
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.href.split('?')[1])
-    const theme = urlParams.get('theme') && urlParams.get('theme').match(/^[A-Za-z0-9\s]+/)[0]
-    if (theme) {
-      setColorMode(theme)
-    }
-
-    if (isColorModeSet()) {
-      return
-    }
-
-    setColorMode(storedTheme)
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
   return (
     <HashRouter>
       <Suspense
@@ -55,7 +38,12 @@ const App = () => {
           <Route exact path="/register" name="Register Page" element={<Register />} />
           <Route exact path="/404" name="Page 404" element={<Page404 />} />
           <Route exact path="/500" name="Page 500" element={<Page500 />} />
-          <Route exact path="/web" name="Website" element={<Website />} />
+          <Route
+            exact
+            path="/web"
+            name="Website"
+            element={<Website key={window.location.pathname} />}
+          />
           <Route path="/blog" element={<NavFooter propelement={<Blog />} />} />
           <Route path="/contact" element={<NavFooter propelement={<EnquiryForm />} />} />
           <Route path="/doctors" element={<NavFooter propelement={<AllDoctors />} />} />

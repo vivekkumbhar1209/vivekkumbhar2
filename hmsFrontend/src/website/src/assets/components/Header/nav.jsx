@@ -43,7 +43,7 @@ const Navbar = () => {
           <span className="text-2xl font-bold">Fortune Multispeciality Hospital</span>
         </div>
         <div className="hidden md:flex space-x-6 text-lg">
-          <Link to="/" className="hover:text-gray-400 !important">Home</Link>
+          <Link to="/" className="hover:text-gray-400">Home</Link>
           <Link to="/about" className="hover:text-gray-400">About Us</Link>
           <Link to="/speciality" className="hover:text-gray-400">Specialities</Link>
           <Link to="/doctors" className="hover:text-gray-400">Doctors</Link>

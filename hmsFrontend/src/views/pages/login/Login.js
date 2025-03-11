@@ -19,6 +19,8 @@ import { useState } from 'react'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import Loader from '../../../components/Loader'
+import '../../../scss/examples.scss'
+import '../../../scss/style.scss'
 
 const Login = () => {
   const [formData, setFormData] = useState({
