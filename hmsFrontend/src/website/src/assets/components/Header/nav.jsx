@@ -35,7 +35,7 @@ const Navbar = () => {
           Book Appointment
         </button>
       </div>
-      
+
       {/* Navbar */}
       <nav className={`p-4 flex items-center justify-between transition-all duration-300 ${isSticky ? 'fixed top-0 left-0 w-full shadow-md z-50 backdrop-blur-lg bg-white text-black' : 'bg-gradient-to-r from-purple-900 to-pink-600 text-white'}`} style={{ height: "4rem" }}>
         <div className="flex items-center h-full">
@@ -43,13 +43,13 @@ const Navbar = () => {
           <span className="text-2xl font-bold">Fortune Multispeciality Hospital</span>
         </div>
         <div className="hidden md:flex space-x-6 text-lg">
-          <Link to="/" className="hover:text-gray-400">Home</Link>
+          <Link to="/" className="hover:text-gray-400 !important">Home</Link>
           <Link to="/about" className="hover:text-gray-400">About Us</Link>
           <Link to="/speciality" className="hover:text-gray-400">Specialities</Link>
           <Link to="/doctors" className="hover:text-gray-400">Doctors</Link>
           <Link to="/contact" className="hover:text-gray-400">Contact Us</Link>
           <Link to="/Blog" className="hover:text-gray-400">Blog</Link>
-        
+
           <div className="relative">
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -126,7 +126,7 @@ const Navbar = () => {
             <label className="block mb-1">Date of Birth</label>
             <input type="date" placeholder="Date of Birth" className="w-full p-2 border rounded mb-2" />
             <label className="block mb-1">Address</label>
-            <input type="text" placeholder="Address" className="w-full p-2 border rounded mb-2"/>
+            <input type="text" placeholder="Address" className="w-full p-2 border rounded mb-2" />
             <label className="block mb-1">Date of Appointment</label>
             <input type="date" className="w-full p-2 border rounded mb-2" />
             <label className="block mb-1">Time </label>
@@ -137,7 +137,7 @@ const Navbar = () => {
               <option>Dr. Smith</option>
               <option>Dr. Johnson</option>
             </select>
-            
+
             <div className="mb-4">
               <label className="block text-gray-700">Have you ever applied to our facility before?</label>
               <div className="flex gap-4">
