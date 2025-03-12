@@ -30,6 +30,7 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
     mobile: '',
     address: '',
     role: role, // This gets set only on the first render
+    profilePhoto: null,
   })
 
   const [modalVisible, setModalVisible] = useState(false); // State for modal visibility
@@ -67,6 +68,7 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
         mobile: '',
         address: '',
         role: role,
+        profilePhoto: null,
       })
     }
   }, [propAction, user, role]) // Runs whenever `propAction`, `user`, or `role` changes
@@ -75,116 +77,270 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
     setData({ ...data, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    const token = localStorage.getItem('login-token')
-
-    // Start loading
-    setLoading(true);
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true); // Show loader
+  
+    // Create FormData object if action is 'add'
+    const formData = new FormData();
     if (propAction === 'add') {
-      axios
-        .post('http://127.0.0.1:8000/api/registeruser', data, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((res) => {
-          console.log(res)
-          swal.fire({
-            title: 'Success!',
-            text: 'Admin added successfully.',
-            icon: 'success',
-            confirmButtonText: 'OK',
-          })
-
-          setData({
-            name: '',
-            email: '',
-            password: '',
-            gender: '',
-            date_Of_Birth: null,
-            mobile: '',
-            address: '',
-            role: role, // Keep the role unchanged
-          })
-        })
-        .catch((err) => {
-          if (err.response && err.response.data.errors) {
-            let errorMessages = Object.values(err.response.data.errors)
-              .flat()
-              .map((msg) => `<li>${msg}</li>`)
-              .join('')
-
-            swal.fire({
-              title: 'Validation Error',
-              html: `<ul style="text-align: left;">${errorMessages}</ul>`,
-              icon: 'error',
-              confirmButtonText: 'Try Again',
-            })
-          } else {
-            swal.fire({
-              title: 'Error!',
-              text: 'Failed to add Admin.',
-              icon: 'error',
-              confirmButtonText: 'Try Again',
-            })
-          }
-        })
-        .finally(() => {
-          // End loading
-          setLoading(false);
-          console.log("Request finished (either success or failure)");
-        });
+      formData.append('name', data.name);
+      formData.append('email', data.email);
+      formData.append('password', data.password);
+      formData.append('gender', data.gender);
+      if (data.date_Of_Birth) formData.append('date_Of_Birth', data.date_Of_Birth);
+      formData.append('address', data.address);
+      formData.append('mobile', data.mobile);
+      formData.append('role', data.role);
+  
+      if (data.profilePhoto) {
+        try {
+          let compressedBlob = await compressImage(data.profilePhoto);
+          const uniqueFileName = `compressed-image-${Date.now()}.jpg`;
+          formData.append('profilePhoto', compressedBlob, uniqueFileName);
+        } catch (error) {
+          console.error('Image compression failed:', error);
+        }
+      }
+  
+      // Call sendToBackend for 'add' action
+      sendToBackend('http://127.0.0.1:8000/api/registeruser', 'POST', formData);
     } else if (propAction === 'edit') {
       // Update user endpoint
-      axios
-        .put(`http://127.0.0.1:8000/api/updateuser/${user.id}`, data, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((res) => {
-          console.log(res)
-          swal.fire({
-            title: 'Success!',
-            text: 'Admin updated successfully.',
-            icon: 'success',
-            confirmButtonText: 'OK',
-          })
-          setModalVisible(false); // Close the modal after editing
-        })
-        .catch((err) => {
-          if (err.response && err.response.data.errors) {
-            let errorMessages = Object.values(err.response.data.errors)
-              .flat()
-              .map((msg) => `<li>${msg}</li>`)
-              .join('')
-
-            swal.fire({
-              title: 'Validation Error',
-              html: `<ul style="text-align: left;">${errorMessages}</ul>`,
-              icon: 'error',
-              confirmButtonText: 'Try Again',
-            })
-          } else {
-            swal.fire({
-              title: 'Error!',
-              text: 'Failed to update Admin.',
-              icon: 'error',
-              confirmButtonText: 'Try Again',
-            })
-          }
-        })
-        .finally(() => {
-          // End loading
-          setLoading(false);
-          console.log("Request finished (either success or failure)");
-        });
+      const url = `http://127.0.0.1:8000/api/updateuser/${user.id}`;
+      sendToBackend(url, 'PUT', formData);
     }
+  };
+  
+  // Generic sendToBackend function
+  const sendToBackend = (url, method, formData) => {
+    const token = localStorage.getItem('login-token');
+    
+    axios({
+      method: method, 
+      url: url, 
+      data: formData,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data', // Ensure correct content type for form data
+      },
+    })
+    .then((res) => {
+      console.log(res);
+      swal.fire({
+        title: 'Success!',
+        text: method === 'POST' ? 'Admin added successfully.' : 'Admin updated successfully.',
+        icon: 'success',
+        confirmButtonText: 'OK',
+      });
+  
+      // Reset form data after successful request
+      setData({
+        name: '',
+        email: '',
+        password: '',
+        gender: '',
+        date_Of_Birth: null,
+        mobile: '',
+        address: '',
+        role: role,
+        profilePhoto: null,
+      });
+      setModalVisible(false); // Close modal on edit success
+    })
+    .catch((err) => {
+      if (err.response && err.response.data.errors) {
+        let errorMessages = Object.values(err.response.data.errors)
+          .flat()
+          .map((msg) => `<li>${msg}</li>`)
+          .join('');
+  
+        swal.fire({
+          title: 'Validation Error',
+          html: `<ul style="text-align: left;">${errorMessages}</ul>`,
+          icon: 'error',
+          confirmButtonText: 'Try Again',
+        });
+      } else {
+        swal.fire({
+          title: 'Error!',
+          text: method === 'POST' ? 'Failed to add Admin.' : 'Failed to update Admin.',
+          icon: 'error',
+          confirmButtonText: 'Try Again',
+        });
+      }
+    })
+    .finally(() => {
+      setLoading(false); // Hide loader
+      console.log("Request finished (either success or failure)");
+    });
+  };
+  
 
-    console.log("Final Data Sent to API:", data);
-  }
+  //compress image
+  const compressImage = (image) => {
+    return new Promise((resolve, reject) => {
+      if (typeof image === 'string' && image.startsWith('data:image')) {
+        // If image is already a base64 string (captured by webcam), no need to compress
+        resolve(image);
+        return;
+      }
+  
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+  
+        const maxWidth = 300;
+        const maxHeight = 300;
+        let width = img.width;
+        let height = img.height;
+  
+        if (width > maxWidth || height > maxHeight) {
+          if (width > height) {
+            height *= maxWidth / width;
+            width = maxWidth;
+          } else {
+            width *= maxHeight / height;
+            height = maxHeight;
+          }
+        }
+  
+        canvas.width = width;
+        canvas.height = height;
+        ctx.drawImage(img, 0, 0, width, height);
+  
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              resolve(blob);
+            } else {
+              reject(new Error('Compression failed'));
+            }
+          },
+          'image/jpeg',
+          0.7
+        );
+      };
+  
+      img.onerror = reject;
+  
+      if (typeof image !== 'string') {
+        img.src = URL.createObjectURL(image);
+      } else {
+        img.src = image;
+      }
+    });
+  };
+
+
+    
+// //////////////////////////////////////////////////////////////////    
+//     if (propAction === 'add') {
+//       axios
+//         .post('http://127.0.0.1:8000/api/registeruser', data, {
+//           headers: {
+//             Authorization: `Bearer ${token}`,
+//           },
+//         })
+//         .then((res) => {
+//           console.log(res)
+//           swal.fire({
+//             title: 'Success!',
+//             text: 'Admin added successfully.',
+//             icon: 'success',
+//             confirmButtonText: 'OK',
+//           })
+
+//           setData({
+//             name: '',
+//             email: '',
+//             password: '',
+//             gender: '',
+//             date_Of_Birth: null,
+//             mobile: '',
+//             address: '',
+//             role: role, // Keep the role unchanged
+
+            
+//           })
+//         })
+//         .catch((err) => {
+//           if (err.response && err.response.data.errors) {
+//             let errorMessages = Object.values(err.response.data.errors)
+//               .flat()
+//               .map((msg) => `<li>${msg}</li>`)
+//               .join('')
+
+//             swal.fire({
+//               title: 'Validation Error',
+//               html: `<ul style="text-align: left;">${errorMessages}</ul>`,
+//               icon: 'error',
+//               confirmButtonText: 'Try Again',
+//             })
+//           } else {
+//             swal.fire({
+//               title: 'Error!',
+//               text: 'Failed to add Admin.',
+//               icon: 'error',
+//               confirmButtonText: 'Try Again',
+//             })
+//           }
+//         })
+//         .finally(() => {
+//           // End loading
+//           setLoading(false);
+//           console.log("Request finished (either success or failure)");
+//         });
+//     } else if (propAction === 'edit') {
+//       // Update user endpoint
+//       axios
+//         .put(`http://127.0.0.1:8000/api/updateuser/${user.id}`, data, {
+//           headers: {
+//             Authorization: `Bearer ${token}`,
+//           },
+//         })
+//         .then((res) => {
+//           console.log(res)
+//           swal.fire({
+//             title: 'Success!',
+//             text: 'Admin updated successfully.',
+//             icon: 'success',
+//             confirmButtonText: 'OK',
+//           })
+//           setModalVisible(false); // Close the modal after editing
+//         })
+//         .catch((err) => {
+//           if (err.response && err.response.data.errors) {
+//             let errorMessages = Object.values(err.response.data.errors)
+//               .flat()
+//               .map((msg) => `<li>${msg}</li>`)
+//               .join('')
+
+//             swal.fire({
+//               title: 'Validation Error',
+//               html: `<ul style="text-align: left;">${errorMessages}</ul>`,
+//               icon: 'error',
+//               confirmButtonText: 'Try Again',
+//             })
+//           } else {
+//             swal.fire({
+//               title: 'Error!',
+//               text: 'Failed to update Admin.',
+//               icon: 'error',
+//               confirmButtonText: 'Try Again',
+//             })
+//           }
+//         })
+//         .finally(() => {
+//           // End loading
+//           setLoading(false);
+//           console.log("Request finished (either success or failure)");
+//         });
+//     }
+
+//     console.log("Final Data Sent to API:", data);
+//   }
 
   const closeModal = () => {
     setModalVisible(false); // Close the modal

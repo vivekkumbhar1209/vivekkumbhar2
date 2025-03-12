@@ -65,7 +65,7 @@ const AddReceptionistForm = ({ role }) => {
   }
 
   const handleUsePhoto = () => {
-    const blob = dataURItoBlob(capturedImage);//change captured image to blob
+  const blob = dataURItoBlob(capturedImage);//change captured image to blob
   const file = new File([blob], `captured-photo-${Date.now()}.jpg`, { type: 'image/jpeg' });
     setData({ ...data, profilePhoto: file }) // Set final profile photo
     setCapturedImage(null)
