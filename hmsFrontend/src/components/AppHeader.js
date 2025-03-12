@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import {
@@ -24,18 +24,17 @@ import {
   cilMoon,
   cilSun,
 } from '@coreui/icons'
-
-import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
 
 const AppHeader = () => {
   const headerRef = useRef()
+  const [time, setTime] = useState(new Date())
   const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
 
   const dispatch = useDispatch()
   const sidebarShow = useSelector((state) => state.sidebarShow)
 
-  const userName = JSON.parse(localStorage.getItem('userData')).name.split(' ')[0]
+  const userName = JSON.parse(localStorage.getItem('userData')).name
 
   useEffect(() => {
     document.addEventListener('scroll', () => {
@@ -43,6 +42,14 @@ const AppHeader = () => {
         headerRef.current.classList.toggle('shadow-sm', document.documentElement.scrollTop > 0)
     })
   }, [])
+
+  useEffect(() => {
+    const updateTime = () => {
+      setTime(new Date())
+    }
+    const timer = setTimeout(updateTime, 1000)
+    return () => clearTimeout(timer)
+  }, [time])
 
   return (
     <CHeader position="sticky" className="mb-4 p-0" ref={headerRef}>
@@ -60,7 +67,16 @@ const AppHeader = () => {
             </CNavLink>
           </CNavItem>
         </CHeaderNav>
+
         <CHeaderNav className="ms-auto">
+          <CNavItem>
+            <CNavLink className="mx-3">
+              <strong>{time.toLocaleTimeString()}</strong>
+            </CNavLink>
+          </CNavItem>
+          <CNavItem>
+            <CNavLink>{localStorage.getItem('login-token')}</CNavLink>
+          </CNavItem>
           <CNavItem>
             <CNavLink>
               <CIcon icon={cilBell} size="lg" />

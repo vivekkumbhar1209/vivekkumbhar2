@@ -16,6 +16,7 @@ import {
   CModalBody,
   CModalFooter
 } from '@coreui/react'
+import Loader from '../../../components/Loader'
 
 const AddDoctorForm = ({ role, propAction = 'add', user }) => {
   const [departments, setDepartments] = useState([]); // Store departments
@@ -28,14 +29,14 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
     mobile: '',
     address: '',
     role: role, // This gets set only on the first render
-    specialization: '',
     experience: '',
     departmentID: '',
     consultation_fee: '',
+    profiePhoto:null,
   });
 
   const [modalVisible, setModalVisible] = useState(false); // State for modal visibility
-
+  const[loading,setLoading]=useState(false)
   // Update the role in state when the prop changes
   useEffect(() => {
     setData((prevData) => ({
@@ -72,7 +73,6 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
         mobile: user.mobile,
         address: user.address,
         role: user.role,
-        specialization: user.specialization || '',
         experience: user.experience || '',
         departmentID: user.departmentID || '',
         consultation_fee: user.consultation_fee || '',
@@ -88,7 +88,6 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
         mobile: '',
         address: '',
         role: role,
-        specialization: '',
         experience: '',
         departmentID: '',
         consultation_fee: '',
@@ -102,6 +101,7 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setLoading(true)
     const token = localStorage.getItem("login-token")
     
     if (propAction === 'add') {
@@ -146,7 +146,6 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
           mobile: '',
           address: '',
           role: role,
-          specialization: '',
           experience: '',
           departmentID: '',
           consultation_fee: '',
@@ -174,6 +173,9 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
             confirmButtonText: "Try Again",
           });
         }
+      }
+      finally{
+        setLoading(false);
       }
     } else if (propAction === 'edit') {
       // Update user endpoint
@@ -229,7 +231,6 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
       mobile: '',
       address: '',
       role: role,
-      specialization: '',
       experience: '',
       departmentID: '',
       consultation_fee: '',
@@ -238,7 +239,24 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
 
   return (
     <>
-      {propAction === 'edit' ? (
+      {loading?(
+        <div
+        className="d-flex justify-content-center align-items-center"
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          zIndex: 9999,
+        }}
+      >
+        <Loader />
+      </div>
+    ):
+     (
+      propAction === 'edit' ? (
         <CModal visible={modalVisible} onClose={closeModal} backdrop="static" size="lg">
           <CModalHeader closeButton={true}>
             <CModalTitle>Edit Doctor</CModalTitle>
@@ -290,11 +308,6 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
                   <div>
                     <CFormLabel htmlFor="address">Address:</CFormLabel>
                     <CFormTextarea id="address" onChange={handleChange} name="address" required value={data.address} placeholder="Enter Address"></CFormTextarea>
-                  </div>
-
-                  <div>
-                    <CFormLabel htmlFor="specialization">Specialization:</CFormLabel>
-                    <CFormInput id="specialization" onChange={handleChange} type="text" name="specialization" required value={data.specialization} placeholder="Specialization" />
                   </div>
 
                   <div>
@@ -367,27 +380,27 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
               </div>
 
               <div>
+                <CFormLabel htmlFor="address">Address:</CFormLabel>
+                <CFormTextarea id="address" onChange={handleChange} name="address" required value={data.address} placeholder="Enter Address"></CFormTextarea>
+              </div>
+              
+
+             
+            </div>
+
+            {/* Right Column */}
+
+            <div className="col-md-6">
+
+            <div>
                 <CFormLabel htmlFor="date_Of_Birth">Date of Birth:</CFormLabel>
                 <CFormInput id="date_Of_Birth" onChange={handleChange} type="date" name="date_Of_Birth" value={data.date_Of_Birth || ''} />
               </div>
 
-              <div>
+            <div>
                 <CFormLabel htmlFor="mobile">Mobile:</CFormLabel>
                 <CFormInput id="mobile" onChange={handleChange} type="tel" name="mobile" required value={data.mobile} placeholder='Mobile Number' />
-              </div>
-            </div>
-
-            {/* Right Column */}
-            <div className="col-md-6">
-              <div>
-                <CFormLabel htmlFor="address">Address:</CFormLabel>
-                <CFormTextarea id="address" onChange={handleChange} name="address" required value={data.address} placeholder="Enter Address"></CFormTextarea>
-              </div>
-
-              <div>
-                <CFormLabel htmlFor="specialization">Specialization:</CFormLabel>
-                <CFormInput id="specialization" onChange={handleChange} type="text" name="specialization" required value={data.specialization} placeholder="Specialization" />
-              </div>
+              </div>   
 
               <div>
                 <CFormLabel htmlFor="experience">Experience (Years):</CFormLabel>
@@ -419,7 +432,8 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
             </CButton>
           </div>
         </CForm>
-      )}
+      )
+    )}
     </>
   );
 };

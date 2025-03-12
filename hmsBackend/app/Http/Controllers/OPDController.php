@@ -1,11 +1,14 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Events\QueueUpdated;
+use App\Models\OpdQueue;
 use App\Models\OpdRegistration;
 use App\Models\Patients;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use Validator;
+use Illuminate\Support\Facades\Validator;
+
 
 class OPDController extends Controller
 {
@@ -39,12 +42,19 @@ class OPDController extends Controller
                     'patientID'        => $request->selectedPatientID,
                     'doctorID'         => $request->selectedDoctor,
                     'reason_For_Visit' => $request->reason,
-
                 ]);
-                if ($data) {
+
+                $queue = OpdQueue::create([
+                    'patientID' => $request->selectedPatientID,
+                    'doctorID'  => $request->selectedDoctor,
+                    'status'    => 'Waiting',
+                ]);
+
+                if ($data && $queue) {
+
                     return response()->json([
                         'status'  => 200,
-                        'message' => 'Patient Registered Successfully',
+                        'message' => 'Patient registered and added to queue successfully',
                         'data'    => $data,
                     ]);
                 } else {
@@ -69,7 +79,7 @@ class OPDController extends Controller
             'created_at',
             'updated_at',
             DB::raw("(SELECT COUNT(*) FROM opd_registration WHERE opd_registration.patientID = patients.patientID) as opdRegistered")
-        )
+        )->orderBy('created_at', 'desc')
             ->get();
 
         // Transform numeric value to 'registered'/'not registered'
@@ -84,6 +94,75 @@ class OPDController extends Controller
             'data'    => $patients,
         ]);
 
+    }
+
+    public function getOpdQueue()
+    {
+
+        $queue = DB::table('opd_queue')->join('patients', 'opd_queue.patientID', '=', 'patients.patientID')->join('doctors', 'opd_queue.doctorID', '=', 'doctors.doctorID')->join('users', 'doctors.userID', '=', 'users.id')->select('patients.patient_name', 'patients.patientID', 'users.name', 'patients.patient_age', 'patients.patient_gender', 'opd_queue.status', 'opd_queue.queueID', 'users.id')->orderBy('opd_queue.created_at', 'desc')->get();
+
+        broadcast(new QueueUpdated($queue))->toOthers();
+
+        return response()->json([
+            'status'  => 200,
+            'message' => 'Queue request successful',
+            'data'=>$queue
+        ]);
+    }
+
+    public function deQueue(Request $request)
+    {
+        $request->validate([
+            'queueID'   => 'required',
+            'patientID' => 'required',
+        ]);
+
+        $deQueue                = DB::table('opd_queue')->where('queueID', $request->queueID)->delete();
+        $deletedOPDRegistration = DB::table('opd_registration')->where('patientID', $request->patientID)->delete();
+
+        if ($deQueue && $deletedOPDRegistration) {
+
+            $data = DB::table('opd_queue')->join('patients', 'opd_queue.patientID', '=', 'patients.patientID')->join('doctors', 'opd_queue.doctorID', '=', 'doctors.doctorID')->join('users', 'doctors.userID', '=', 'users.id')->select('patients.patient_name', 'patients.patientID', 'users.name', 'patients.patient_age', 'patients.patient_gender', 'opd_queue.status', 'opd_queue.queueID', 'users.id')->orderBy('opd_queue.created_at', 'desc')->get();
+
+            broadcast(new QueueUpdated($data))->toOthers();
+
+            return response()->json([
+                'status'  => 200,
+                'message' => 'De Queued Successfully',
+            ]);
+        } else {
+            return response()->json([
+                'status'  => 409,
+                'message' => 'Database Error Encountered',
+            ]);
+        }
+
+    }
+
+    public function updatePatientQueueStatus(Request $request)
+    {
+        $request->validate([
+            'queueID' => 'required',
+        ]);
+
+        $updated = OpdQueue::where('queueID', $request->queueID)->update(['status' => 'In Consultation']);
+
+        if ($updated) {
+
+            $data = DB::table('opd_queue')->join('patients', 'opd_queue.patientID', '=', 'patients.patientID')->join('doctors', 'opd_queue.doctorID', '=', 'doctors.doctorID')->join('users', 'doctors.userID', '=', 'users.id')->select('patients.patient_name', 'patients.patientID', 'users.name', 'patients.patient_age', 'patients.patient_gender', 'opd_queue.status', 'opd_queue.queueID', 'users.id')->orderBy('opd_queue.created_at', 'desc')->get();
+
+            broadcast(new QueueUpdated($data))->toOthers();
+
+            return response()->json([
+                'status'  => 200,
+                'message' => 'Status updated successfully',
+            ]);
+        } else {
+            return response()->json([
+                'status'  => 409,
+                'message' => 'Database Error Encountered',
+            ]);
+        }
     }
 
 }

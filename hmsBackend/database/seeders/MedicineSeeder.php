@@ -12,7 +12,7 @@ class MedicineSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('medicine')->insert([
+        DB::table('medicines')->insert([
             [
                 'medicineID'    => 1,
                 'categoryID'    => 1, // Pain Relief

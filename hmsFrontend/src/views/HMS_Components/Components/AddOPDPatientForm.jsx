@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   CCard,
   CCardHeader,
@@ -46,6 +47,7 @@ const ManageOPDPatients = () => {
   const [reason, setReason] = useState('')
   const [checkInButtonText, changeCheckInButtonText] = useState('CheckIn')
   const itemsPerPage = 5
+  const navigator = useNavigate()
 
   const handleSubmit = () => {
     setLoading(true)
@@ -82,6 +84,7 @@ const ManageOPDPatients = () => {
           console.log(res.data)
           setLoading(false)
           setModelVisibility(false)
+          navigator('/dashboard/viewQueue')
         } else if (res.data.status === 409) {
           swal.fire({
             title: 'Error!',
@@ -170,9 +173,9 @@ const ManageOPDPatients = () => {
     if (searchTerm) {
       updatedData = updatedData.filter(
         (patient) =>
-          patient.name.toLowerCase().includes(searchTerm) ||
-          patient.mobile.includes(searchTerm) ||
-          patient.id.toString().includes(searchTerm),
+          patient.patient_name.toLowerCase().includes(searchTerm) ||
+          patient.patient_mobile.includes(searchTerm) ||
+          patient.patientID.toString().includes(searchTerm),
       )
     }
 

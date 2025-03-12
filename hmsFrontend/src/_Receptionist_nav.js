@@ -66,6 +66,12 @@ const _nav = [
         to: '/dashboard/manageOPDPatient',
         icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
       },
+      {
+        component: CNavItem,
+        name: 'Queue Management',
+        to: '/dashboard/viewQueue',
+        icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+      },
     ],
   },
   {
