@@ -32,7 +32,7 @@ const AppHeaderDropdown = () => {
       )
       .then((res) => {
         localStorage.clear()
-        navigate('/')
+        navigate('/web')
       })
   }
 
@@ -43,11 +43,11 @@ const AppHeaderDropdown = () => {
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-body-secondary fw-semibold my-2">Settings</CDropdownHeader>
-        <CDropdownItem as={Link} to={'/dashboard/userProfile'} style={{cursor:'pointer'}}>
+        <CDropdownItem as={Link} to={'/dashboard/userProfile'} style={{ cursor: 'pointer' }}>
           <CIcon icon={cilUser} className="me-2" />
           Profile
         </CDropdownItem>
-        <CDropdownItem as={Link} to={'/dashboard/userSettings'} style={{cursor:'pointer'}}>
+        <CDropdownItem as={Link} to={'/dashboard/userSettings'} style={{ cursor: 'pointer' }}>
           <CIcon icon={cilSettings} className="me-2" />
           Settings
           <CBadge color="danger" className="ms-2">
@@ -55,7 +55,7 @@ const AppHeaderDropdown = () => {
           </CBadge>
         </CDropdownItem>
         <CDropdownDivider />
-        <CDropdownItem style={{cursor:'pointer'}} onClick={handleLogout}>
+        <CDropdownItem style={{ cursor: 'pointer' }} onClick={handleLogout}>
           <CIcon icon={cilAccountLogout} className="me-2" />
           Log Out
         </CDropdownItem>

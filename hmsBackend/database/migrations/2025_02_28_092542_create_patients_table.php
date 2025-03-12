@@ -14,15 +14,17 @@ return new class extends Migration
         Schema::create('patients', function (Blueprint $table) {
             $table->bigIncrements('patientID');
             $table->string('patient_name');
-            $table->string('patient_email')->unique();
+            $table->string('patient_email')->unique()->nullable();
             $table->string('patient_mobile');
             $table->string('emergency_name')->nullable();
             $table->string('emergency_no')->nullable();
-            $table->text('patient_address');
-            $table->enum('patient_gender', ['Male', 'Female', 'Others']);
-            $table->date('patient_dob');
-            $table->integer('patient_age');
+            $table->text('patient_address')->nullable();
+            $table->enum('patient_gender', ['Male', 'Female', 'Others'])->nullable();
+            $table->date('patient_dob')->nullable();
+            $table->integer('patient_age')->nullable();
             $table->string('profilePhoto')->nullable();
+            $table->string('patient_adhar')->unique()->nullable();
+            $table->enum('registration_fee',['Paid','Unpaid'])->nullable();
             $table->timestamps();
         });
     }
