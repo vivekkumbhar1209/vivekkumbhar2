@@ -173,9 +173,9 @@ const ManageOPDPatients = () => {
     if (searchTerm) {
       updatedData = updatedData.filter(
         (patient) =>
-          patient.name.toLowerCase().includes(searchTerm) ||
-          patient.mobile.includes(searchTerm) ||
-          patient.id.toString().includes(searchTerm),
+          patient.patient_name.toLowerCase().includes(searchTerm) ||
+          patient.patient_mobile.includes(searchTerm) ||
+          patient.patientID.toString().includes(searchTerm),
       )
     }
 
