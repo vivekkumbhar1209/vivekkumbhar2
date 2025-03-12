@@ -5,7 +5,6 @@ import { CForm, CFormSelect, CFormTextarea, CFormInput, CButton, CFormLabel } fr
 import Loader from '../../../components/Loader'
 
 const AddDiseaseForm = () => {
-  const[loading,setLoading]=useState(false)
   const [data, setData] = useState({
     diseaseName: '',
     diseaseDescription: '',
