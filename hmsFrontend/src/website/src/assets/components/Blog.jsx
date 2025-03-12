@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css"; // Import AOS styles
-
+import { Link } from "react-router-dom";
 const blogs = [
   {
     title: "The Rise Of Conjunctivitis In Delhi-NCR: Understanding Pink Eye And How To Stay Protected",
@@ -86,12 +86,12 @@ const BlogGrid = () => {
 
       {/* View All Blogs Button */}
       <div className="text-center mt-10" data-aos="zoom-in">
-        <a
-          href="/all-blogs"
+        <Link 
+          to={"/allblogs"}
           className="bg-purple-900 text-white px-8 py-3 rounded-md text-lg font-semibold shadow-md hover:bg-purple-500 hover:shadow-lg transition duration-300"
         >
           View All Blogs
-        </a>
+        </Link>
       </div>
     </div>
   );

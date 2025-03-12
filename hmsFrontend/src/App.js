@@ -11,6 +11,7 @@ import Speciality from './website/src/assets/components/Spacialty/Spaciality'
 import AllDoctors from './website/src/assets/components/doctorsection/AllDoctors'
 import Blog from './website/src/assets/components/Blog'
 import EnquiryForm from './website/src/assets/components/enquiry form/enquiry'
+import AllBlogGrid from './website/src/assets/components/All blogs';
 
 // Containers
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
@@ -50,6 +51,7 @@ const App = () => {
           <Route exact path="/web" name="Website" element={<Website />} />
           <Route path="/blog" element={<NavFooter propelement={<Blog />} />} />
           <Route path="/contact" element={<NavFooter propelement={<EnquiryForm />} />} />
+          <Route path="/allblogs" element={<NavFooter propelement={<AllBlogGrid/>} />} />
           <Route path="/doctors" element={<NavFooter propelement={<AllDoctors />} />} />
           <Route path="/speciality" element={<NavFooter propelement={<Speciality />} />} />
           <Route path="/seemore" element={<Seemore />} />
