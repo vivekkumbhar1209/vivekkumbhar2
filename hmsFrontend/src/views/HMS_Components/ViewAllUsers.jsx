@@ -161,11 +161,6 @@ const ViewAllUsers = ({ action }) => {
                 <CTableHeaderCell>Email</CTableHeaderCell>
                 <CTableHeaderCell>Gender</CTableHeaderCell>
                 <CTableHeaderCell>Contact Number</CTableHeaderCell>
-                {action === 'edit' ? (
-                  <CTableHeaderCell>Actions</CTableHeaderCell>
-                ) : (
-                  <></>
-                )}
                 { action === "edit" ? 
                   (<>
                   <CTableHeaderCell>Last Updated</CTableHeaderCell>

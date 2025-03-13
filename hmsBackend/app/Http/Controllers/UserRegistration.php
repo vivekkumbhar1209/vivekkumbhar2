@@ -68,7 +68,7 @@ class UserRegistration extends Controller
                 'gender'        => ['required', 'in:Male,Female,Others'],
                 'date_Of_Birth' => ['nullable', 'date', 'before:today'],
                 'mobile'        => ['required', 'regex:/^[789][0-9]{9}$/', 'unique:users,mobile'],
-                'address'       => ['required', 'string', 'min:5', 'max:255'],
+                'address'       => ['required', 'string'],
                'profilePhoto' => ['nullable'],
             ]);
 
@@ -143,11 +143,11 @@ else if ($request->role == 'Doctor') {
       'gender'           => ['required', 'in:Male,Female,Others'],
       'date_Of_Birth'    => ['nullable', 'date', 'before:today'],
       'mobile'           => ['required', 'regex:/^[789][0-9]{9}$/', 'unique:users,mobile'],
-      'address'          => ['required', 'string', 'min:5', 'max:255'],
+      'address'          => ['required', 'string'],
       'experience'       => ['required', 'integer', 'min:0'],
       'departmentID'     => ['required', 'integer'],
       'consultation_fee' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/', 'min:0'],
-      'profilePhoto' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+      'profilePhoto' => ['nullable'],
 
       
   ]);
@@ -176,6 +176,15 @@ else if ($request->role == 'Doctor') {
       ]);
   }
 
+  if ($request->hasFile('profilePhoto')) {
+    $image = $request->file('profilePhoto');
+    $formattedUsername = preg_replace('/\s+/', '_', strtolower($request->name));
+    $imageName = $formattedUsername . '_' . now()->format('Y-m-d_H-i-s') . '.' . $image->getClientOriginalExtension();
+    $path = $image->storeAs('profile_photos', $imageName, 'public');
+} else {
+    $path = null;
+}
+
   // Enter data into the doctor and user table
   $user = User::create([
       'name'          => $request->name,
@@ -187,6 +196,7 @@ else if ($request->role == 'Doctor') {
       'age'           => $age, // Save calculated age
       'mobile'        => $request->mobile,
       'address'       => $request->address,
+      'profilePhoto'=>$path,
   ]);
 
   
@@ -231,7 +241,7 @@ public function updateUser(Request $request, $id)
             'gender'=>['required', 'in:Male,Female,Others'],
             'date_Of_Birth' => ['nullable','date', 'before:today'],
             'mobile'=>['required', 'regex:/^[789][0-9]{9}$/', 'unique:users,mobile,'.$id],
-            'address'=>['required', 'string', 'min:5', 'max:255'],
+            'address'=>['required', 'string'],
             'profilePhoto' => ['nullable|image|mimes:jpeg,png,jpg,gif|max:2048'],
         ]);
 
@@ -289,7 +299,7 @@ public function updateUser(Request $request, $id)
             'gender'=>['required', 'in:Male,Female,Others'],
             'date_Of_Birth' => ['nullable','date', 'before:today'],
             'mobile'=>['required', 'regex:/^[789][0-9]{9}$/', 'unique:users,mobile,'.$id],
-            'address'=>['required', 'string', 'min:5', 'max:255'],
+            'address'=>['required', 'string'],
             'experience'=>['required', 'integer', 'min:0'],
             'departmentID'=>['required','integer'],
             'consultation_fee'=>['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/', 'min:0'],

@@ -10,6 +10,8 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilMagnifyingGlass } from '@coreui/icons'
+import '../../../scss/style.scss'
+import '../../../scss/examples.scss'
 
 const Page500 = () => {
   return (

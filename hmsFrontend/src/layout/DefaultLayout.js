@@ -1,5 +1,7 @@
 import React from 'react'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/index'
+import '../scss/examples.scss'
+import '../scss/style.scss'
 
 const DefaultLayout = () => {
   return (
