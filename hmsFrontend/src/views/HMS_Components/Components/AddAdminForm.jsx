@@ -47,6 +47,7 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
   // Populate form fields with user data when editing
   useEffect(() => {
     if (propAction === 'edit' && user) {
+      console.log(data)
       setData({
         name: user.name,
         email: user.email,
@@ -56,6 +57,7 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
         mobile: user.mobile,
         address: user.address,
         role: user.role,
+        // profilePhoto: user.profilePhoto
       })
       setModalVisible(true); // Open the modal
     } else {
@@ -83,32 +85,37 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
   
     // Create FormData object if action is 'add'
     const formData = new FormData();
-    if (propAction === 'add') {
-      formData.append('name', data.name);
-      formData.append('email', data.email);
-      formData.append('password', data.password);
-      formData.append('gender', data.gender);
-      if (data.date_Of_Birth) formData.append('date_Of_Birth', data.date_Of_Birth);
-      formData.append('address', data.address);
-      formData.append('mobile', data.mobile);
-      formData.append('role', data.role);
-  
-      if (data.profilePhoto) {
-        try {
-          let compressedBlob = await compressImage(data.profilePhoto);
-          const uniqueFileName = `compressed-image-${Date.now()}.jpg`;
-          formData.append('profilePhoto', compressedBlob, uniqueFileName);
-        } catch (error) {
-          console.error('Image compression failed:', error);
-        }
+    formData.append('name', data.name);
+    formData.append('email', data.email);
+    formData.append('password', data.password);
+    formData.append('gender', data.gender);
+    if (data.date_Of_Birth) formData.append('date_Of_Birth', data.date_Of_Birth);
+    formData.append('address', data.address);
+    formData.append('mobile', data.mobile);
+    formData.append('role', data.role);
+    
+    if (data.profilePhoto) {
+      try {
+        let compressedBlob = await compressImage(data.profilePhoto);
+        const uniqueFileName = `compressed-image-${Date.now()}.jpg`;
+        formData.append('profilePhoto', compressedBlob, uniqueFileName);
+      } catch (error) {
+        console.error('Image compression failed:', error);
       }
-  
-      // Call sendToBackend for 'add' action
+    }
+    
+    // Call sendToBackend for 'add' action
+    if (propAction === 'add') {
+      console.log("inadd",formData)
+
       sendToBackend('http://127.0.0.1:8000/api/registeruser', 'POST', formData);
     } else if (propAction === 'edit') {
       // Update user endpoint
+
+      formData.append("_method", "PUT")
       const url = `http://127.0.0.1:8000/api/updateuser/${user.id}`;
-      sendToBackend(url, 'PUT', formData);
+      console.log("in edit",formData, data)
+      sendToBackend(url, 'POST', formData);
     }
   };
   
@@ -482,7 +489,13 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
                     ></CFormTextarea>
                   </div>
                 </div>
+                              {/* {photo upload section} */}
+              <div className='col-md-4 d-flex flex-column align-items-center'>
+
+<PhotoCapture data={data} setData={setData}/>
+</div>
               </div>
+
 
               <div className="text-left mt-3">
                 <CButton color="primary" type="submit">

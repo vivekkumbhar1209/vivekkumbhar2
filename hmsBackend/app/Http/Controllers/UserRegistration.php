@@ -55,7 +55,7 @@ class UserRegistration extends Controller
                 'errors'  => $validator->errors(),
             ]);
         }
-        //\Log::info("User Role:", ['role' => $request->role]);  //for debugging
+        // \Log::info("User Role:", ['role' => $request->role]);  //for debugging
 
         //add valiadtion if user is Receptionist
         if ($request->role == 'Receptionist' || $request->role=="Admin") {
@@ -108,7 +108,7 @@ class UserRegistration extends Controller
                 $path = null;
             }
             
-            //Log::info("Profile Photo Path: " . $path); // Debugging
+            // Log::info("Profile Photo Path: " . $path); // Debugging
             //Add receptionist data into database
             $user = User::create([
                 'name'          => $request->name,
@@ -220,6 +220,9 @@ else if ($request->role == 'Doctor') {
    // Edit or update users
 public function updateUser(Request $request, $id)
 {
+  Log::info("Request Data:", $request->all());
+  Log::info("User Role:", ['role' => $request->role]);
+  Log::info("Request Headers:", $request->headers->all());
     $data = $request->all();
     $validator = Validator::make($data, ['role'=>['required']]);
     if($validator->fails())
@@ -228,8 +231,10 @@ public function updateUser(Request $request, $id)
             'status'=>403,
             'message'=>'Validation failed',
             'errors'=>$validator->errors(),
+            "data" => $data,
         ]);
     }
+    
 
     //add validation if user is Receptionist
     if($request->role=='Receptionist' || $request->role=='Admin')
