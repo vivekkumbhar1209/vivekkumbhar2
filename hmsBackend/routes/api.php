@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\AddDisease;
+use App\Http\Controllers\DiseaseController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DeptReg;
-use App\Http\Controllers\DiseaseController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogOutController;
@@ -22,17 +22,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     //all team members add your post/get routes in this middleware group function since all the links are protected in this group. Only authenticated user with valid authentication token will be able to access these links
 
-    Route::post('/logout', [LogOutController::class, 'logout']);
-
     //Implementation is done for this api in the frontend
-    Route::post('/adddisease', [AddDisease::class, 'addDisease']);
+    Route::post('/logout', [LogOutController::class, 'logout']);
+    Route::post('/addDisease', [AddDisease::class, 'addDisease']);
     Route::post('/registerDepartment', [DeptReg::class, 'registerDepartment']);
+    Route::get('/getDept', [DeptReg::class, 'getDept']);
     Route::post('/updateDepartment', [UpdateDepartment::class, 'updateDepartment']);
     Route::post('/registerpatient', [PatientRegistration::class, 'registerPatient']);
-
     Route::put('/updateuser/{id}', [UserRegistration::class, 'updateUser']);
-
-    Route::post('/registeruser', [UserRegistration::class, 'registerUser']); //this will register all users
+    Route::post('/registeruser', [UserRegistration::class, 'registerUser']);//this will register all users
     Route::get('/patients', [PatientController::class, 'index']);
     Route::get('/patients/{id}', [PatientController::class, 'show']);
     Route::get('/viewAllUsers', [UserRegistration::class, 'getAllUsers']);
@@ -48,8 +46,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 
     Route::get('/getDept', [DepartmentController::class, 'allDepartment']);
-
-    //Implementation is not done for these api in the frontend
     Route::post('/addMedicineCategory', [MedicineCategoryController::class, 'addCategory']);
 
     Route::post('/getMedCategory', [MedicineCategoryController::class, 'getMedCategory']);
@@ -65,9 +61,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 
     Route::get('/getdiseases', [AddDisease::class, 'getDisease']);
-    Route::put('/updatedisease/{id}', [DiseaseController::class, 'updateDisease']); //dhanu
     Route::get('/getPatientsWithOPDStatus', [OPDController::class, 'getPatientsWithOPDStatus']);
-
+    Route::get('/getMedicines', [MedicineController::class, 'getMedicines']);
+    //done by vivek 
     Route::post('/getMedCategory', [MedicineCategoryController::class, 'getMedCategory']);
     Route::post('/addMedicine', [MedicineController::class, 'addMedicine']);
 

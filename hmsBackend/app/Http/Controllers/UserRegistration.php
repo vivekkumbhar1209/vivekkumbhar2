@@ -8,7 +8,7 @@ use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
-
+use App\Helper\FileHelper;
 
 class UserRegistration extends Controller
 {
@@ -55,7 +55,7 @@ class UserRegistration extends Controller
                 'errors'  => $validator->errors(),
             ]);
         }
-        //\Log::info("User Role:", ['role' => $request->role]);  //for debugging
+        // \Log::info("User Role:", ['role' => $request->role]);  //for debugging
 
         //add valiadtion if user is Receptionist
         if ($request->role == 'Receptionist' || $request->role=="Admin") {
@@ -108,7 +108,7 @@ class UserRegistration extends Controller
                 $path = null;
             }
             
-            //Log::info("Profile Photo Path: " . $path); // Debugging
+            // Log::info("Profile Photo Path: " . $path); // Debugging
             //Add receptionist data into database
             $user = User::create([
                 'name'          => $request->name,
@@ -220,6 +220,9 @@ else if ($request->role == 'Doctor') {
    // Edit or update users
 public function updateUser(Request $request, $id)
 {
+  Log::info("Request Data:", $request->all());
+  Log::info("User Role:", ['role' => $request->role]);
+  Log::info("Request Headers:", $request->headers->all());
     $data = $request->all();
     $validator = Validator::make($data, ['role'=>['required']]);
     if($validator->fails())
@@ -228,11 +231,13 @@ public function updateUser(Request $request, $id)
             'status'=>403,
             'message'=>'Validation failed',
             'errors'=>$validator->errors(),
+            "data" => $data,
         ]);
     }
+    
 
     //add validation if user is Receptionist
-    if($request->role=='Receptionist')
+    if($request->role=='Receptionist' || $request->role=='Admin')
     {
         $validator = Validator::make($data, [
             'name'=>['required'],
@@ -242,7 +247,7 @@ public function updateUser(Request $request, $id)
             'date_Of_Birth' => ['nullable','date', 'before:today'],
             'mobile'=>['required', 'regex:/^[789][0-9]{9}$/', 'unique:users,mobile,'.$id],
             'address'=>['required', 'string'],
-            'profilePhoto' => ['nullable|image|mimes:jpeg,png,jpg,gif|max:2048'],
+            'profilePhoto' => ['nullable',  'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
 
         if($validator->fails())
@@ -269,18 +274,29 @@ public function updateUser(Request $request, $id)
             ]);
         }
 
+        // Need this early
+        $user = User::find($id);
+
+        // Handle file function from FileHelper class
+        $path = FileHelper::handleProfilePhoto($request, $user->profilePhoto);
+
         // Update receptionist data into database
-        $user = User::where('id', $id)->update([
+        $user->update([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => $request->password ? Hash::make($request->password) : null, // Only update password if provided
             'role' => $request->role,
             'gender' => $request->gender,
             'date_Of_Birth' => $request->date_Of_Birth,
             'age' => $age, // Save calculated age
             'mobile' => $request->mobile,
             'address' => $request->address,
+            'profilePhoto' => $path,
         ]);
+
+        // Update password only if new one provided
+        if ($request->password) {
+          $user->update(['password' => Hash::make($request->password)]);// Only update password if provided
+        }
 
         return response()->json([
             'status' => 200,
@@ -303,7 +319,7 @@ public function updateUser(Request $request, $id)
             'experience'=>['required', 'integer', 'min:0'],
             'departmentID'=>['required','integer'],
             'consultation_fee'=>['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/', 'min:0'],
-            'profilePhoto' => ['nullable|image|mimes:jpeg,png,jpg,gif|max:2048'],
+            'profilePhoto' => ['nullable',  'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
 
         if($validator->fails())
@@ -330,18 +346,30 @@ public function updateUser(Request $request, $id)
             ]);
         }
 
+        // Find doctor user
+        $user = User::find($id);
+        $path = FileHelper::handleProfilePhoto($request, $user->profilePhoto);
         // Update doctor and user data
-        User::where('id', $id)->update([
+        $user->update([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => $request->password ? Hash::make($request->password) : null, // Only update password if provided
+            // 'password' => $request->password ? Hash::make($request->password) : null, // Only update password if provided
             'role' => $request->role,
             'gender' => $request->gender,
             'date_Of_Birth' => $request->date_Of_Birth,
             'age' => $age, // Save calculated age
             'mobile' => $request->mobile,
             'address' => $request->address,
+            'profilePhoto' => $path,
+             
         ]);
+
+        // Update only if provided
+        if ($request->password) {
+          $user->update(["password" => Hash::make($request->password0)]);
+        }
+
+
 
         Doctor::where('userID', $id)->update([
             'experience' => $request->experience,
