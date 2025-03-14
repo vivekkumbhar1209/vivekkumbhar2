@@ -53,7 +53,9 @@ const PhotoCapture = ({ data, setData }) => {
 
   return (
     <div className="col-md-4 d-flex flex-column align-items-center">
-      {/* Photo Preview Section */}
+      {/* Photo Preview Section */
+      console.log(data.profilePhoto, "in capture component")
+      }
       <div
         className="rounded-circle border d-flex justify-content-center align-items-center mt-2"
         style={{
@@ -73,7 +75,7 @@ const PhotoCapture = ({ data, setData }) => {
         ) : data.profilePhoto ? (
           // Display the uploaded photo if captured photo is not available
           <img
-            src={URL.createObjectURL(data.profilePhoto)}
+            src={`http://localhost:8000/storage/${data.profilePhoto}`}
             alt="Profile Preview"
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />

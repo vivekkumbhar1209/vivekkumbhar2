@@ -84,7 +84,7 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
         experience: user.experience,
         departmentID: user.departmentID,
         consultation_fee: user.consultation_fee,
-        // profilePhoto: user.profilePhoto
+        profilePhoto: user.profilePhoto
       })
       setModalVisible(true) // Open the modal
     } else {
@@ -236,7 +236,7 @@ const sendToBackend = async (url, method, formData) => {
       experience: '',
       departmentID: '',
       consultation_fee: '',
-      profilePhoto: null,
+      profilePhoto: '',
     })
   } catch (err) {
     console.error('Error:', err)
@@ -543,7 +543,7 @@ return (
                     <img
                     src={
                       typeof data.profilePhoto === 'string'
-                      ? data.profilePhoto
+                      ? `http://localhost:8000/storage/${data.profilePhoto}`
                       : URL.createObjectURL(data.profilePhoto)
                     }
                     alt="Profile Preview"
