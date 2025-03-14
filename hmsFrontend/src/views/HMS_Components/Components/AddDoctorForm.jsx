@@ -375,9 +375,9 @@ return (
       </div>
     ) : null}
     {propAction === 'edit' ? (
-      <CModal visible={modalVisible} onClose={closeModal} backdrop="static" size="lg">
+      <CModal visible={modalVisible} onClose={closeModal} backdrop="static" size="xl">
                 <CModalHeader closeButton={true}>
-                  <CModalTitle>Edit Admin</CModalTitle>
+                  <CModalTitle>Edit Doctor</CModalTitle>
                 </CModalHeader>
       
                 <CModalBody>
@@ -388,7 +388,6 @@ return (
             {/* Left Column */}
             <div className="col-md-8">
               <CCard className="p-3 h-100">
-                <p className="text-body-secondary fs-5">Add Doctor</p>
                 <div className="row">
                   <div className="col-md-6">
                     <CFormLabel htmlFor="name">Name:</CFormLabel>
@@ -421,7 +420,8 @@ return (
                       onChange={handleChange}
                       type="password"
                       name="password"
-                      required
+                      required={propAction === "add"}
+                      placeholder={propAction === 'add' ? 'Password' : 'Leave blank to keep current password'}
                       value={data.password}
                       />
 
@@ -582,7 +582,7 @@ return (
 
           <div className="text-left mt-3">
             <CButton color="primary" type="submit">
-              Add User
+              Update Doctor
             </CButton>
           </div>
         </CForm>

@@ -1,21 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import swal from 'sweetalert2'
-import {
-  CCard,
-  CForm,
-  CFormSelect,
-  CFormTextarea,
-  CFormInput,
-  CCardBody,
-  CButton,
-  CFormLabel,
-  CModal,
-  CModalHeader,
-  CModalTitle,
-  CModalBody,
-  CModalFooter,
-} from '@coreui/react'
+import { CCard, CForm, CFormSelect, CFormTextarea, CFormInput, CCardBody, CButton, CFormLabel, CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter } from '@coreui/react'
 
 // Assuming Loader is imported or defined somewhere
 import Loader from '../../../components/Loader'
@@ -239,112 +225,6 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
     })
   }
 
-  // //////////////////////////////////////////////////////////////////
-  //     if (propAction === 'add') {
-  //       axios
-  //         .post('http://127.0.0.1:8000/api/registeruser', data, {
-  //           headers: {
-  //             Authorization: `Bearer ${token}`,
-  //           },
-  //         })
-  //         .then((res) => {
-  //           console.log(res)
-  //           swal.fire({
-  //             title: 'Success!',
-  //             text: 'Admin added successfully.',
-  //             icon: 'success',
-  //             confirmButtonText: 'OK',
-  //           })
-
-  //           setData({
-  //             name: '',
-  //             email: '',
-  //             password: '',
-  //             gender: '',
-  //             date_Of_Birth: null,
-  //             mobile: '',
-  //             address: '',
-  //             role: role, // Keep the role unchanged
-
-  //           })
-  //         })
-  //         .catch((err) => {
-  //           if (err.response && err.response.data.errors) {
-  //             let errorMessages = Object.values(err.response.data.errors)
-  //               .flat()
-  //               .map((msg) => `<li>${msg}</li>`)
-  //               .join('')
-
-  //             swal.fire({
-  //               title: 'Validation Error',
-  //               html: `<ul style="text-align: left;">${errorMessages}</ul>`,
-  //               icon: 'error',
-  //               confirmButtonText: 'Try Again',
-  //             })
-  //           } else {
-  //             swal.fire({
-  //               title: 'Error!',
-  //               text: 'Failed to add Admin.',
-  //               icon: 'error',
-  //               confirmButtonText: 'Try Again',
-  //             })
-  //           }
-  //         })
-  //         .finally(() => {
-  //           // End loading
-  //           setLoading(false);
-  //           console.log("Request finished (either success or failure)");
-  //         });
-  //     } else if (propAction === 'edit') {
-  //       // Update user endpoint
-  //       axios
-  //         .put(`http://127.0.0.1:8000/api/updateuser/${user.id}`, data, {
-  //           headers: {
-  //             Authorization: `Bearer ${token}`,
-  //           },
-  //         })
-  //         .then((res) => {
-  //           console.log(res)
-  //           swal.fire({
-  //             title: 'Success!',
-  //             text: 'Admin updated successfully.',
-  //             icon: 'success',
-  //             confirmButtonText: 'OK',
-  //           })
-  //           setModalVisible(false); // Close the modal after editing
-  //         })
-  //         .catch((err) => {
-  //           if (err.response && err.response.data.errors) {
-  //             let errorMessages = Object.values(err.response.data.errors)
-  //               .flat()
-  //               .map((msg) => `<li>${msg}</li>`)
-  //               .join('')
-
-  //             swal.fire({
-  //               title: 'Validation Error',
-  //               html: `<ul style="text-align: left;">${errorMessages}</ul>`,
-  //               icon: 'error',
-  //               confirmButtonText: 'Try Again',
-  //             })
-  //           } else {
-  //             swal.fire({
-  //               title: 'Error!',
-  //               text: 'Failed to update Admin.',
-  //               icon: 'error',
-  //               confirmButtonText: 'Try Again',
-  //             })
-  //           }
-  //         })
-  //         .finally(() => {
-  //           // End loading
-  //           setLoading(false);
-  //           console.log("Request finished (either success or failure)");
-  //         });
-  //     }
-
-  //     console.log("Final Data Sent to API:", data);
-  //   }
-
   const closeModal = () => {
     setModalVisible(false) // Close the modal
     setData({
@@ -380,46 +260,30 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
       ) : null}
 
       {propAction === 'edit' ? (
-        <CModal visible={modalVisible} onClose={closeModal} backdrop="static" size="lg">
+        <CModal visible={modalVisible} onClose={closeModal} backdrop="static" size="xl">
           <CModalHeader closeButton={true}>
             <CModalTitle>Edit Admin</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CForm onSubmit={handleSubmit} className="w-100" encType="multipart/form-data">
-              <div className="row">
+              <div className="row align-items-stretch">
                 {/* Left Column */}
-                <div className="col-8-md">
-                  <CCard>
+                <div className="col-md-8">
+                  <CCard className="p-3 h-100">
                     <div className="row">
                       <div className="col-md-6">
                         <div>
-                          <CFormLabel htmlFor="name">Name:</CFormLabel>
-                          <CFormInput
-                            id="name"
-                            onChange={handleChange}
-                            type="text"
-                            placeholder="Name"
-                            name="name"
-                            required
-                            value={data.name}
-                          />
+                          <CFormLabel htmlFor="name" className='mt-2'>Name:</CFormLabel>
+                          <CFormInput id="name" onChange={handleChange} type="text" placeholder="Name" name="name" required value={data.name} />
                         </div>
 
                         <div>
-                          <CFormLabel htmlFor="email">Email:</CFormLabel>
-                          <CFormInput
-                            id="email"
-                            onChange={handleChange}
-                            type="email"
-                            placeholder="Email"
-                            name="email"
-                            required
-                            value={data.email}
-                          />
+                          <CFormLabel htmlFor="email" className='mt-2'>Email:</CFormLabel>
+                          <CFormInput id="email" onChange={handleChange} type="email" placeholder="Email" name="email" required value={data.email} />
                         </div>
 
                         <div>
-                          <CFormLabel htmlFor="password">Password:</CFormLabel>
+                          <CFormLabel htmlFor="password" className='mt-2'>Password:</CFormLabel>
                           <CFormInput
                             id="password"
                             onChange={handleChange}
@@ -427,70 +291,37 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
                             name="password"
                             required={propAction === 'add'} // Only required for adding new user
                             autoComplete="new-password"
-                            placeholder={
-                              propAction === 'add'
-                                ? 'Password'
-                                : 'Leave blank to keep current password'
-                            }
+                            placeholder={propAction === 'add' ? 'Password' : 'Leave blank to keep current password'}
                             value={data.password}
                           />
                         </div>
 
+                        {/* Right Column */}
                         <div>
-                          <CFormLabel htmlFor="gender">Gender:</CFormLabel>
-                          <CFormSelect
-                            id="gender"
-                            name="gender"
-                            onChange={handleChange}
-                            required
-                            value={data.gender}
-                          >
+                          <CFormLabel htmlFor="gender" className='mt-2'>Gender:</CFormLabel>
+                          <CFormSelect id="gender" name="gender" onChange={handleChange} required value={data.gender}>
                             <option value="" disabled>
                               Select Gender
                             </option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
-                            <option value="Others">Other</option>
+                            <option value="Other">Other</option>
                           </CFormSelect>
                         </div>
-
-                        <div>
-                          <CFormLabel htmlFor="date_Of_Birth">Date of Birth:</CFormLabel>
-                          <CFormInput
-                            id="date_Of_Birth"
-                            onChange={handleChange}
-                            type="date"
-                            name="date_Of_Birth"
-                            value={data.date_Of_Birth || ''}
-                          />
-                        </div>
-
-                        <div>
-                          <CFormLabel htmlFor="mobile">Mobile:</CFormLabel>
-                          <CFormInput
-                            id="mobile"
-                            onChange={handleChange}
-                            type="tel"
-                            name="mobile"
-                            required
-                            placeholder="Mobile Number"
-                            value={data.mobile}
-                          />
-                        </div>
                       </div>
-
-                      {/* Right Column */}
                       <div className="col-md-6">
                         <div>
-                          <CFormLabel htmlFor="address">Address:</CFormLabel>
-                          <CFormTextarea
-                            id="address"
-                            onChange={handleChange}
-                            name="address"
-                            required
-                            placeholder="Enter address"
-                            value={data.address}
-                          ></CFormTextarea>
+                          <CFormLabel htmlFor="date_Of_Birth" className='mt-2'>Date of Birth:</CFormLabel>
+                          <CFormInput id="date_Of_Birth" onChange={handleChange} type="date" name="date_Of_Birth" value={data.date_Of_Birth || ''} />
+                        </div>
+
+                        <div>
+                          <CFormLabel htmlFor="mobile" className='mt-2'>Mobile:</CFormLabel>
+                          <CFormInput id="mobile" onChange={handleChange} type="tel" name="mobile" required placeholder="Mobile Number" value={data.mobile} />
+                        </div>
+                        <div>
+                          <CFormLabel htmlFor="address" className='mt-2'>Address:</CFormLabel>
+                          <CFormTextarea id="address" onChange={handleChange} name="address" required placeholder="Enter address" value={data.address}></CFormTextarea>
                         </div>
                       </div>
                     </div>
@@ -505,18 +336,16 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
                   </CCard>
                 </div>
               </div>
-
-              <div className="text-left mt-3">
-                <CButton color="primary" type="submit">
-                  {propAction === 'add' ? 'Add User' : 'Update User'}
-                </CButton>
-                <CButton color="secondary" onClick={closeModal} className="ms-2">
-                  Cancel
-                </CButton>
-              </div>
+                <div className="text-left mt-3">
+                  <CButton color="primary" type="submit">
+                    {propAction === 'add' ? 'Add User' : 'Update User'}
+                  </CButton>
+                  <CButton color="secondary" onClick={closeModal} className="ms-2">
+                    Cancel
+                  </CButton>
+                </div>
             </CForm>
           </CModalBody>
-
           <CModalFooter>{/* Footer buttons are already handled in the form */}</CModalFooter>
         </CModal>
       ) : (
@@ -531,59 +360,28 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
                   <div className="col-md-6">
                     <div>
                       <CFormLabel htmlFor="name">Name:</CFormLabel>
-                      <CFormInput
-                        id="name"
-                        onChange={handleChange}
-                        type="text"
-                        placeholder="Name"
-                        name="name"
-                        required
-                        value={data.name}
-                      />
+                      <CFormInput id="name" onChange={handleChange} type="text" placeholder="Name" name="name" required value={data.name} />
                     </div>
 
                     <div>
                       <CFormLabel htmlFor="email">Email:</CFormLabel>
-                      <CFormInput
-                        id="email"
-                        onChange={handleChange}
-                        type="email"
-                        placeholder="Email"
-                        name="email"
-                        required
-                        value={data.email}
-                      />
+                      <CFormInput id="email" onChange={handleChange} type="email" placeholder="Email" name="email" required value={data.email} />
                     </div>
 
                     <div>
                       <CFormLabel htmlFor="password">Password:</CFormLabel>
-                      <CFormInput
-                        id="password"
-                        onChange={handleChange}
-                        type="password"
-                        name="password"
-                        required
-                        autoComplete="new-password"
-                        placeholder="Password"
-                        value={data.password}
-                      />
+                      <CFormInput id="password" onChange={handleChange} type="password" name="password" required autoComplete="new-password" placeholder="Password" value={data.password} />
                     </div>
 
                     <div>
                       <CFormLabel htmlFor="gender">Gender:</CFormLabel>
-                      <CFormSelect
-                        id="gender"
-                        name="gender"
-                        onChange={handleChange}
-                        required
-                        value={data.gender}
-                      >
+                      <CFormSelect id="gender" name="gender" onChange={handleChange} required value={data.gender}>
                         <option value="" disabled>
                           Select Gender
                         </option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
-                        <option value="Others">Other</option>
+                        <option value="Other">Other</option>
                       </CFormSelect>
                     </div>
                   </div>
@@ -591,39 +389,18 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
                   <div className="col-md-6">
                     <div>
                       <CFormLabel htmlFor="date_Of_Birth">Date of Birth:</CFormLabel>
-                      <CFormInput
-                        id="date_Of_Birth"
-                        onChange={handleChange}
-                        type="date"
-                        name="date_Of_Birth"
-                        value={data.date_Of_Birth || ''}
-                      />
+                      <CFormInput id="date_Of_Birth" onChange={handleChange} type="date" name="date_Of_Birth" value={data.date_Of_Birth || ''} />
                     </div>
 
                     <div>
                       <CFormLabel htmlFor="mobile">Mobile:</CFormLabel>
-                      <CFormInput
-                        id="mobile"
-                        onChange={handleChange}
-                        type="tel"
-                        name="mobile"
-                        required
-                        placeholder="Mobile Number"
-                        value={data.mobile}
-                      />
+                      <CFormInput id="mobile" onChange={handleChange} type="tel" name="mobile" required placeholder="Mobile Number" value={data.mobile} />
                     </div>
 
                     {/* Right Column */}
                     <div>
                       <CFormLabel htmlFor="address">Address:</CFormLabel>
-                      <CFormTextarea
-                        id="address"
-                        onChange={handleChange}
-                        name="address"
-                        required
-                        placeholder="Enter address"
-                        value={data.address}
-                      ></CFormTextarea>
+                      <CFormTextarea id="address" onChange={handleChange} name="address" required placeholder="Enter address" value={data.address}></CFormTextarea>
                     </div>
                   </div>
                 </div>
