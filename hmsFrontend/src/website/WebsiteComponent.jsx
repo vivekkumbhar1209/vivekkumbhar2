@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import Navbar from './src/assets/components/Header/nav'
-import Homepage from './src/assets/pages/Homepage'
+const Homepage = React.lazy(() => import('./src/assets/pages/Homepage'))
 import './index.css'
+import Loader from '../components/Loader'
 
 const WebsiteComponent = () => {
 
@@ -9,8 +10,14 @@ const WebsiteComponent = () => {
 
     return (
         <>
-            <Navbar />
-            <Homepage />
+            <Suspense fallback={
+                <div className='flex justify-center items-center h-screen w-screen'>
+                    <Loader />
+                </div>
+            }>
+                <Navbar />
+                <Homepage />
+            </Suspense>
         </>
     )
 }
