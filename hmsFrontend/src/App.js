@@ -4,15 +4,16 @@ import { useSelector } from 'react-redux'
 import { CSpinner, useColorModes } from '@coreui/react'
 import PrivateRoute from './PrivateRoute'
 import Website from './website/WebsiteComponent'
-import AboutUs from './website/src/assets/pages/About'
-import NavFooter from './website/src/assets/components/layouts/NavFooter'
-import Seemore from './website/src/assets/components/Spacialty/Seemore'
-import Speciality from './website/src/assets/components/Spacialty/Spaciality'
-import AllDoctors from './website/src/assets/components/doctorsection/AllDoctors'
-import Blog from './website/src/assets/components/Blog'
-import EnquiryForm from './website/src/assets/components/enquiry form/enquiry'
-import AllBlogGrid from './website/src/assets/components/All blogs'
 import Loader from './components/Loader'
+
+const AllBlogGrid = React.lazy(() => import('./website/src/assets/components/All blogs'))
+const EnquiryForm = React.lazy(() => import('./website/src/assets/components/enquiry form/enquiry'))
+const Blog = React.lazy(() => import('./website/src/assets/components/Blog'))
+const AllDoctors = React.lazy(() => import('./website/src/assets/components/doctorsection/AllDoctors'))
+const Speciality = React.lazy(() => import('./website/src/assets/components/Spacialty/Spaciality'))
+const Seemore = React.lazy(() => import('./website/src/assets/components/Spacialty/Seemore'))
+const AboutUs = React.lazy(() => import('./website/src/assets/pages/About'))
+const NavFooter = React.lazy(() => import('./website/src/assets/components/layouts/NavFooter'))
 
 // Containers
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
