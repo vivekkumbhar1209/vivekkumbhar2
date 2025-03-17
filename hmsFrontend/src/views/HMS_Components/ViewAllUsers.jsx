@@ -161,10 +161,10 @@ const ViewAllUsers = ({ action }) => {
                 <CTableHeaderCell>Email</CTableHeaderCell>
                 <CTableHeaderCell>Gender</CTableHeaderCell>
                 <CTableHeaderCell>Contact Number</CTableHeaderCell>
-                { action === "edit" ? 
+                {action === "edit" ?
                   (<>
-                  <CTableHeaderCell>Last Updated</CTableHeaderCell>
-                  <CTableHeaderCell>Action</CTableHeaderCell>
+                    <CTableHeaderCell>Last Updated</CTableHeaderCell>
+                    <CTableHeaderCell>Action</CTableHeaderCell>
                   </>) : null
                 }
               </CTableRow>
@@ -212,14 +212,14 @@ const ViewAllUsers = ({ action }) => {
                     <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>{elem.gender}</CTableDataCell>
                     <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>{elem.mobile}</CTableDataCell>
                     {action === 'edit' ? (
-                        <> 
-                      <CTableDataCell>
-                        {new Date(elem.updated_at).toLocaleString()}
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <CButton onClick={() => handleEdit(elem)}>Edit</CButton>
-                      </CTableDataCell>
-                        </>
+                      <>
+                        <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>
+                          {new Date(elem.updated_at).toLocaleString()}
+                        </CTableDataCell>
+                        <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>
+                          <CButton onClick={() => handleEdit(elem)}>Edit</CButton>
+                        </CTableDataCell>
+                      </>
                     ) : null}
                   </CTableRow>
                 ))
