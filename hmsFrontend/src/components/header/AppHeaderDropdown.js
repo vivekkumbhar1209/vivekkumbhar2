@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   CAvatar,
   CBadge,
@@ -13,9 +13,14 @@ import { cilSettings, cilUser, cilAccountLogout } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import avatar8 from './../../assets/images/avatars/8.jpg'
 import axios from 'axios'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, Link, useSearchParams } from 'react-router-dom'
 
 const AppHeaderDropdown = () => {
+
+  // useEffect(()=>{
+  //   console.log(JSON.parse(localStorage.getItem('userData')).profilePhoto)
+  // },[])
+
   const navigate = useNavigate()
   const handleLogout = () => {
     console.log('logout')
@@ -39,7 +44,7 @@ const AppHeaderDropdown = () => {
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0 pe-0" caret={false}>
-        <CAvatar src={avatar8} size="md" />
+        <CAvatar src={`http://127.0.0.1:8000/storage/${JSON.parse(localStorage.getItem('userData')).profilePhoto}`}  size="md" />
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-body-secondary fw-semibold my-2">Settings</CDropdownHeader>
