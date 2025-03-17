@@ -1,18 +1,6 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import {
-  CButton,
-  CCard,
-  CCardBody,
-  CCardGroup,
-  CCol,
-  CContainer,
-  CForm,
-  CFormInput,
-  CInputGroup,
-  CInputGroupText,
-  CRow,
-} from '@coreui/react'
+import { CButton, CCard, CCardBody, CCardGroup, CCol, CContainer, CForm, CFormInput, CInputGroup, CInputGroupText, CRow } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import { useState } from 'react'
@@ -101,32 +89,16 @@ const Login = () => {
                           <CInputGroupText>
                             <CIcon icon={cilUser} />
                           </CInputGroupText>
-                          <CFormInput
-                            onChange={handleChange}
-                            type="email"
-                            placeholder="Email"
-                            autoComplete="username"
-                            name="email"
-                          />
+                          <CFormInput onChange={handleChange} type="email" placeholder="Email" autoComplete="username" name="email" />
                         </CInputGroup>
-                        {validationErrors && (
-                          <p style={{ color: 'red' }}>{validationErrors.email}</p>
-                        )}
+                        {validationErrors && <p style={{ color: 'red' }}>{validationErrors.email}</p>}
                         <CInputGroup className="mb-4">
                           <CInputGroupText>
                             <CIcon icon={cilLockLocked} />
                           </CInputGroupText>
-                          <CFormInput
-                            type="password"
-                            placeholder="Password"
-                            autoComplete="current-password"
-                            name="password"
-                            onChange={handleChange}
-                          />
+                          <CFormInput type="password" placeholder="Password" autoComplete="current-password" name="password" onChange={handleChange} />
                         </CInputGroup>
-                        {validationErrors && (
-                          <p style={{ color: 'red' }}>{validationErrors.password}</p>
-                        )}
+                        {validationErrors && <p style={{ color: 'red' }}>{validationErrors.password}</p>}
                         <CRow>
                           <CCol xs={6}>
                             <CButton type="submit" color="primary" className="px-4">
@@ -134,9 +106,9 @@ const Login = () => {
                             </CButton>
                           </CCol>
                           <CCol xs={6} className="text-right">
-                            <CButton color="link" className="px-0">
+                            <Link to={'/forgot-password'} color="link" className="px-0">
                               Forgot password?
-                            </CButton>
+                            </Link>
                           </CCol>
                         </CRow>
                       </CForm>
