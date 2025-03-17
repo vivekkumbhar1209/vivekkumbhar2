@@ -80,10 +80,10 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
         mobile: user.mobile,
         address: user.address,
         role: user.role,
-        specialization: user.specialization,
-        experience: user.experience,
-        departmentID: user.departmentID,
-        consultation_fee: user.consultation_fee,
+        specialization: user.doctor.specialization,
+        experience: user.doctor.experience,
+        departmentID: user.doctor.departmentID,
+        consultation_fee: user.doctor.consultation_fee,
         profilePhoto: user.profilePhoto
       })
       setModalVisible(true) // Open the modal

@@ -40,11 +40,12 @@ const ViewAllUsers = ({ action }) => {
       })
       .then((res) => {
         setUsers(res.data.Users)
+
       })
       .catch((err) => {
         console.log(err)
       })
-  }, [sortBy, order])
+  }, [sortBy, order, users])
 
   const handleSearch = (e) => {
     var value = e.target.value.toLowerCase()
@@ -213,7 +214,7 @@ const ViewAllUsers = ({ action }) => {
                     <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>{elem.mobile}</CTableDataCell>
                     {action === 'edit' ? (
                         <> 
-                      <CTableDataCell>
+                      <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>
                         {new Date(elem.updated_at).toLocaleString()}
                       </CTableDataCell>
                       <CTableDataCell>

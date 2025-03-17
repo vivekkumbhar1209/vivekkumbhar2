@@ -381,7 +381,7 @@ const AddReceptionistForm = ({ role, propAction = 'add', user }) => {
 
             <div className="text-left mt-3">
               <CButton color="primary" type="submit">
-                Add User
+                Update Receptionist
               </CButton>
             </div>
           </CForm>
