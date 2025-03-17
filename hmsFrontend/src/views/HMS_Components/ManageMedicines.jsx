@@ -24,7 +24,7 @@ const ManageDepartment = () => {
           <p className="text-body-secondary small">
             You can manage all the <code>medicines</code> from here.
           </p>
-          <CTabs activeItemKey={1}>
+          <CTabs activeItemKey={2}>
             <CTabList variant="underline-border">
               <CTab itemKey={1}>Add Medicines</CTab>
               <CTab itemKey={2}>Edit Medicines</CTab>

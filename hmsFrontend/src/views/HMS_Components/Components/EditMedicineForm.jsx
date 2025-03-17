@@ -135,7 +135,10 @@ const EditMedicine = () => {
                   <CTableDataCell>{formatDate(medicine.updated_at)}</CTableDataCell>
                   <CTableDataCell>
                     <CButton color="warning" size="sm" onClick={() => handleEditClick(medicine)}>
-                      <FaEdit /> Edit
+                      <div className='d-flex justify-content-center align-items-center gap-2'>
+                        <FaEdit />
+                        <span>Edit</span>
+                      </div>
                     </CButton>
                   </CTableDataCell>
                 </CTableRow>
