@@ -336,14 +336,14 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
                   </CCard>
                 </div>
               </div>
-                <div className="text-left mt-3">
-                  <CButton color="primary" type="submit">
-                    {propAction === 'add' ? 'Add User' : 'Update User'}
-                  </CButton>
-                  <CButton color="secondary" onClick={closeModal} className="ms-2">
-                    Cancel
-                  </CButton>
-                </div>
+              <div className="text-left mt-3">
+                <CButton color="primary" type="submit">
+                  {propAction === 'add' ? 'Add User' : 'Update User'}
+                </CButton>
+                <CButton color="secondary" onClick={closeModal} className="ms-2">
+                  Cancel
+                </CButton>
+              </div>
             </CForm>
           </CModalBody>
           <CModalFooter>{/* Footer buttons are already handled in the form */}</CModalFooter>
