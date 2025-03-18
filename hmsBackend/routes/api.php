@@ -70,3 +70,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/getProfilePhoto', [OPDController::class, 'showProfilePhoto']);
 
 });
+
+Route::post('/forgot-password', [UserRegistration::class, 'forgotPassword']);
+Route::post('/update-password', [UserRegistration::class, 'updatePassword']);
