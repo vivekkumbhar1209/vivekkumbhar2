@@ -238,6 +238,7 @@ const sendToBackend = async (url, method, formData) => {
       consultation_fee: '',
       profilePhoto: '',
     })
+    setModalVisible(false);
   } catch (err) {
     console.error('Error:', err)
 

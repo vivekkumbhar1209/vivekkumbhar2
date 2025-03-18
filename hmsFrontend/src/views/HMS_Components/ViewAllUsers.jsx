@@ -217,7 +217,7 @@ const ViewAllUsers = ({ action }) => {
                       <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>
                         {new Date(elem.updated_at).toLocaleString()}
                       </CTableDataCell>
-                      <CTableDataCell>
+                      <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>
                         <CButton onClick={() => handleEdit(elem)}>Edit</CButton>
                       </CTableDataCell>
                         </>
