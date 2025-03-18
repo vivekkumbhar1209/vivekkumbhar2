@@ -1,3 +1,4 @@
+import { element } from 'prop-types'
 import React from 'react'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
@@ -16,6 +17,8 @@ const Profile = React.lazy(() => import('./views/HMS_Components/Profile'))
 const ViewQueue = React.lazy(() => import('./views/HMS_Components/ViewQueue'))
 const OpdConsultation = React.lazy(() => import('./views/HMS_Components/OpdConsultation'))
 const ViewStats = React.lazy(() => import('./views/HMS_Components/ViewStatistics'))
+const DoctorAvailability=React.lazy(()=>import('./views/HMS_Components/DoctorAvailability'))
+const UpdateAvailability=React.lazy(()=>import('./views/HMS_Components/Updateavailability'))
 
 //website content element
 const Reviews = React.lazy(() => import('./views/HMS_Components/Reviews'))
@@ -120,6 +123,16 @@ const routes = [
     name: 'Search Patient',
     element: SearchPatient,
   },
+  {
+    path:'/updateAvailability',
+    name:'Update Availability',
+    element: UpdateAvailability,
+  },
+  {
+    path:'/doctorAvailability',
+    name:'Doctor availability',
+    element:DoctorAvailability,
+  }
 ]
 
 export default routes
