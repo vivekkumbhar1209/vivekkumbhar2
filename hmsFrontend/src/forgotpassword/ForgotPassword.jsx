@@ -1,16 +1,18 @@
-import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { CButton, CCard, CCardBody, CCardGroup, CCol, CContainer, CForm, CFormInput, CInputGroup, CInputGroupText, CRow } from '@coreui/react'
+import React, { useState } from 'react'
+import { CButton, CCard, CCardBody, CCardGroup, CCol, CContainer, CForm, CFormInput, CInputGroup, CInputGroupText, CRow, CFormCheck } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilLockLocked, cilUser } from '@coreui/icons'
-import { useState } from 'react'
-import axios from 'axios'
-import Swal from 'sweetalert2'
-import Loader from '../components/Loader'
+import { cilAt, cilUser } from '@coreui/icons'
 import '../scss/examples.scss'
 import '../scss/style.scss'
 
 const ForgotPassword = () => {
+
+    const [selectedOption, setSelectedOption] = useState('1')
+
+    const handleSelectedOption = (e) => {
+        setSelectedOption(e.target.value)
+    }
+
     return (
         <>
             <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
@@ -25,7 +27,7 @@ const ForgotPassword = () => {
                                     <CCardBody className="text-center d-flex align-items-center">
                                         <div>
                                             <h2>Forgot Password?</h2>
-                                            <p>Reset password using email</p>
+                                            <p>Reset password using email.</p>
                                         </div>
                                     </CCardBody>
                                 </CCard>
@@ -34,10 +36,37 @@ const ForgotPassword = () => {
                                     <CCardBody>
                                         <CForm>
                                             <h1>Reset Password</h1>
-                                            <p className="text-body-secondary">Your registered email please</p>
+                                            <p className="text-body-secondary">Your registered email please!</p>
                                             <CInputGroup className="mb-3">
                                                 <CInputGroupText>
                                                     <CIcon icon={cilUser} />
+                                                </CInputGroupText>
+                                                <div className="d-flex align-items-center px-3">
+                                                    <CFormCheck
+                                                        type="radio"
+                                                        name="exampleRadios"
+                                                        id="exampleRadios1"
+                                                        value="1"
+                                                        label="Employee"
+                                                        className="me-3"
+                                                        onChange={handleSelectedOption}
+                                                        checked={selectedOption === '1'}
+                                                    />
+                                                    <CFormCheck
+                                                        type="radio"
+                                                        name="exampleRadios"
+                                                        id="exampleRadios2"
+                                                        value="2"
+                                                        label="Patient"
+                                                        className="me-3"
+                                                        onChange={handleSelectedOption}
+                                                        checked={selectedOption === '2'}
+                                                    />
+                                                </div>
+                                            </CInputGroup>
+                                            <CInputGroup className="mb-3">
+                                                <CInputGroupText>
+                                                    <CIcon icon={cilAt} />
                                                 </CInputGroupText>
                                                 <CFormInput type="email" placeholder="Email" autoComplete="username" name="email" />
                                             </CInputGroup>
@@ -47,6 +76,8 @@ const ForgotPassword = () => {
                                                         Send OTP
                                                     </CButton>
                                                 </CCol>
+
+                                                <p>Selected Option - {selectedOption}</p>
                                             </CRow>
                                         </CForm>
                                     </CCardBody>
