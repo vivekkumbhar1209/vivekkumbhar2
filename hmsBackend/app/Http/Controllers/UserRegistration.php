@@ -34,12 +34,15 @@ class UserRegistration extends Controller
         
 
         // second argument in the query method is a default value
-        $users = User::orderBy($sortBy, $order)->get();
-
+        $users = User::orderBy($sortBy, $order)
+        ->with(['doctor:doctorID,userID,experience,departmentID,consultation_fee'])
+        ->get();
+        // $doctors_supplymentary_details = Doctor::select('userID', 'experience', 'departmentID', 'consultation_fee')->get();
         return response()->json([
             "status"  => 200,
             "message" => "Users Data",
             "Users"   => $users,
+            // "Doctors" => $doctors_supplymentary_details,
             //   "params" => $requestParams,
         ]);
     }
