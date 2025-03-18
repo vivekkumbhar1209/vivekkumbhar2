@@ -14,6 +14,8 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PatientRegistration;
 use App\Http\Controllers\UpdateDepartment;
 use App\Http\Controllers\UserRegistration;
+use App\Http\Controllers\EnquiryController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [LoginController::class, 'login']);
@@ -72,3 +74,4 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/updatePatientQueueStatus', [OPDController::class, 'updatePatientQueueStatus']);
 
 });
+Route::post('/submit-enquiry', [EnquiryController::class, 'store']);

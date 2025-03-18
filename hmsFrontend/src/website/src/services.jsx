@@ -35,15 +35,15 @@ const ServicesCarousel = () => {
 
       <div className="relative">
         {/* Custom navigation buttons */}
-        <button className="custom-prev absolute left-2 sm:left-0 md:-left-6 lg:-left-10 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-white border border-gray-300 rounded-full shadow-md hover:bg-gray-100 transition">
+        <button style={{borderRadius:'20px'}} className="custom-prev absolute left-2 sm:left-0 md:-left-6 lg:-left-10 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-white border border-gray-300 rounded-full shadow-md hover:bg-gray-100 transition">
           ❮
         </button>
-        <button className="custom-next absolute right-2 sm:right-0 md:-right-6 lg:-right-10 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-white border border-gray-300 rounded-full shadow-md hover:bg-gray-100 transition">
+        <button style={{borderRadius:'20px'}} className="custom-next absolute right-2 sm:right-0 md:-right-6 lg:-right-10 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-white border border-gray-300 rounded-full shadow-md hover:bg-gray-100 transition">
           ❯
         </button>
 
         <Swiper
-          modules={[Navigation, Pagination, Autoplay]}
+          modules={[Navigation, Autoplay]}
           spaceBetween={15}
           loop={true}
           autoplay={{
@@ -72,7 +72,7 @@ const ServicesCarousel = () => {
                   className="w-full h-40 object-cover"
                 />
                 <div className="p-4 text-center flex flex-col justify-center h-24">
-                  <h3 className="text-lg font-semibold text-gray-800">{service.title}</h3>
+                  <h3 style={{fontSize:'17px'}} className="text-9xl font-semibold text-gray-800">{service.title}</h3>
                 </div>
               </div>
             </SwiperSlide>
