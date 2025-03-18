@@ -4,6 +4,7 @@ use App\Http\Controllers\AddDisease;
 use App\Http\Controllers\DiseaseController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DeptReg;
+use App\Http\Controllers\DoctorAvailabilityController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogOutController;
@@ -43,6 +44,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/addMedicine', [MedicineController::class, 'addMedicine']);
     Route::get('/getMedicines', [MedicineController::class, 'getMedicines']);
     Route::post('/add-medicine', [MedicineController::class, 'addMedicine']);
+    Route::post('/updateavailability',[DoctorAvailabilityController::class,'updateAvailability']);//update availability of doctor
 
 
     Route::get('/getDept', [DepartmentController::class, 'allDepartment']);

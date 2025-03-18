@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('doctor_availability', function (Blueprint $table) {
             $table->bigIncrements('availability_ID');
-            $table->unsignedBigInteger('doctorID');
-            $table->foreign('doctorID')->references('doctorID')->on('doctors')->onDelete('cascade');
+            $table->unsignedBigInteger('userID');
+            $table->foreign('userID')->references('id')->on('users')->onDelete('cascade');
             $table->enum('availability_status',['Available','Unavailable']);
             $table->time('available_start_time')->nullable();
             $table->time('available_end_time')->nullable();
