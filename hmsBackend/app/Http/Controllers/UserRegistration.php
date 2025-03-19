@@ -29,13 +29,24 @@ class UserRegistration extends Controller
         //   sortBy: sortBy,
         //   order: order,
         // },
+        $action = $request->query("action");
+        $users = null;
+        
         $sortBy = $request->query("sortBy", "name");
         $order  = $request->query("order", "asc");
-
+        if ($action === "doctors"){
+            $users = User::where('role', 'Doctor')
+            ->orderBy($sortBy, $order)
+            ->with(['doctor:doctorID,userID,experience,departmentID,consultation_fee'])
+            ->get();
+        }
+        else {
         // second argument in the query method is a default value
         $users = User::orderBy($sortBy, $order)
         ->with(['doctor:doctorID,userID,experience,departmentID,consultation_fee'])
         ->get();
+        }
+
         // $doctors_supplymentary_details = Doctor::select('userID', 'experience', 'departmentID', 'consultation_fee')->get();
         return response()->json([
             "status"  => 200,
@@ -45,6 +56,8 @@ class UserRegistration extends Controller
             //   "params" => $requestParams,
         ]);
     }
+
+    
 
     public function registerUser(Request $request)
     {

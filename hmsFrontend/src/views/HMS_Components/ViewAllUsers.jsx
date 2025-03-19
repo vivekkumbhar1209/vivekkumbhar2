@@ -21,7 +21,7 @@ import AddReceptionistForm from './AddReceptionistForm'
 import AddAdminForm from './Components/AddAdminForm'
 import AddDoctorForm from './Components/AddDoctorForm'
 
-const ViewAllUsers = ({ action }) => {
+const ViewAllUsers = ({ action = "doctors" }) => {
   const [users, setUsers] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredData, setFilteredData] = useState([])
@@ -33,12 +33,16 @@ const ViewAllUsers = ({ action }) => {
 
   useEffect(() => {
     var token = localStorage.getItem('login-token')
-    axios
-      .get('http://127.0.0.1:8000/api/viewAllUsers', {
-        headers: { Authorization: `Bearer ${token}` },
-        params: { sortBy, order },
-      })
-      .then((res) => {
+    const url =  "http://127.0.0.1:8000/api/viewAllUsers";
+    axios({
+      method: 'GET',
+      url: url,
+      params: {sortBy, order, action},
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+    .then((res) => {
         setUsers(res.data.Users)
 
       })
