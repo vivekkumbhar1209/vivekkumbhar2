@@ -11,7 +11,7 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isSticky, setIsSticky] = useState(false)
   // const [appointmentPopupOpen, setAppointmentPopupOpen] = useState(false)
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
