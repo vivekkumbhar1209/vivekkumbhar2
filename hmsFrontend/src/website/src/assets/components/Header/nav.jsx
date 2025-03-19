@@ -34,7 +34,7 @@ const Navbar = () => {
           <span className="text-red-500">+987 654 3210</span>
         </div>
         <button
-          onClick={() => navigate('/enquiry')}
+          onClick={() => navigate('/contact')}
           className="bg-purple-900 text-white px-6 py-2 rounded-full font-semibold shadow-md hover:opacity-90"
         >
           Book Appointment

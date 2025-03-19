@@ -1,7 +1,6 @@
 import { FaPhone, FaInstagram, FaXTwitter, FaLinkedinIn, FaFacebookF, FaYoutube, FaLocationDot } from "react-icons/fa6";
 import enquirybg from "../../../../Images/enquirybg.jpg";
 import { useState } from 'react';
-import axios from 'axios';
 import Swal from 'sweetalert2';
 import Ringloader from '../../../../../components/RingLoader'
 import api from '../../../../../api'
