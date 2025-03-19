@@ -2,14 +2,16 @@ import { useState, useEffect } from 'react'
 import { X, Menu } from 'lucide-react'
 import logo from './logo2.png'
 import 'swiper/css'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import EnquiryForm from '../enquiry form/enquiry'
 
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [loginPopupOpen, setLoginPopupOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isSticky, setIsSticky] = useState(false)
-  const [appointmentPopupOpen, setAppointmentPopupOpen] = useState(false)
+  // const [appointmentPopupOpen, setAppointmentPopupOpen] = useState(false)
+  const navigate=useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,7 +34,7 @@ const Navbar = () => {
           <span className="text-red-500">+987 654 3210</span>
         </div>
         <button
-          onClick={() => setAppointmentPopupOpen(true)}
+          onClick={() => navigate('/enquiry')}
           className="bg-purple-900 text-white px-6 py-2 rounded-full font-semibold shadow-md hover:opacity-90"
         >
           Book Appointment
@@ -155,74 +157,19 @@ const Navbar = () => {
           </div>
         </div>
       )}
-      {appointmentPopupOpen && (
-        <div className="fixed inset-0 backdrop-blur-lg bg-transparent flex items-center justify-center p-4 z-50">
-          <div className="bg-white p-6 rounded shadow-lg w-full max-w-md relative max-h-screen overflow-y-auto">
-            <button
-              onClick={() => setAppointmentPopupOpen(false)}
-              className="absolute top-3 right-4 text-red-600  hover:text-gray-900"
-            >
-              <X size={20} />
-            </button>
-            <h2 className="text-xl bg-white-100 font-bold mb-4 text-center">Book an Appointment</h2>
-            <label className="block mb-1">Name</label>
-            <input type="text" placeholder="Name" className="w-full p-2 border rounded mb-2" />
-            <label className="block mb-1">Gender</label>
-            <select className="w-full p-2 border rounded mb-2">
-              <option>Male</option>
-              <option>Female</option>
-              <option>other</option>
-            </select>
-            <label className="block mb-1">Email Address</label>
-            <input
-              type="email"
-              placeholder="Email Address"
-              className="w-full p-2 border rounded mb-2"
-            />
-            <label className="block mb-1">Phone Number</label>
-            <input
-              type="tel"
-              placeholder="Phone Number"
-              className="w-full p-2 border rounded mb-2"
-            />
-            <label className="block mb-1">Date of Birth</label>
-            <input
-              type="date"
-              placeholder="Date of Birth"
-              className="w-full p-2 border rounded mb-2"
-            />
-            <label className="block mb-1">Address</label>
-            <input type="text" placeholder="Address" className="w-full p-2 border rounded mb-2" />
-            <label className="block mb-1">Date of Appointment</label>
-            <input type="date" className="w-full p-2 border rounded mb-2" />
-            <label className="block mb-1">Time </label>
-            <input type="time" className="w-full p-2 border rounded mb-2" />
-            <label className="block mb-1">Select a Doctor</label>
-            <select className="w-full p-2 border rounded mb-2">
-              <option>Select Doctor</option>
-              <option>Dr. Smith</option>
-              <option>Dr. Johnson</option>
-            </select>
-
-            <div className="mb-4">
-              <label className="block text-gray-700">
-                Have you ever applied to our facility before?
-              </label>
-              <div className="flex gap-4">
-                <label className="flex items-center">
-                  <input type="radio" name="appliedBefore" value="yes" className="mr-2" /> Yes
-                </label>
-                <label className="flex items-center">
-                  <input type="radio" name="appliedBefore" value="no" className="mr-2" /> No
-                </label>
-              </div>
-            </div>
-            <label className="block mb-1">Message</label>
-            <textarea placeholder="Message" className="w-full p-2 border rounded mb-4"></textarea>
-            <button className="bg-purple-600 text-white px-4 py-2 rounded w-full">Confirm</button>
-          </div>
-        </div>
-      )}
+      {/* {appointmentPopupOpen && (
+         <div className="fixed inset-0 backdrop-blur-lg bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+         <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg relative">
+           <button
+             onClick={() => setAppointmentPopupOpen(false)}
+             className="absolute top-3 right-4 text-red-600 hover:text-gray-900"
+           >
+             <X size={20} />
+           </button>
+           <EnquiryForm />
+         </div>
+       </div>
+      )} */}
     </>
   )
 }
