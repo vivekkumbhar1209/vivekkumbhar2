@@ -4,7 +4,7 @@ import { CButton, CCard, CCardBody, CCardGroup, CCol, CContainer, CForm, CFormIn
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import { useState } from 'react'
-import axios from 'axios'
+import api from '../../../api'
 import Swal from 'sweetalert2'
 import RingLoader from '../../../components/RingLoader'
 import '../../../scss/examples.scss'
@@ -30,7 +30,7 @@ const Login = () => {
   const handleSubmit = (e) => {
     setLoading(true)
     e.preventDefault()
-    axios
+    api
       .post('http://localhost:8000/api/login', formData)
       .then((res) => {
         if (res.data.validationError) {
