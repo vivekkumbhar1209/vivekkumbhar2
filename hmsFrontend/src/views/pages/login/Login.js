@@ -31,7 +31,7 @@ const Login = () => {
     setLoading(true)
     e.preventDefault()
     api
-      .post('http://localhost:8000/api/login', formData)
+      .post('login', formData)
       .then((res) => {
         if (res.data.validationError) {
           let errorMessages = Object.values(res.data.validationError).flat().join('\n')
