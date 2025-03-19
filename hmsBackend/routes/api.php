@@ -43,7 +43,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/addMedicine', [MedicineController::class, 'addMedicine']);
     Route::get('/getMedicines', [MedicineController::class, 'getMedicines']);
     Route::post('/add-medicine', [MedicineController::class, 'addMedicine']);
-    Route::post('/updateavailability',[DoctorAvailabilityController::class,'updateAvailability']);//update availability of doctor
+    Route::post('/updateavailability', [DoctorAvailabilityController::class, 'updateAvailability']);//update availability of doctor
+    Route::get('/getavailabilityofdoctor', [DoctorAvailabilityController::class, 'getAvailabilityOfDoctor']);
 
     Route::get('/getDept', [DepartmentController::class, 'allDepartment']);
     Route::post('/addMedicineCategory', [MedicineCategoryController::class, 'addCategory']);
