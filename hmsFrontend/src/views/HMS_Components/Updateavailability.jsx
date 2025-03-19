@@ -1,4 +1,3 @@
-//its only for doctor dashboard to update own availability
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import swal from 'sweetalert2'
@@ -9,6 +8,7 @@ const UpdateAvailability = () => {
   const [availabilityStatus, setAvailabilityStatus] = useState('')
   const [availableStartTime, setAvailableStartTime] = useState('')
   const [availableEndTime, setAvailableEndTime] = useState('')
+  const [leaveType, setLeaveType] = useState('') // 1-day leave or multi-day leave
   const [unavailableStartDate, setUnavailableStartDate] = useState('')
   const [unavailableEndDate, setUnavailableEndDate] = useState('')
   const [reason, setReason] = useState('')
@@ -40,18 +40,11 @@ const UpdateAvailability = () => {
     setLoading(true)
     try {
       const userData = JSON.parse(localStorage.getItem('userData'))
-      const token = localStorage.getItem('login-token') // Ensure token is retrieved properly
+      const token = localStorage.getItem('login-token')
       const userID = userData?.id
 
-      if (!userID) {
-        console.error('User ID not found in local storage')
-        swal.fire('Error', 'User ID not found. Please log in again.', 'error')
-        return
-      }
-
-      if (!token) {
-        console.error('Auth token not found in local storage')
-        swal.fire('Unauthorized', 'Please log in again.', 'warning')
+      if (!userID || !token) {
+        swal.fire('Unauthorized', 'Please log in again.', 'error')
         return
       }
 
@@ -65,7 +58,6 @@ const UpdateAvailability = () => {
         reason: availabilityStatus === 'Unavailable' ? reason : null,
       }
 
-      // API request using axios
       const response = await axios.post('http://127.0.0.1:8000/api/updateavailability', formData, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -75,31 +67,15 @@ const UpdateAvailability = () => {
       })
 
       if (response.data.status === 200) {
-        swal.fire({
-          title: 'Success!',
-          text: 'Availability updated successfully.',
-          icon: 'success',
-          confirmButtonText: 'OK',
-        })
+        swal.fire('Success', 'Availability updated successfully.', 'success')
         setAvailabilityStatus('')
         setAvailableStartTime('')
         setAvailableEndTime('')
+        setLeaveType('')
         setUnavailableStartDate('')
         setUnavailableEndDate('')
         setReason('')
-        fetchDoctorAvailability() //refresh availability
-      } else if (response.data.status === 403) {
-        const validationErrorMessages = Object.values(response.data.validationErrors)
-          .flat()
-          .map((msg) => `<li>${msg}</li>`)
-          .join('')
-
-        swal.fire({
-          title: 'Validation Error',
-          html: `<ul style='text-align: left'>${validationErrorMessages}</ul>`,
-          icon: 'error',
-          confirmButtonText: 'Try again',
-        })
+        fetchDoctorAvailability()
       } else {
         swal.fire('Error', response.data.message || 'Something went wrong!', 'error')
       }
@@ -111,11 +87,6 @@ const UpdateAvailability = () => {
     }
   }
 
-  /* to get details of user from user table
- $user = User::with('availability')->find(1);
-dd($user->toArray());
-
-*/
   return (
     <>
       {loading ? (
@@ -141,9 +112,15 @@ dd($user->toArray());
                   )}
                   {doctorAvailability.availability_status === 'Unavailable' && (
                     <>
-                      <p>
-                        <strong>Unavailable From:</strong> {doctorAvailability.unavailable_start_date} <strong>to</strong> {doctorAvailability.unavailable_end_date}
-                      </p>
+                      {doctorAvailability.unavailable_start_date === doctorAvailability.unavailable_end_date ? (
+                        <p>
+                          <strong>Unavailable Date:</strong> {doctorAvailability.unavailable_start_date}
+                        </p>
+                      ) : (
+                        <p>
+                          <strong>Unavailable From:</strong> {doctorAvailability.unavailable_start_date} <strong>to</strong> {doctorAvailability.unavailable_end_date}
+                        </p>
+                      )}
                       <p>
                         <strong>Reason:</strong> {doctorAvailability.reason}
                       </p>
@@ -190,16 +167,48 @@ dd($user->toArray());
                 {/* Fields for Unavailable */}
                 {availabilityStatus === 'Unavailable' && (
                   <>
+                    {/* Leave Type Dropdown */}
                     <CRow className="mb-3">
                       <CCol md={4}>
-                        <CFormLabel>Start Date</CFormLabel>
-                        <CFormInput type="date" value={unavailableStartDate} onChange={(e) => setUnavailableStartDate(e.target.value)} />
-                      </CCol>
-                      <CCol md={4}>
-                        <CFormLabel>End Date</CFormLabel>
-                        <CFormInput type="date" value={unavailableEndDate} onChange={(e) => setUnavailableEndDate(e.target.value)} />
+                        <CFormLabel>Leave Type</CFormLabel>
+                        <CFormSelect value={leaveType} onChange={(e) => setLeaveType(e.target.value)}>
+                          <option value="">Select</option>
+                          <option value="1-day">1 Day Leave</option>
+                          <option value="multi-day">Multi-Day Leave</option>
+                        </CFormSelect>
                       </CCol>
                     </CRow>
+
+                    {/* Date Fields based on Leave Type */}
+                    {leaveType === '1-day' && (
+                      <CRow className="mb-3">
+                        <CCol md={4}>
+                          <CFormLabel>Leave Date</CFormLabel>
+                          <CFormInput
+                            type="date"
+                            value={unavailableStartDate}
+                            onChange={(e) => {
+                              setUnavailableStartDate(e.target.value)
+                              setUnavailableEndDate(e.target.value) // Auto-set end date
+                            }}
+                          />
+                        </CCol>
+                      </CRow>
+                    )}
+
+                    {leaveType === 'multi-day' && (
+                      <CRow className="mb-3">
+                        <CCol md={4}>
+                          <CFormLabel>Start Date</CFormLabel>
+                          <CFormInput type="date" value={unavailableStartDate} onChange={(e) => setUnavailableStartDate(e.target.value)} />
+                        </CCol>
+                        <CCol md={4}>
+                          <CFormLabel>End Date</CFormLabel>
+                          <CFormInput type="date" value={unavailableEndDate} onChange={(e) => setUnavailableEndDate(e.target.value)} />
+                        </CCol>
+                      </CRow>
+                    )}
+
                     <CRow className="mb-3">
                       <CCol md={8}>
                         <CFormLabel>Reason</CFormLabel>
@@ -209,14 +218,9 @@ dd($user->toArray());
                   </>
                 )}
 
-                {/* Submit Button */}
-                <CRow>
-                  <CCol md={4}>
-                    <CButton type="submit" color="primary">
-                      Update Availability
-                    </CButton>
-                  </CCol>
-                </CRow>
+                <CButton type="submit" color="primary">
+                  Update Availability
+                </CButton>
               </CForm>
             </CCardBody>
           </CCard>

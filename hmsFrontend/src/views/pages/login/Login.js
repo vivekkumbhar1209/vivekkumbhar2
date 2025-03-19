@@ -5,6 +5,7 @@ import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import { useState } from 'react'
 import axios from 'axios'
+import api from '../../../api'
 import Swal from 'sweetalert2'
 import RingLoader from '../../../components/RingLoader'
 import '../../../scss/examples.scss'
@@ -30,8 +31,8 @@ const Login = () => {
   const handleSubmit = (e) => {
     setLoading(true)
     e.preventDefault()
-    axios
-      .post('http://localhost:8000/api/login', formData)
+    api
+      .post('/login', formData)
       .then((res) => {
         if (res.data.validationError) {
           let errorMessages = Object.values(res.data.validationError).flat().join('\n')
