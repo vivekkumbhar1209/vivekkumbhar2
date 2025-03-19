@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { CAvatar, CBadge, CDropdown, CDropdownDivider, CDropdownHeader, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreui/react'
-import { cilSettings, cilUser, cilAccountLogout, cilUserPlus } from '@coreui/icons'
+import { cilSettings, cilUser, cilAccountLogout } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import axios from 'axios'
-import { useNavigate, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import TailSpinLoader from '../TailSpinLoader'
 import DefaultAvatar from '../../assets/images/avatars/1.png'
 
@@ -25,7 +25,6 @@ const AppHeaderDropdown = () => {
       })
   }, [])
 
-  const navigate = useNavigate()
   const handleLogout = () => {
     console.log('logout')
     const token = localStorage.getItem('login-token')
@@ -41,7 +40,7 @@ const AppHeaderDropdown = () => {
       )
       .then((res) => {
         localStorage.clear()
-        navigate('/web')
+        window.location.href = '/web'
       })
   }
 
