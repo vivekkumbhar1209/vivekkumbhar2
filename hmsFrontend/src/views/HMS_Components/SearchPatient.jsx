@@ -15,7 +15,6 @@ import {
   CFormSelect,
 } from '@coreui/react'
 import { FaSearch } from 'react-icons/fa'
-import axios from 'axios'
 import api from '../../api'
 import ReactPaginate from 'react-paginate'
 import Loader from '../../components/Loader'
@@ -35,11 +34,7 @@ const SearchPatient = () => {
     setLoading(true)
     const token = localStorage.getItem('login-token')
     api
-      .get('patients', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .get('patients')
       .then((res) => {
         setData(res.data.data)
         setLoading(false)

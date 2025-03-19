@@ -3,6 +3,7 @@ import axios from 'axios'
 import swal from 'sweetalert2'
 import { CForm, CFormSelect, CFormTextarea, CFormInput, CButton, CFormLabel } from '@coreui/react'
 import Loader from '../../../components/Loader'
+import api from '../../../api'
 
 const AddDiseaseForm = () => {
   const [loading, setLoading] = useState(false)
@@ -26,9 +27,7 @@ const AddDiseaseForm = () => {
     const token = localStorage.getItem('login-token')
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/addDisease', data, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      const response = await api.post('addDisease', data)
 
       swal.fire({
         title: 'Success!',

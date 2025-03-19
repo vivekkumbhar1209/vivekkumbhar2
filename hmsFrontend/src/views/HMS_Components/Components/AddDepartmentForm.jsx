@@ -1,9 +1,9 @@
 import React from 'react'
 import { CButton, CForm, CFormInput, CFormLabel } from '@coreui/react'
 import { useState } from 'react'
-import axios from 'axios'
 import swal from 'sweetalert2'
 import Loader from '../../../components/Loader'
+import api from '../../../api'
 
 const AddDepartmentForm = () => {
   const [formData, setFormData] = useState({
@@ -20,12 +20,8 @@ const AddDepartmentForm = () => {
     setLoading(true)
     e.preventDefault()
     var token = localStorage.getItem('login-token')
-    axios
-      .post('http://localhost:8000/api/registerDepartment', formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+    api
+      .post('registerDepartment', formData)
       .then((res) => {
         console.log(res.data)
         if (res.data.status == 200) {
