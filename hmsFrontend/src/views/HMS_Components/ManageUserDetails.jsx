@@ -40,7 +40,7 @@ const ManageUserDetails = () => {
                   <ViewAllUsers action="edit"/>
                 </CTabPanel>
                 <CTabPanel className="py-3" itemKey={3}>
-                  <ViewAllUsers action='edit' />
+                  <ViewAllUsers />
                 </CTabPanel>
               </CTabContent>
             </CTabs>

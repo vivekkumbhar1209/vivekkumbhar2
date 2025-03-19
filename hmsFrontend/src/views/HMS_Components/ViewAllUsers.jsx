@@ -1,27 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import {
-  CCard,
-  CCardHeader,
-  CInputGroup,
-  CFormInput,
-  CCardBody,
-  CButton,
-  CTable,
-  CTableHead,
-  CTableBody,
-  CTableRow,
-  CTableHeaderCell,
-  CTableDataCell,
-  CFormSelect,
-} from '@coreui/react'
+import { CCard, CCardHeader, CInputGroup, CFormInput, CCardBody, CButton, CTable, CTableHead, CTableBody, CTableRow, CTableHeaderCell, CTableDataCell, CFormSelect } from '@coreui/react'
 import { FaSearch } from 'react-icons/fa'
 import ReactPaginate from 'react-paginate'
 import AddReceptionistForm from './AddReceptionistForm'
 import AddAdminForm from './Components/AddAdminForm'
 import AddDoctorForm from './Components/AddDoctorForm'
+import UpdateAvailability from './Updateavailability'
 
-const ViewAllUsers = ({ action = "doctors" }) => {
+const ViewAllUsers = ({ action }) => {
   const [users, setUsers] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredData, setFilteredData] = useState([])
@@ -33,18 +20,17 @@ const ViewAllUsers = ({ action = "doctors" }) => {
 
   useEffect(() => {
     var token = localStorage.getItem('login-token')
-    const url =  "http://127.0.0.1:8000/api/viewAllUsers";
+    const url = 'http://127.0.0.1:8000/api/viewAllUsers'
     axios({
       method: 'GET',
       url: url,
-      params: {sortBy, order, action},
+      params: { sortBy, order, action },
       headers: {
         Authorization: `Bearer ${token}`,
-      }
+      },
     })
-    .then((res) => {
+      .then((res) => {
         setUsers(res.data.Users)
-
       })
       .catch((err) => {
         console.log(err)
@@ -59,6 +45,10 @@ const ViewAllUsers = ({ action = "doctors" }) => {
     setCurrentPage(0)
   }
 
+  const hanldleUpdateAvailability = (e) => {
+    return <UpdateAvailability/>
+
+  }
   const handleSortChange = (e) => {
     const value = e.target.value
     switch (value) {
@@ -80,10 +70,7 @@ const ViewAllUsers = ({ action = "doctors" }) => {
     setOrder(e.target.value === '1' ? 'asc' : 'desc')
   }
 
-  const currentData =
-    searchTerm.length > 0
-      ? filteredData.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
-      : users.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
+  const currentData = searchTerm.length > 0 ? filteredData.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage) : users.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
 
   const handleEdit = (user) => {
     setEditingUser(user) // Set the user to be edited
@@ -117,19 +104,10 @@ const ViewAllUsers = ({ action = "doctors" }) => {
               <FaSearch />
             </CButton>
             <div style={{ width: '80%', margin: '0px 5px' }}>
-              <CFormInput
-                placeholder="Search"
-                aria-label="Search"
-                aria-describedby="addon-wrapping"
-                onChange={handleSearch}
-              />
+              <CFormInput placeholder="Search" aria-label="Search" aria-describedby="addon-wrapping" onChange={handleSearch} />
             </div>
             <div style={{ width: '10%', margin: '0px 5px' }}>
-              <CFormSelect
-                className="text-start"
-                aria-label="Default select example"
-                onChange={handleSortChange}
-              >
+              <CFormSelect className="text-start" aria-label="Default select example" onChange={handleSortChange}>
                 <option color="secondary" defaultChecked>
                   Sort By
                 </option>
@@ -139,11 +117,7 @@ const ViewAllUsers = ({ action = "doctors" }) => {
               </CFormSelect>
             </div>
             <div style={{ width: '10%', margin: '0px 5px' }}>
-              <CFormSelect
-                className="text-start"
-                aria-label="Default select example"
-                onChange={handleOrderChange}
-              >
+              <CFormSelect className="text-start" aria-label="Default select example" onChange={handleOrderChange}>
                 <option color="secondary" disabled>
                   Order
                 </option>
@@ -166,19 +140,19 @@ const ViewAllUsers = ({ action = "doctors" }) => {
                 <CTableHeaderCell>Email</CTableHeaderCell>
                 <CTableHeaderCell>Gender</CTableHeaderCell>
                 <CTableHeaderCell>Contact Number</CTableHeaderCell>
-                {action === "edit" ?
-                  (<>
+                {action === 'edit' ? (
+                  <>
                     <CTableHeaderCell>Last Updated</CTableHeaderCell>
                     <CTableHeaderCell>Action</CTableHeaderCell>
-                  </>) : null
-                }
+                  </>
+                ) : null}
               </CTableRow>
             </CTableHead>
             <CTableBody>
               {currentData.length > 0 ? (
                 currentData.map((elem, index) => (
                   <CTableRow key={index}>
-                    <CTableDataCell  >
+                    <CTableDataCell>
                       {elem.profilePhoto ? (
                         <img
                           src={`http://127.0.0.1:8000/storage/${elem.profilePhoto}`}
@@ -188,7 +162,6 @@ const ViewAllUsers = ({ action = "doctors" }) => {
                             height: '60px',
                             borderRadius: '50%',
                             objectFit: 'cover',
-
                           }}
                         />
                       ) : (
@@ -210,21 +183,36 @@ const ViewAllUsers = ({ action = "doctors" }) => {
                         </div>
                       )}
                     </CTableDataCell>
-                    <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>{elem.id}</CTableDataCell>
+                    <CTableDataCell className="text-center" style={{ verticalAlign: 'middle' }}>
+                      {elem.id}
+                    </CTableDataCell>
                     <CTableDataCell style={{ verticalAlign: 'middle' }}>{elem.name}</CTableDataCell>
-                    <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>{elem.role}</CTableDataCell>
+                    <CTableDataCell className="text-center" style={{ verticalAlign: 'middle' }}>
+                      {elem.role}
+                    </CTableDataCell>
                     <CTableDataCell style={{ verticalAlign: 'middle' }}>{elem.email}</CTableDataCell>
-                    <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>{elem.gender}</CTableDataCell>
-                    <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>{elem.mobile}</CTableDataCell>
+                    <CTableDataCell className="text-center" style={{ verticalAlign: 'middle' }}>
+                      {elem.gender}
+                    </CTableDataCell>
+                    <CTableDataCell className="text-center" style={{ verticalAlign: 'middle' }}>
+                      {elem.mobile}
+                    </CTableDataCell>
                     {action === 'edit' ? (
-                        <> 
-                      <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>
-                        {new Date(elem.updated_at).toLocaleString()}
-                      </CTableDataCell>
-                      <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>
-                        <CButton onClick={() => handleEdit(elem)}>Edit</CButton>
-                      </CTableDataCell>
-                        </>
+                      <>
+                        <CTableDataCell className="text-center" style={{ verticalAlign: 'middle' }}>
+                          {new Date(elem.updated_at).toLocaleString()}
+                        </CTableDataCell>
+                        <CTableDataCell className="text-center" style={{ verticalAlign: 'middle' }}>
+                          <CButton onClick={() => handleEdit(elem)}>Edit</CButton>
+                        </CTableDataCell>
+                      </>
+                    ) : null}
+                    {action === 'doctors' ? (
+                      <>
+                        <CTableDataCell className="text-center" style={{ verticalAlign: 'middle' }}>
+                          <CButton onClick={() => hanldleUpdateAvailability()}>Update</CButton>
+                        </CTableDataCell>
+                      </>
                     ) : null}
                   </CTableRow>
                 ))
@@ -246,9 +234,7 @@ const ViewAllUsers = ({ action = "doctors" }) => {
               previousLabel={'<<'}
               nextLabel={'>>'}
               breakLabel={'...'}
-              pageCount={Math.ceil(
-                (filteredData.length > 0 ? filteredData.length : users.length) / itemsPerPage,
-              )}
+              pageCount={Math.ceil((filteredData.length > 0 ? filteredData.length : users.length) / itemsPerPage)}
               marginPagesDisplayed={2}
               pageRangeDisplayed={3}
               onPageChange={(e) => setCurrentPage(e.selected)}

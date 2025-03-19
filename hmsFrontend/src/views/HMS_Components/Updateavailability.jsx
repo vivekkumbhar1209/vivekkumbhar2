@@ -14,7 +14,7 @@ const UpdateAvailability = () => {
   const [reason, setReason] = useState('')
   const [doctorAvailability, setDoctorAvailability] = useState(null)
   const [loading, setLoading] = useState(false)
-
+  
   useEffect(() => {
     fetchDoctorAvailability()
   }, [])

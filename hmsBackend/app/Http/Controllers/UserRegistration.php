@@ -37,7 +37,8 @@ class UserRegistration extends Controller
         if ($action === "doctors"){
             $users = User::where('role', 'Doctor')
             ->orderBy($sortBy, $order)
-            ->with(['doctor:doctorID,userID,experience,departmentID,consultation_fee'])
+            ->with(['doctor:doctorID,userID,experience,departmentID,consultation_fee',
+                'availability'])
             ->get();
         }
         else {
