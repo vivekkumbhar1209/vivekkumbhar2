@@ -8,6 +8,7 @@ import axios from 'axios'
 import Swal from 'sweetalert2'
 import RingLoader from '../components/RingLoader'
 import { useNavigate } from 'react-router-dom'
+import '../views/responsive.css'
 
 
 const ForgotPassword = () => {
