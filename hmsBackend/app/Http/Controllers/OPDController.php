@@ -172,10 +172,15 @@ class OPDController extends Controller
         ]);
 
         $profilePhoto = User::where('id', $request->userID)->value('profilePhoto');
-
-        return response()->json([
-            'data' => $profilePhoto,
-        ]);
+        if ($profilePhoto) {
+            return response()->json([
+                'data' => $profilePhoto,
+            ]);
+        } else {
+            return response()->json([
+                'data' => false,
+            ]);
+        }
 
     }
 

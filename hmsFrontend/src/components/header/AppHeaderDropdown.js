@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { CAvatar, CBadge, CDropdown, CDropdownDivider, CDropdownHeader, CDropdownItem, CDropdownMenu, CDropdownToggle } from '@coreui/react'
-import { cilSettings, cilUser, cilAccountLogout } from '@coreui/icons'
+import { cilSettings, cilUser, cilAccountLogout, cilUserPlus } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import axios from 'axios'
 import { useNavigate, Link } from 'react-router-dom'
 import TailSpinLoader from '../TailSpinLoader'
+import DefaultAvatar from '../../assets/images/avatars/1.png'
 
 const AppHeaderDropdown = () => {
   const [loading, setLoading] = useState(false)
@@ -52,7 +53,7 @@ const AppHeaderDropdown = () => {
             <TailSpinLoader />
           </div>
         ) : (
-          <CAvatar src={`http://127.0.0.1:8000/storage/${profile}`} size="md" />
+          <div>{profile ? <CAvatar src={profile ? `http://127.0.0.1:8000/storage/${profile}` : ''} alt={'Profile Photo'} size="md" /> : <CAvatar src={DefaultAvatar} alt={'Profile Photo'} size="md" />}</div>
         )}
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
