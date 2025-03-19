@@ -19,15 +19,17 @@ const PhotoCapture = ({ data, setData }) => {
     return new Blob([ab], { type: mimeString });
   };
 
-  // Handle file input change (file upload)
-  const handlePhotoChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      // Set the selected file's object URL to show preview
-      const fileURL = URL.createObjectURL(file);
-      setData({ ...data, profilePhoto: file }); // Set file object for preview
-    }
-  };
+ // Handle file input change (file upload)
+const handlePhotoChange = (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    // Set the selected file's object URL to show preview
+    const fileURL = URL.createObjectURL(file);
+    setCapturedPhoto(fileURL); // Update capturedPhoto for preview
+    setData({ ...data, profilePhoto: file }); // Set file object for upload
+  }
+};
+
 
   // Remove selected photo
   const handleRemovePhoto = () => {
@@ -46,16 +48,20 @@ const PhotoCapture = ({ data, setData }) => {
   const handleUsePhoto = () => {
     const blob = dataURItoBlob(capturedPhoto); // Convert captured image to Blob
     const file = new File([blob], `captured-photo-${Date.now()}.jpg`, { type: 'image/jpeg' });
-    setData({ ...data, profilePhoto: file }); // Set the final profile photo
-    setCapturedPhoto(null);
-    setShowCamera(false); // Close modal
+    
+    // Set the final profile photo
+    setData({ ...data, profilePhoto: file });
+  
+    // Reset captured photo only after the profile photo is updated
+    // setCapturedPhoto(null);  
+  
+    // Close the modal after capturing
+    setShowCamera(false);
   };
+  
 
   return (
     <div className="col-md-4 d-flex flex-column align-items-center">
-      {/* Photo Preview Section */
-      console.log(data.profilePhoto, "in capture component")
-      }
       <div
         className="rounded-circle border d-flex justify-content-center align-items-center mt-2"
         style={{
@@ -66,21 +72,18 @@ const PhotoCapture = ({ data, setData }) => {
         }}
       >
         {capturedPhoto ? (
-          // Display the captured photo if available
           <img
             src={capturedPhoto}
             alt="Profile Preview"
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
         ) : data.profilePhoto ? (
-          // Display the uploaded photo if captured photo is not available
           <img
-            src={`http://localhost:8000/storage/${data.profilePhoto}`}
-            alt="Profile Preview"
+          src={`http://localhost:8000/storage/${data.profilePhoto}`}
+          alt="Profile Preview"
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
         ) : (
-          // Display placeholder text if no photo has been uploaded or captured
           <span>No Image</span>
         )}
       </div>
@@ -95,17 +98,17 @@ const PhotoCapture = ({ data, setData }) => {
         onChange={handlePhotoChange}
         hidden
       />
-      <CButton color="primary" className="me-2" onClick={() => document.getElementById('profilePhoto').click()}>
+      <CButton color="primary" className="me-2 whitespace-nowrap" onClick={() => document.getElementById('profilePhoto').click()}>
         Upload Photo
       </CButton>
 
       {/* Button to open Webcam Capture */}
-      <CButton color="primary" className="mt-2" onClick={() => setShowCamera(true)}>
+      <CButton color="primary" className="mt-2 whitespace-nowrap" onClick={() => setShowCamera(true)}>
         Capture Photo
       </CButton>
 
       {/* Button to Remove Photo */}
-      <CButton color="danger" className="mt-2" onClick={handleRemovePhoto}>
+      <CButton color="danger" className="mt-2 whitespace-nowrap" onClick={handleRemovePhoto}>
         Remove Photo
       </CButton>
 
@@ -113,7 +116,6 @@ const PhotoCapture = ({ data, setData }) => {
       <CModal visible={showCamera} onClose={() => setShowCamera(false)}>
         <CModalHeader>Capture Photo</CModalHeader>
         <CModalBody>
-          {/* Conditionally render the webcam or the captured photo */}
           {capturedPhoto ? (
             <img
               src={capturedPhoto}
@@ -126,7 +128,7 @@ const PhotoCapture = ({ data, setData }) => {
         </CModalBody>
         <CModalFooter>
           {!capturedPhoto ? (
-            <CButton color="primary" onClick={handleCapture}>
+            <CButton  color="primary" onClick={handleCapture}>
               Capture
             </CButton>
           ) : (

@@ -40,6 +40,7 @@ const EditDepartmentForm = () => {
   }
 
   const handleSubmit = (e) => {
+    setLoading(true)
     e.preventDefault()
     var token = localStorage.getItem('login-token')
     console.log(formData)
@@ -62,6 +63,7 @@ const EditDepartmentForm = () => {
             icon: 'error',
             confirmButtonText: 'Try again',
           })
+          setLoading(false)
         } else if (res.data.status === 200) {
           swal.fire({
             title: 'Success!',
@@ -69,6 +71,7 @@ const EditDepartmentForm = () => {
             icon: 'success',
             confirmButtonText: 'OK',
           })
+          setLoading(false)
         }
       })
       .catch((err) => {
@@ -78,6 +81,7 @@ const EditDepartmentForm = () => {
           icon: 'error',
           confirmButtonText: 'OK',
         })
+        setLoading(false)
       })
   }
 

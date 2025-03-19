@@ -40,11 +40,12 @@ const ViewAllUsers = ({ action }) => {
       })
       .then((res) => {
         setUsers(res.data.Users)
+
       })
       .catch((err) => {
         console.log(err)
       })
-  }, [sortBy, order])
+  }, [sortBy, order, users])
 
   const handleSearch = (e) => {
     var value = e.target.value.toLowerCase()
@@ -161,10 +162,10 @@ const ViewAllUsers = ({ action }) => {
                 <CTableHeaderCell>Email</CTableHeaderCell>
                 <CTableHeaderCell>Gender</CTableHeaderCell>
                 <CTableHeaderCell>Contact Number</CTableHeaderCell>
-                { action === "edit" ? 
+                {action === "edit" ?
                   (<>
-                  <CTableHeaderCell>Last Updated</CTableHeaderCell>
-                  <CTableHeaderCell>Action</CTableHeaderCell>
+                    <CTableHeaderCell>Last Updated</CTableHeaderCell>
+                    <CTableHeaderCell>Action</CTableHeaderCell>
                   </>) : null
                 }
               </CTableRow>
@@ -213,10 +214,10 @@ const ViewAllUsers = ({ action }) => {
                     <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>{elem.mobile}</CTableDataCell>
                     {action === 'edit' ? (
                         <> 
-                      <CTableDataCell>
+                      <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>
                         {new Date(elem.updated_at).toLocaleString()}
                       </CTableDataCell>
-                      <CTableDataCell>
+                      <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>
                         <CButton onClick={() => handleEdit(elem)}>Edit</CButton>
                       </CTableDataCell>
                         </>

@@ -26,15 +26,15 @@ const UserView = ({ user }) => {
 
 const App = () => {
   const user = {
-    name: "Admin User",
-    email: "admin@example.com",
-    gender: "Male",
-    date_Of_Birth: "1980-01-20",
-    address: "789 Admin Avenue, City, Country",
-    age: 44,
-    mobile: "9876543212",
-    role: "Admin",
-    profilePhoto: avatar8, // Use the imported image
+    name:`${JSON.parse(localStorage.getItem('userData')).name}`,
+    email: `${JSON.parse(localStorage.getItem('userData')).email}`,
+    gender:`${JSON.parse(localStorage.getItem('userData')).gender}`,
+    date_Of_Birth: `${JSON.parse(localStorage.getItem('userData')).date_Of_Birth}`,
+    address: `${JSON.parse(localStorage.getItem('userData')).address}`,
+    age: `${JSON.parse(localStorage.getItem('userData')).age}`,
+    mobile: `${JSON.parse(localStorage.getItem('userData')).mobile}`,
+    role: `${JSON.parse(localStorage.getItem('userData')).role}`,
+    profilePhoto:`http://127.0.0.1:8000/storage/${JSON.parse(localStorage.getItem('userData')).profilePhoto }` // Use the imported image
   };
 
   return (

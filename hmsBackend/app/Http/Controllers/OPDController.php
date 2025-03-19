@@ -5,10 +5,10 @@ use App\Events\QueueUpdated;
 use App\Models\OpdQueue;
 use App\Models\OpdRegistration;
 use App\Models\Patients;
-use Illuminate\Support\Facades\DB;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-
 
 class OPDController extends Controller
 {
@@ -106,7 +106,7 @@ class OPDController extends Controller
         return response()->json([
             'status'  => 200,
             'message' => 'Queue request successful',
-            'data'=>$queue
+            'data'    => $queue,
         ]);
     }
 
@@ -163,6 +163,25 @@ class OPDController extends Controller
                 'message' => 'Database Error Encountered',
             ]);
         }
+    }
+
+    public function showProfilePhoto(Request $request)
+    {
+        $request->validate([
+            'userID' => 'required',
+        ]);
+
+        $profilePhoto = User::where('id', $request->userID)->value('profilePhoto');
+        if ($profilePhoto) {
+            return response()->json([
+                'data' => $profilePhoto,
+            ]);
+        } else {
+            return response()->json([
+                'data' => false,
+            ]);
+        }
+
     }
 
 }

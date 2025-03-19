@@ -1,18 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 
-import {
-  CRow,
-  CCol,
-  CDropdown,
-  CDropdownMenu,
-  CDropdownItem,
-  CDropdownToggle,
-  CWidgetStatsA,
-  CCard,
-  CCardHeader,
-  CCardBody,
-} from '@coreui/react'
+import { CRow, CCol, CDropdown, CDropdownMenu, CDropdownItem, CDropdownToggle, CWidgetStatsA, CCard, CCardHeader, CCardBody } from '@coreui/react'
 import { getStyle } from '@coreui/utils'
 import { CChartBar, CChartLine } from '@coreui/react-chartjs'
 import CIcon from '@coreui/icons-react'
@@ -252,24 +241,7 @@ const WidgetsDropdown = (props) => {
                 className="mt-3 mx-3"
                 style={{ height: '70px' }}
                 data={{
-                  labels: [
-                    'January',
-                    'February',
-                    'March',
-                    'April',
-                    'May',
-                    'June',
-                    'July',
-                    'August',
-                    'September',
-                    'October',
-                    'November',
-                    'December',
-                    'January',
-                    'February',
-                    'March',
-                    'April',
-                  ],
+                  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March', 'April'],
                   datasets: [
                     {
                       label: 'My First dataset',
