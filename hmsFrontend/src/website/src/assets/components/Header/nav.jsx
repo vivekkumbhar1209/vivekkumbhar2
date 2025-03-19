@@ -48,7 +48,11 @@ const Navbar = () => {
       >
         <div className="flex items-center h-full">
           <img src={logo} alt="Logo" className="h-10 w-10 mr-2" />
-          <span className="text-2xl font-bold">Fortune Multispeciality Hospital</span>
+          <span className="text-2xl font-bold">
+            <Link to={'/web'}>
+              Fortune Multispeciality Hospital
+            </Link>
+          </span>
         </div>
         <div className="hidden md:flex justify-center items-center space-x-6 text-lg">
           <Link to="/" className="hover:text-gray-400">
