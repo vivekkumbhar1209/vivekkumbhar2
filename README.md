@@ -37,7 +37,8 @@ Frontend Setup
 
 1. cd ./hmsFrontend - change directory to frontend directory
 2. npm install - run this command to install all react and node dependencies.
-3. npm start - run this command to start the react development server
+3. cp .env.example .env - run this command to generate a env file
+4. npm start - run this command to start the react development server
 
 Demo users and password:
 
