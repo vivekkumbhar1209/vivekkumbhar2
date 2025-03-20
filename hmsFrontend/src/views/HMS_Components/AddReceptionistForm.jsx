@@ -143,7 +143,7 @@ const AddReceptionistForm = ({ role, propAction = 'add', user }) => {
         console.log(res)
         swal.fire({
           title: 'Success!',
-          text: 'Receptionist added successfully.',
+          text: propAction === 'add' ? 'Receptionist added successfully.' : 'Receptionist updated successfully',
           icon: 'success',
           confirmButtonText: 'OK',
         })
@@ -364,7 +364,7 @@ const AddReceptionistForm = ({ role, propAction = 'add', user }) => {
                     {data.profilePhoto ? <img src={typeof data.profilePhoto === 'string' ? `http://localhost:8000/storage/${data.profilePhoto}` : URL.createObjectURL(data.profilePhoto)} alt="Profile Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <span>No Image</span>}
                   </div>
 
-                <CFormLabel className="mt-2"></CFormLabel>[]
+                <CFormLabel className="mt-2"></CFormLabel>
                   <input type="file" accept="image/*" id="profilePhoto" name="profilePhoto" onChange={handlePhotoChange} hidden />
                   <CButton color="primary" className="me-2" onClick={() => document.getElementById('profilePhoto').click()}>
                     Upload Photo
@@ -381,7 +381,7 @@ const AddReceptionistForm = ({ role, propAction = 'add', user }) => {
 
             <div className="text-left mt-3">
               <CButton color="primary" type="submit">
-                Add User
+                Update Receptionist
               </CButton>
             </div>
           </CForm>

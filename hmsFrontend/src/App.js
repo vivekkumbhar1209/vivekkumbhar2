@@ -22,6 +22,7 @@ const Login = React.lazy(() => import('./views/pages/login/Login'))
 const Register = React.lazy(() => import('./views/pages/register/Register'))
 const Page404 = React.lazy(() => import('./views/pages/page404/Page404'))
 const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
+const ForgotPassword = React.lazy(() => import('../src/forgotpassword/ForgotPassword'))
 
 const App = () => {
   useEffect(() => {
@@ -51,6 +52,7 @@ const App = () => {
           <Route exact path="/404" name="Page 404" element={<Page404 />} />
           <Route exact path="/500" name="Page 500" element={<Page500 />} />
           <Route exact path="/web" name="Website" element={<Website />} />
+          <Route exact path="/forgot-password" name="Website" element={<ForgotPassword />} />
           <Route path="/blog" element={<NavFooter propelement={<Blog />} />} />
           <Route path="/contact" element={<NavFooter propelement={<EnquiryForm />} />} />
           <Route path="/allblogs" element={<NavFooter propelement={<AllBlogGrid />} />} />

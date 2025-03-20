@@ -7,9 +7,9 @@ const SocialMediaHandlers = () => {
     <div className="flex flex-col items-center mt-4 mb-4">
       <div className="font-bold">Get In Touch</div>
       <div className="flex gap-2">
-        {socialMediaHandlers.map((item) => {
+        {socialMediaHandlers.map((item, index) => {
           return (
-            <div>
+            <div key={index}>
               <a
                 key={item}
                 href="#"

@@ -32,6 +32,8 @@ function App() {
         <Route path="/speciality" element={<NavFooter propelement={<Speciality />} />} />
         <Route path="/about" element={<NavFooter propelement={<AboutUs />} />} />
         <Route path="/contact" element={<NavFooter propelement={<EnquiryForm />} />} />
+        <Route path="/enquiry" element={<EnquiryForm />} />
+
       </Routes>
     </Router>
   );

@@ -1,13 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import {
-  CCloseButton,
-  CSidebar,
-  CSidebarBrand,
-  CSidebarFooter,
-  CSidebarHeader,
-  CSidebarToggler,
-} from '@coreui/react'
+import { CCloseButton, CSidebar, CSidebarBrand, CSidebarFooter, CSidebarHeader, CSidebarToggler } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { AppSidebarNav } from './AppSidebarNav'
 import { cilMedicalCross } from '@coreui/icons'
@@ -50,20 +43,14 @@ const AppSidebar = () => {
           {/* <CIcon customClassName="sidebar-brand-full" icon={cilMedicalCross} height={25} /> */}
           <h3>HMS</h3>
         </CSidebarBrand>
-        <CCloseButton
-          className="d-lg-none"
-          dark
-          onClick={() => dispatch({ type: 'set', sidebarShow: false })}
-        />
+        <CCloseButton className="d-lg-none" dark onClick={() => dispatch({ type: 'set', sidebarShow: false })} />
       </CSidebarHeader>
 
       {/* this is the line where sidebar links are given as props to AppSideBarNav component */}
       <AppSidebarNav items={links} />
 
       <CSidebarFooter className="border-top d-none d-lg-flex">
-        <CSidebarToggler
-          onClick={() => dispatch({ type: 'set', sidebarUnfoldable: !unfoldable })}
-        />
+        <CSidebarToggler onClick={() => dispatch({ type: 'set', sidebarUnfoldable: !unfoldable })} />
       </CSidebarFooter>
     </CSidebar>
   )

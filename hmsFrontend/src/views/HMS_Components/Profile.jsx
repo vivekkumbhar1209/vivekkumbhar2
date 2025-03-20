@@ -25,6 +25,7 @@ const UserView = ({ user }) => {
 };
 
 const App = () => {
+
   // Retrieve user data from localStorage
   const userData = JSON.parse(localStorage.getItem('userData'));
 
@@ -41,6 +42,7 @@ const App = () => {
     role: `${JSON.parse(localStorage.getItem('userData'))}.profile`,
     profilePhoto:`http://127.0.0.1:8000/storage/${JSON.parse(localStorage.getItem('userData'))}.profilePhoto`, // profilePhoto is null in the default data
     
+
   };
 
   // Use the user data from localStorage or fallback to the default user
