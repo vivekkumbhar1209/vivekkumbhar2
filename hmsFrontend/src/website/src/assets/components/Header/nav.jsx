@@ -10,7 +10,7 @@ const Navbar = () => {
   const [loginPopupOpen, setLoginPopupOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isSticky, setIsSticky] = useState(false)
-  // const [appointmentPopupOpen, setAppointmentPopupOpen] = useState(false)
+  const [appointmentPopupOpen, setAppointmentPopupOpen] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
