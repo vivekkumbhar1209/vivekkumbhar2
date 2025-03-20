@@ -17,8 +17,9 @@ const Profile = React.lazy(() => import('./views/HMS_Components/Profile'))
 const ViewQueue = React.lazy(() => import('./views/HMS_Components/ViewQueue'))
 const OpdConsultation = React.lazy(() => import('./views/HMS_Components/OpdConsultation'))
 const ViewStats = React.lazy(() => import('./views/HMS_Components/ViewStatistics'))
-const DoctorAvailability=React.lazy(()=>import('./views/HMS_Components/DoctorAvailability'))
-const UpdateAvailability=React.lazy(()=>import('./views/HMS_Components/Updateavailability'))
+const DoctorAvailability = React.lazy(() => import('./views/HMS_Components/DoctorAvailability'))
+const UpdateAvailability = React.lazy(() => import('./views/HMS_Components/Updateavailability'))
+const AppointmentEnquiry = React.lazy(() => import('./views/HMS_Components/AppointmentEnquiry'))
 
 //website content element
 const Reviews = React.lazy(() => import('./views/HMS_Components/Reviews'))
@@ -34,6 +35,11 @@ const routes = [
     path: '/services',
     name: 'Services',
     element: Services,
+  },
+  {
+    path: '/appointment-enquiry',
+    name: 'Enquiry',
+    element: AppointmentEnquiry,
   },
   {
     path: '/specialities',
@@ -124,14 +130,14 @@ const routes = [
     element: SearchPatient,
   },
   {
-    path:'/updateAvailability',
-    name:'Update Availability',
+    path: '/updateAvailability',
+    name: 'Update Availability',
     element: UpdateAvailability,
   },
   {
-    path:'/doctorAvailability',
-    name:'Doctor availability',
-    element:DoctorAvailability,
+    path: '/doctorAvailability',
+    name: 'Doctor availability',
+    element: DoctorAvailability,
   }
 ]
 
