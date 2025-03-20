@@ -256,8 +256,6 @@ const AddReceptionistForm = ({ role }) => {
       ) : (
         // Form after loading completes
         <div className="container">
-  
-
   <CForm onSubmit={handleSubmit} className="w-100" encType="multipart/form-data">
     <div className="row align-items-stretch">
       {/* Left and Middle Columns - Wrapped in a single card */}

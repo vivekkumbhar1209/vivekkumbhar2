@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Doctor;
 use App\Models\User;
 use Carbon\Carbon;
-use Hash;
+use Illuminate\Support\Facades\Hash; //use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
