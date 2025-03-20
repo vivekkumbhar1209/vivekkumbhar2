@@ -37,4 +37,16 @@ class EnquiryController extends Controller
             ]);
         }
     }
+
+    public function retrieveAllEnquiries(Request $request)
+    {
+        $data = Enquiry::all();
+        if ($data) {
+            return response()->json([
+                'status'  => 200,
+                'message' => 'Success',
+                'data'    => $data,
+            ]);
+        }
+    }
 }
