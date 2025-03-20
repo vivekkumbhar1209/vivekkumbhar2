@@ -1,23 +1,27 @@
 import React, { useState, useEffect } from 'react'
 import { CCard, CCardBody, CCardHeader, CTable, CTableHead, CTableBody, CTableHeaderCell, CTableDataCell, CTableRow, CButton } from '@coreui/react'
 import api from '../../api'
+import Loader from '../../components/Loader'
 
 const AppointmentEnquiry = () => {
 
     const [enquiryData, setEnquiryData] = useState([])
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
+        setLoading(true)
         try {
             api.get('/getAllEnquiries').then(res => {
-                console.log(res.data.data)
                 setEnquiryData(res.data.data)
             }).catch(err => {
                 console.log(err)
+            }).finally(() => {
+                setLoading(false)
             })
         } catch (error) {
 
         }
-    })
+    }, [])
 
 
     return (
@@ -47,20 +51,27 @@ const AppointmentEnquiry = () => {
                                 <CTableHeaderCell>Register</CTableHeaderCell>
                             </CTableRow>
                         </CTableHead>
-                        <CTableBody>
-                            {enquiryData.map((elem, index) => (
-                                <CTableRow key={index}>
-                                    <CTableDataCell>{elem.name}</CTableDataCell>
-                                    <CTableDataCell>{elem.email}</CTableDataCell>
-                                    <CTableDataCell>{elem.mobile_no}</CTableDataCell>
-                                    <CTableDataCell>{elem.address}</CTableDataCell>
-                                    <CTableDataCell>{elem.message}</CTableDataCell>
-                                    <CTableDataCell>
-                                        <CButton color='primary'>Register</CButton>
-                                    </CTableDataCell>
-                                </CTableRow>
-                            ))}
-                        </CTableBody>
+                        {loading ? (
+                            <div className='text-center'>
+                                <Loader />
+                            </div>
+                        ) : (
+
+                            <CTableBody>
+                                {enquiryData.map((elem, index) => (
+                                    <CTableRow key={index}>
+                                        <CTableDataCell>{elem.name}</CTableDataCell>
+                                        <CTableDataCell>{elem.email}</CTableDataCell>
+                                        <CTableDataCell>{elem.mobile_no}</CTableDataCell>
+                                        <CTableDataCell>{elem.address}</CTableDataCell>
+                                        <CTableDataCell>{elem.message}</CTableDataCell>
+                                        <CTableDataCell>
+                                            <CButton color='primary'>Register</CButton>
+                                        </CTableDataCell>
+                                    </CTableRow>
+                                ))}
+                            </CTableBody>
+                        )}
                     </CTable>
                 </CCardBody>
             </CCard>
