@@ -26,6 +26,12 @@ const _nav = [
         to: '/dashboard/manageUserDetails',
         icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
       },
+      {
+        component: CNavItem,
+        name: 'Appointment Enquiry',
+        to: '/dashboard/appointment-enquiry',
+        icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+      },
     ],
   },
   {
