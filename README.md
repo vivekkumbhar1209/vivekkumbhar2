@@ -26,6 +26,11 @@ VITE_PUSHER_PORT="${PUSHER_PORT}"
 VITE_PUSHER_SCHEME="${PUSHER_SCHEME}"
 VITE_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
 
+Also replace the following line in your .env file :-
+BROADCAST_CONNECTION=log
+with
+BROADCAST_CONNECTION=pusher
+
 ---
 
 Frontend Setup

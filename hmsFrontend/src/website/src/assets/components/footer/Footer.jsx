@@ -17,23 +17,21 @@ const Footer = () => {
         </div>
         <div className="flex lg:flex-row flex-col ">
 
-          {footerLinks.map((linkSectionItem) => {
+          {footerLinks.map((linkSectionItem, index) => {
             return (
-              <div key="links-container-2" className="   p-2  max-w-60  ">
+              <div key={index} className="   p-2  max-w-60  ">
                 <div
-                  key={linkSectionItem.linkSection}
                   className="font-bold text-md"
                 >
                   {linkSectionItem.linkSection}
                 </div>
                 <ul
-                  key={linkSectionItem.linkSection}
                   className=" text-nowrap  "
                 >
                   {linkSectionItem.links.map((link, index) => {
                     return (
                       <li
-                        key={link}
+                        key={index}
                         className="text-wrap group "
                       >
                         <a
