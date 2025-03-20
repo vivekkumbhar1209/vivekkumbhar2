@@ -23,7 +23,7 @@ const AppointmentEnquiry = () => {
 
         }
     }, [])
--
+
 
     const role = JSON.parse(localStorage.getItem('userData')).role
     return (
