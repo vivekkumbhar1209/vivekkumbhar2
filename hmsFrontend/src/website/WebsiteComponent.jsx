@@ -1,12 +1,23 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import Navbar from './src/assets/components/Header/nav'
-import Homepage from './src/assets/pages/Homepage'
+const Homepage = React.lazy(() => import('./src/assets/pages/Homepage'))
+import './index.css'
+import RingLoader from '../components/RingLoader'
 
 const WebsiteComponent = () => {
+
+
+
     return (
         <>
-            <Navbar />
-            <Homepage />
+            <Suspense fallback={
+                <div className='flex justify-center items-center h-screen w-screen'>
+                    <RingLoader />
+                </div>
+            }>
+                <Navbar />
+                <Homepage />
+            </Suspense>
         </>
     )
 }

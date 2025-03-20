@@ -1,24 +1,32 @@
-import React from "react";
-import Feedback from "../../Feedback";
-import Footer from "../components/footer/Footer";
-import DoctorsSection from "../components/doctorsection/DoctorsSection";
-import HospitalInfo from "../../Home";
-import ServicesCarousel from "../../services";
-import Speciality from "../components/Spacialty/Spaciality";
-import EnquiryForm from "../components/enquiry form/enquiry";
-import Blog from "../components/Blog";
-import MapSection from "../components/map";
+import React, { Suspense } from "react";
+import HospitalInfo from "../../Home"
+import Blog from "../components/Blog"
+import EnquiryForm from "../components/enquiry form/enquiry"
+import MapSection from "../components/map"
+import Footer from "../components/footer/Footer"
+import RingLoader from "../../../../components/RingLoader";
+const DoctorsSection = React.lazy(() => import("../components/doctorsection/DoctorsSection"))
+const ServicesCarousel = React.lazy(() => import("../../services"))
+const Speciality = React.lazy(() => import("../components/Spacialty/Spaciality"))
+const Feedback = React.lazy(() => import('../../Feedback'))
+
+
 const Homepage = () => {
   return (
     <>
       <HospitalInfo />
-      <ServicesCarousel />
-      <Speciality />
-      <DoctorsSection />
-      <Feedback />
-      <Blog />
-      <EnquiryForm />
+      <Suspense fallback={
+        <div className='flex justify-center items-center h-screen w-screen'>
+          <RingLoader />
+        </div>}>
+        <ServicesCarousel />
+        <Speciality />
+        <DoctorsSection />
+        <EnquiryForm />
+        <Feedback />
+      </Suspense>
       <MapSection />
+      <Blog />
       <Footer />
     </>
   )

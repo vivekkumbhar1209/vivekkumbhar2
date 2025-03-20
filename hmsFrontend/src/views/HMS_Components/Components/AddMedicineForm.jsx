@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { CButton, CForm, CFormInput, CFormLabel, CFormSelect } from '@coreui/react';
 import axios from 'axios';
 import Swal from 'sweetalert2'; // Import SweetAlert2
+import Loader from '../../../components/Loader';
 
 const AddMedicineForm = () => {
   const [categories, setCategories] = useState([]); // Store medicine categories
@@ -83,27 +84,36 @@ const AddMedicineForm = () => {
   };
 
   return (
-    <CForm className="w-100 w-lg-50" onSubmit={handleSubmit}>
-      <div className="mb-3">
-        <CFormLabel>Category</CFormLabel>
-        <CFormSelect value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} disabled={loading}>
-          <option value="">Select Category</option>
-          {categories.map((category) => (
-            <option key={category.categoryID} value={category.categoryID}>
-              {category.category_name}
-            </option>
-          ))}
-        </CFormSelect>
-      </div>
 
-      <CFormLabel>Medicine Name</CFormLabel>
-      <CFormInput type="text" value={medicineName} onChange={(e) => setMedicineName(e.target.value)} required />
+    <>
+      {loading ? (
+        <div className='d-flex justify-content-center align-items-center'>
+          <Loader />
+        </div>
+      ) : (
+        <CForm className="w-100 w-lg-50" onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <CFormLabel>Category</CFormLabel>
+            <CFormSelect value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+              {categories.map((category) => (
+                <option key={category.categoryID} value={category.categoryID}>
+                  {category.category_name}
+                </option>
+              ))}
+            </CFormSelect>
+          </div>
 
-      <CFormLabel>Cost</CFormLabel>
-      <CFormInput type="number" value={cost} onChange={(e) => setCost(e.target.value)} required />
-        
-      <CButton color="primary" type="submit">Add Medicine</CButton>
-    </CForm>
+          <CFormLabel>Medicine Name</CFormLabel>
+          <CFormInput type="text" value={medicineName} onChange={(e) => setMedicineName(e.target.value)} required />
+
+          <CFormLabel>Cost</CFormLabel>
+          <CFormInput type="number" value={cost} onChange={(e) => setCost(e.target.value)} required />
+
+          <CButton color="primary" type="submit">Add Medicine</CButton>
+        </CForm>
+      )}
+    </>
+
   );
 };
 

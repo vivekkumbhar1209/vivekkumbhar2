@@ -1,24 +1,15 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import {
-  CButton,
-  CCard,
-  CCardBody,
-  CCardGroup,
-  CCol,
-  CContainer,
-  CForm,
-  CFormInput,
-  CInputGroup,
-  CInputGroupText,
-  CRow,
-} from '@coreui/react'
+import { CButton, CCard, CCardBody, CCardGroup, CCol, CContainer, CForm, CFormInput, CInputGroup, CInputGroupText, CRow } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import { useState } from 'react'
-import axios from 'axios'
+import api from '../../../api'
 import Swal from 'sweetalert2'
-import Loader from '../../../components/Loader'
+import RingLoader from '../../../components/RingLoader'
+import '../../../scss/examples.scss'
+import '../../../scss/style.scss'
+import '../../responsive.css'
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -39,14 +30,20 @@ const Login = () => {
   const handleSubmit = (e) => {
     setLoading(true)
     e.preventDefault()
-    console.log(formData)
-    axios
-      .post('http://localhost:8000/api/login', formData)
+    api
+      .post('/login', formData)
       .then((res) => {
         if (res.data.validationError) {
-          setValidationErrors(res.data.validationError)
+          let errorMessages = Object.values(res.data.validationError).flat().join('\n')
+          Swal.fire({
+            title: 'Validation Errors',
+            text: errorMessages,
+            confirmButtonText: 'Ok',
+          })
           setLoading(false)
-          setTimeout(() => setValidationErrors({}), 3000)
+
+          // setValidationErrors(res.data.validationError)
+          // setTimeout(() => setValidationErrors({}), 3000)
         } else if (res.data.status === 401) {
           Swal.fire({
             icon: 'error',
@@ -72,77 +69,58 @@ const Login = () => {
       <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
         <CContainer>
           <CRow className="justify-content-center">
-            {loading ? (
-              <Loader />
-            ) : (
-              <CCol md={8}>
-                <CCardGroup>
-                  <CCard className="text-white bg-primary py-5" style={{ width: '100%' }}>
-                    <CCardBody className="text-center">
-                      <div>
-                        <h2>Sign up</h2>
-                        <p>Sign in to access your dashboard</p>
-                        <Link to="/dashboard/dashboard">
-                          <CButton color="primary" className="mt-3" active tabIndex={-1}>
-                            Register Now!
+            <CCol md={8}>
+              <CCardGroup>
+                <CCard className="text-white bg-primary py-5 disappear-signup" style={{ width: '100%' }}>
+                  <CCardBody className="text-center d-flex align-items-center justify-content-center">
+                    <div>
+                      <h2>Sign up</h2>
+                      <p>Sign in to access your dashboard</p>
+                    </div>
+                  </CCardBody>
+                </CCard>
+                <CCard className="p-4">
+                  <CCardBody>
+                    <CForm onSubmit={handleSubmit}>
+                      <h1>Login</h1>
+                      <p className="text-body-secondary">Sign In to your account</p>
+                      <CInputGroup className="mb-3">
+                        <CInputGroupText>
+                          <CIcon icon={cilUser} />
+                        </CInputGroupText>
+                        <CFormInput onChange={handleChange} type="email" placeholder="Email" autoComplete="username" name="email" />
+                      </CInputGroup>
+                      {/* {validationErrors && <p style={{ color: 'red' }}>{validationErrors.email}</p>} */}
+                      <CInputGroup className="mb-4">
+                        <CInputGroupText>
+                          <CIcon icon={cilLockLocked} />
+                        </CInputGroupText>
+                        <CFormInput type="password" placeholder="Password" autoComplete="current-password" name="password" onChange={handleChange} />
+                      </CInputGroup>
+                      {/* {validationErrors && <p style={{ color: 'red' }}>{validationErrors.password}</p>} */}
+                      <CRow>
+                        <CCol xs={6}>
+                          <CButton type="submit" color="primary" className="px-4" disabled={loading}>
+                            {loading ? (
+                              <span>
+                                <RingLoader />
+                              </span>
+                            ) : (
+                              <span>Login</span>
+                            )}
                           </CButton>
-                        </Link>
-                      </div>
-                    </CCardBody>
-                  </CCard>
-                  <CCard className="p-4">
-                    <CCardBody>
-                      <CForm onSubmit={handleSubmit}>
-                        <h1>Login</h1>
-                        <p className="text-body-secondary">Sign In to your account</p>
-                        <CInputGroup className="mb-3">
-                          <CInputGroupText>
-                            <CIcon icon={cilUser} />
-                          </CInputGroupText>
-                          <CFormInput
-                            onChange={handleChange}
-                            type="email"
-                            placeholder="Email"
-                            autoComplete="username"
-                            name="email"
-                          />
-                        </CInputGroup>
-                        {validationErrors && (
-                          <p style={{ color: 'red' }}>{validationErrors.email}</p>
-                        )}
-                        <CInputGroup className="mb-4">
-                          <CInputGroupText>
-                            <CIcon icon={cilLockLocked} />
-                          </CInputGroupText>
-                          <CFormInput
-                            type="password"
-                            placeholder="Password"
-                            autoComplete="current-password"
-                            name="password"
-                            onChange={handleChange}
-                          />
-                        </CInputGroup>
-                        {validationErrors && (
-                          <p style={{ color: 'red' }}>{validationErrors.password}</p>
-                        )}
-                        <CRow>
-                          <CCol xs={6}>
-                            <CButton type="submit" color="primary" className="px-4">
-                              Login
-                            </CButton>
-                          </CCol>
-                          <CCol xs={6} className="text-right">
-                            <CButton color="link" className="px-0">
-                              Forgot password?
-                            </CButton>
-                          </CCol>
-                        </CRow>
-                      </CForm>
-                    </CCardBody>
-                  </CCard>
-                </CCardGroup>
-              </CCol>
-            )}
+                        </CCol>
+                        <CCol xs={6} className="text-right">
+                          <Link to={'/forgot-password'} color="link" className="px-0">
+                            Forgot password?
+                          </Link>
+                        </CCol>
+                      </CRow>
+                    </CForm>
+                  </CCardBody>
+                </CCard>
+              </CCardGroup>
+            </CCol>
           </CRow>
         </CContainer>
       </div>

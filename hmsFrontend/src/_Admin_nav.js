@@ -1,23 +1,6 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
-import {
-  cilSpeedometer,
-  cilUserFollow,
-  cilPeople,
-  cilUserPlus,
-  cilSettings,
-  cilBuilding,
-  cilApplicationsSettings,
-  cilMedicalCross,
-  cilList,
-  cilGraph,
-  cilChartLine,
-  cilMonitor,
-  cilNotes,
-  cilLayers,
-  cilCommentBubble,
-  cilNewspaper,
-} from '@coreui/icons'
+import { cilSpeedometer, cilUserFollow, cilPeople, cilUserPlus, cilSettings, cilBuilding, cilApplicationsSettings, cilMedicalCross, cilList, cilGraph, cilChartLine, cilMonitor, cilNotes, cilLayers, cilCommentBubble, cilNewspaper } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
 const _nav = [
@@ -37,13 +20,6 @@ const _nav = [
     to: '/HMS_Components',
     icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
     items: [
-      {
-        component: CNavItem,
-        name: 'Add User',
-        to: '/dashboard/addUser',
-        icon: <CIcon icon={cilUserFollow} customClassName="nav-icon" />,
-      },
-
       {
         component: CNavItem,
         name: 'Manage Users',

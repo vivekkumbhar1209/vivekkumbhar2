@@ -73,6 +73,16 @@ const _nav = [
       },
     ],
   },
+  {
+    component: CNavTitle,
+    name: 'Doctor Availability',
+  },
+  {
+    component: CNavItem,
+    name: 'Update Availability',
+    to: '/dashboard/updateAvailability',
+    icon: <CIcon icon={cilUserFollow} customClassName="nav-icon" />,
+  },
 ]
 
 export default _nav
