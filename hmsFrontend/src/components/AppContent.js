@@ -14,8 +14,8 @@ const AppContent = () => {
   useEffect(() => {
     // Pusher.logToConsole = true
 
-    const pusher = new Pusher('4f0d3f536163be9e540c', {
-      cluster: 'ap2',
+    const pusher = new Pusher(import.meta.env.VITE_PUSHER_APP_ID, {
+      cluster: import.meta.env.VITE_PUSHER_CLUSTER,
     })
 
     const channel = pusher.subscribe('enquiry')

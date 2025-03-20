@@ -6,8 +6,6 @@ import RingLoader from '../components/RingLoader'
 
 const WebsiteComponent = () => {
 
-
-
     return (
         <>
             <Suspense fallback={
