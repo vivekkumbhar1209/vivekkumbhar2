@@ -14,6 +14,8 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PatientRegistration;
 use App\Http\Controllers\UpdateDepartment;
 use App\Http\Controllers\UserRegistration;
+use App\Http\Controllers\EnquiryController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [LoginController::class, 'login']);
@@ -43,7 +45,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/addMedicine', [MedicineController::class, 'addMedicine']);
     Route::get('/getMedicines', [MedicineController::class, 'getMedicines']);
     Route::post('/add-medicine', [MedicineController::class, 'addMedicine']);
-    Route::post('/updateavailability',[DoctorAvailabilityController::class,'updateAvailability']);//update availability of doctor
+    Route::post('/updateavailability', [DoctorAvailabilityController::class, 'updateAvailability']);//update availability of doctor
+    Route::get('/getavailabilityofdoctor', [DoctorAvailabilityController::class, 'getAvailabilityOfDoctor']);
 
     Route::get('/getDept', [DepartmentController::class, 'allDepartment']);
     Route::post('/addMedicineCategory', [MedicineCategoryController::class, 'addCategory']);
@@ -72,6 +75,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/getProfilePhoto', [OPDController::class, 'showProfilePhoto']);
 
 });
+
+Route::post('/submit-enquiry', [EnquiryController::class, 'store']);
+
 
 Route::post('/forgot-password', [UserRegistration::class, 'forgotPassword']);
 Route::post('/update-password', [UserRegistration::class, 'updatePassword']);

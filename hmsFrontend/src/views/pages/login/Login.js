@@ -4,11 +4,12 @@ import { CButton, CCard, CCardBody, CCardGroup, CCol, CContainer, CForm, CFormIn
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import { useState } from 'react'
-import axios from 'axios'
+import api from '../../../api'
 import Swal from 'sweetalert2'
 import RingLoader from '../../../components/RingLoader'
 import '../../../scss/examples.scss'
 import '../../../scss/style.scss'
+import '../../responsive.css'
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -29,8 +30,8 @@ const Login = () => {
   const handleSubmit = (e) => {
     setLoading(true)
     e.preventDefault()
-    axios
-      .post('http://localhost:8000/api/login', formData)
+    api
+      .post('/login', formData)
       .then((res) => {
         if (res.data.validationError) {
           let errorMessages = Object.values(res.data.validationError).flat().join('\n')
@@ -70,16 +71,11 @@ const Login = () => {
           <CRow className="justify-content-center">
             <CCol md={8}>
               <CCardGroup>
-                <CCard className="text-white bg-primary py-5" style={{ width: '100%' }}>
-                  <CCardBody className="text-center">
+                <CCard className="text-white bg-primary py-5 disappear-signup" style={{ width: '100%' }}>
+                  <CCardBody className="text-center d-flex align-items-center justify-content-center">
                     <div>
                       <h2>Sign up</h2>
                       <p>Sign in to access your dashboard</p>
-                      <Link to="/dashboard/dashboard">
-                        <CButton color="primary" className="mt-3" active tabIndex={-1}>
-                          Register Now!
-                        </CButton>
-                      </Link>
                     </div>
                   </CCardBody>
                 </CCard>
