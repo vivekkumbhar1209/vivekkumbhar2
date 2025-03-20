@@ -15,7 +15,6 @@ const AppHeaderDropdown = () => {
     axios
       .post('http://localhost:8000/api/getProfilePhoto', { userID: JSON.parse(localStorage.getItem('userData')).id }, { headers: { Authorization: `Bearer ${localStorage.getItem('login-token')}` } })
       .then((res) => {
-        console.log(res.data.data)
         setProfile(res.data.data)
         setLoading(false)
       })
@@ -26,7 +25,6 @@ const AppHeaderDropdown = () => {
   }, [])
 
   const handleLogout = () => {
-    console.log('logout')
     const token = localStorage.getItem('login-token')
     axios
       .post(
