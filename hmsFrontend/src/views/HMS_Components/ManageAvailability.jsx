@@ -27,7 +27,7 @@ const ManageAvailibility = () => {
               <CTabList variant="underline-border">
                 {/* <CTab itemKey={1}>Add User</CTab> */}
                 <CTab itemKey={2}>Edit Doctor's availability</CTab>
-                <CTab itemKey={3}>All users</CTab>
+                <CTab itemKey={3}>View all Doctors</CTab>
               </CTabList>
               <CTabContent>
                 <CTabPanel className="py-3" itemKey={1}>
@@ -38,7 +38,7 @@ const ManageAvailibility = () => {
                   <ViewAllUsers action="doctors"/>
                 </CTabPanel>
                 <CTabPanel className="py-3" itemKey={3}>
-                  <ViewAllUsers action="doctors" />
+                  <ViewAllUsers/>
                 </CTabPanel>
               </CTabContent>
             </CTabs>

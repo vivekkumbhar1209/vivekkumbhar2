@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { CCard, CCardHeader, CInputGroup, CFormInput, CCardBody, CButton, CTable, CTableHead, CTableBody, CTableRow, CTableHeaderCell, CTableDataCell, CFormSelect } from '@coreui/react'
+import { CCard, CCardHeader, CInputGroup, CFormInput, CCardBody, CButton, CTable, CTableHead, CTableBody, CTableRow, CTableHeaderCell, CTableDataCell, CFormSelect, CModal, CModalHeader, CModalBody, CModalFooter, CModalTitle } from '@coreui/react'
 import { FaSearch } from 'react-icons/fa'
 import ReactPaginate from 'react-paginate'
 import AddReceptionistForm from './AddReceptionistForm'
@@ -15,7 +15,9 @@ const ViewAllUsers = ({ action }) => {
   const [currentPage, setCurrentPage] = useState(0)
   const [sortBy, setSortBy] = useState('name')
   const [order, setOrder] = useState('asc')
-  const [editingUser, setEditingUser] = useState(null) // State to hold the user being edited
+  const [editingUser, setEditingUser] = useState(null)
+  const [showModal, setShowModal] = useState(false) // State to control modal visibility
+  const [currentUser, setCurrentUser] = useState(null) // State to store the user for whom update is being triggered
   const itemsPerPage = 5
 
   useEffect(() => {
@@ -35,7 +37,7 @@ const ViewAllUsers = ({ action }) => {
       .catch((err) => {
         console.log(err)
       })
-  }, [sortBy, order, users])
+  }, [sortBy, order, action])
 
   const handleSearch = (e) => {
     var value = e.target.value.toLowerCase()
@@ -45,10 +47,6 @@ const ViewAllUsers = ({ action }) => {
     setCurrentPage(0)
   }
 
-  const hanldleUpdateAvailability = (e) => {
-    return <UpdateAvailability/>
-
-  }
   const handleSortChange = (e) => {
     const value = e.target.value
     switch (value) {
@@ -73,11 +71,11 @@ const ViewAllUsers = ({ action }) => {
   const currentData = searchTerm.length > 0 ? filteredData.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage) : users.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
 
   const handleEdit = (user) => {
-    setEditingUser(user) // Set the user to be edited
+    setEditingUser(user)
   }
 
   const renderEditForm = () => {
-    if (!editingUser) return null // If no user is being edited, don't show form
+    if (!editingUser) return null
 
     if (editingUser.role === 'Admin') {
       return <AddAdminForm role={editingUser.role} propAction="edit" user={editingUser} />
@@ -88,9 +86,15 @@ const ViewAllUsers = ({ action }) => {
     }
   }
 
+  // Function to open the modal for UpdateAvailability
+  const handleUpdateAvailability = (user) => {
+    setCurrentUser(user) // Store the current user whose availability is being updated
+    setShowModal(true) // Show the modal
+  }
+
   return (
     <>
-      {renderEditForm()} {/* Render the form when user clicks edit */}
+      {renderEditForm()}
       <CCard className="mb-3">
         <CCardHeader>
           <strong>Search Users</strong>
@@ -210,7 +214,7 @@ const ViewAllUsers = ({ action }) => {
                     {action === 'doctors' ? (
                       <>
                         <CTableDataCell className="text-center" style={{ verticalAlign: 'middle' }}>
-                          <CButton onClick={() => hanldleUpdateAvailability()}>Update</CButton>
+                          <CButton onClick={() => handleUpdateAvailability(elem)}>Update</CButton>
                         </CTableDataCell>
                       </>
                     ) : null}
@@ -227,6 +231,18 @@ const ViewAllUsers = ({ action }) => {
           </CTable>
         </CCardBody>
       </CCard>
+      {/* Modal for UpdateAvailability */}
+      <CModal visible={showModal} onClose={() => setShowModal(false)} size='lg'>
+        <CModalHeader>
+          <CModalTitle >Update Availability</CModalTitle>
+        </CModalHeader>
+        <CModalBody className='p-3'>
+          <UpdateAvailability doctorUser={currentUser} /> {/* Pass current user to the UpdateAvailability component */}
+        </CModalBody>
+        <CModalFooter className='p-3'>
+          <CButton color="secondary" onClick={() => setShowModal(false)}>Close</CButton>
+        </CModalFooter>
+      </CModal>
       <CCard className="mt-2">
         <CCardBody className="pb-0">
           <div className="d-flex justify-content-center">

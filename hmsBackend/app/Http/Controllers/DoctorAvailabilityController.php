@@ -64,10 +64,11 @@ class DoctorAvailabilityController extends Controller
 
 
     //function to return availability details of perticular doctor
-    public function getAvailabilityOfDoctor()
+    public function getAvailabilityOfDoctor(Request $request)
     {
-        $userID = auth()->user()->id; // Get the logged-in user ID
 
+        $userID = $request->query("doctorId") ? $request->query("doctorId") : auth()->user()->id; // Get the logged-in user ID
+        
         $availability = DoctorAvailability::with('user')
             ->where('userID', $userID)
             ->first(); // Fetch only one record for the specific doctor

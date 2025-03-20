@@ -5,7 +5,7 @@ import swal from 'sweetalert2'
 import Loader from '../../components/Loader'
 import { CCard, CCardHeader, CCardBody, CForm, CFormLabel, CFormSelect, CFormInput, CButton, CRow, CCol } from '@coreui/react'
 
-const UpdateAvailability = () => {
+const UpdateAvailability = ( {doctorUser = null} ) => {
   const [availabilityStatus, setAvailabilityStatus] = useState('')
   const [availableStartTime, setAvailableStartTime] = useState('')
   const [availableEndTime, setAvailableEndTime] = useState('')
@@ -23,6 +23,8 @@ const UpdateAvailability = () => {
     try {
       const token = localStorage.getItem('login-token')
       const response = await axios.get('http://127.0.0.1:8000/api/getavailabilityofdoctor', {
+        
+        params: doctorUser === null ? {} : {doctorId: doctorUser.id},    // pass doctor id selected from receptionist's dashboard to backend!
         headers: { Authorization: `Bearer ${token}` },
       })
       if (response.data.status === 200) {
@@ -36,10 +38,12 @@ const UpdateAvailability = () => {
   }
 
   const handleSubmit = async (e) => {
+
     e.preventDefault()
     setLoading(true)
     try {
-      const userData = JSON.parse(localStorage.getItem('userData'))
+      const userData = doctorUser === null ? JSON.parse(localStorage.getItem('userData')) : doctorUser;
+      console.log(userData);
       const token = localStorage.getItem('login-token') // Ensure token is retrieved properly
       const userID = userData?.id
 
