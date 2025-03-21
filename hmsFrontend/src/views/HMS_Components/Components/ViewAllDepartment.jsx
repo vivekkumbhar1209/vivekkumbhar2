@@ -16,10 +16,11 @@ import {
 } from '@coreui/react'
 import { useEffect } from 'react'
 import { useState } from 'react'
-import axios from 'axios'
+//import axios from 'axios'
 import { formatDate } from '../../../dateUtility'
 import { FaSearch } from 'react-icons/fa'
 import ReactPaginate from 'react-paginate'
+import api from '../../../api'
 
 const ViewAllDepartment = () => {
   const [deptData, setDeptData] = useState([])
@@ -30,7 +31,7 @@ const ViewAllDepartment = () => {
 
   useEffect(() => {
     var token = localStorage.getItem('login-token')
-    axios
+    /*axios
       .get('http://127.0.0.1:8000/api/getDept', {
         headers: {
           Authorization: `Bearer ${token}`,}
@@ -41,7 +42,16 @@ const ViewAllDepartment = () => {
       })
       .catch((err) => {
         console.log(err)
-      })
+      })*/
+     api
+     .get('/getDept')
+     .then((res)=>
+    {
+      setDeptData(res.data.deptData)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   }, [])
 
   const handleSearch = (e) => {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import swal from 'sweetalert2'
 import Loader from '../../components/Loader'
+import api from '../../api'
 import { CCard, CCardHeader, CCardBody, CForm, CFormLabel, CFormSelect, CFormInput, CButton, CRow, CCol } from '@coreui/react'
 
 const UpdateAvailability = ( {doctorUser = null} ) => {
@@ -22,10 +23,10 @@ const UpdateAvailability = ( {doctorUser = null} ) => {
   const fetchDoctorAvailability = async () => {
     try {
       const token = localStorage.getItem('login-token')
-      const response = await axios.get('http://127.0.0.1:8000/api/getavailabilityofdoctor', {
+      const response = await api.get('/getavailabilityofdoctor', {
         
         params: doctorUser === null ? {} : {doctorId: doctorUser.id},    // pass doctor id selected from receptionist's dashboard to backend!
-        headers: { Authorization: `Bearer ${token}` },
+        
       })
       if (response.data.status === 200) {
         setDoctorAvailability(response.data.data)
@@ -62,13 +63,7 @@ const UpdateAvailability = ( {doctorUser = null} ) => {
         reason: availabilityStatus === 'Unavailable' ? reason : null,
       }
 
-      const response = await axios.post('http://127.0.0.1:8000/api/updateavailability', formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-      })
+      const response = await api.post('/updateavailability', formData)
 
       if (response.data.status === 200) {
         swal.fire('Success', 'Availability updated successfully.', 'success')
