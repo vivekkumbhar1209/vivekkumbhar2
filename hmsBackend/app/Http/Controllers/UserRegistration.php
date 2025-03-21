@@ -6,7 +6,7 @@ use App\Helper\FileHelper;
 use App\Models\Doctor;
 use App\Models\User;
 use Carbon\Carbon;
-use Hash;
+use Illuminate\Support\Facades\Hash; //use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;

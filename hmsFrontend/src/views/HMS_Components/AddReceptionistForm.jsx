@@ -392,29 +392,34 @@ const AddReceptionistForm = ({ role, propAction = 'add', user }) => {
       ) : (
         // Form after loading completes
         <div className="container">
-          <CForm onSubmit={handleSubmit} className="w-100" encType="multipart/form-data">
-            <div className="row align-items-stretch">
-              {/* Left and Middle Columns - Wrapped in a single card */}
-              <div className="col-md-8">
-                <CCard className="p-3 h-100">
-                  <p className="text-body-secondary fs-5">Add Receptionist</p>
-                  <div className="row">
-                    {/* Left Column */}
-                    <div className="col-md-6">
-                      <CFormLabel htmlFor="name" className="mt-2">
-                        Name:
-                      </CFormLabel>
-                      <CFormInput id="name" onChange={handleChange} type="text" name="name" required value={data.name} />
 
-                      <CFormLabel htmlFor="email" className="mt-2">
-                        Email:
-                      </CFormLabel>
-                      <CFormInput id="email" onChange={handleChange} type="email" name="email" required value={data.email} />
+  <CForm onSubmit={handleSubmit} className="w-100" encType="multipart/form-data">
+    <div className="row align-items-stretch">
+      {/* Left and Middle Columns - Wrapped in a single card */}
+      <div className="col-md-8">
+        <CCard className="p-3 h-100">
+        <p className="text-body-secondary fs-5">Add Receptionist</p>
+          <div className="row">
+            {/* Left Column */}
+            <div className="col-md-6">
+              <CFormLabel htmlFor="name" className="mt-2">Name:</CFormLabel>
+              <CFormInput id="name" onChange={handleChange} type="text" name="name" required value={data.name} />
 
-                      <CFormLabel htmlFor="password" className="mt-2">
-                        Password:
-                      </CFormLabel>
-                      <CFormInput id="password" onChange={handleChange} type="password" name="password" required autoComplete="new-password" value={data.password} />
+              <CFormLabel htmlFor="email" className="mt-2">Email:</CFormLabel>
+              <CFormInput id="email" onChange={handleChange} type="email" name="email" required value={data.email} />
+
+              <CFormLabel htmlFor="password" className="mt-2">Password:</CFormLabel>
+              <CFormInput id="password" onChange={handleChange} type="password" name="password" required autoComplete="new-password" value={data.password} />
+
+              <CFormLabel htmlFor="gender" className="mt-2">Gender:</CFormLabel>
+              <CFormSelect id="gender" name="gender" onChange={handleChange} required value={data.gender}>
+                <option value="" disabled>Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </CFormSelect>
+            </div>
+
 
                       <CFormLabel htmlFor="gender" className="mt-2">
                         Gender:
