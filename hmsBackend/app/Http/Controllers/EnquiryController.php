@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Events\EnquiryTableUpdated;
 use App\Events\NewEnquiry;
 use App\Http\Controllers\Controller;
 use App\Models\Enquiry;
@@ -28,6 +29,7 @@ class EnquiryController extends Controller
             ];
 
             broadcast(new NewEnquiry($data))->toOthers();
+            broadcast(new EnquiryTableUpdated(true));
 
             return response()->json(['message' => 'Enquiry submitted successfully!', 'data' => $enquiry], 200);
         } else {
@@ -40,7 +42,7 @@ class EnquiryController extends Controller
 
     public function retrieveAllEnquiries(Request $request)
     {
-        $data = Enquiry::all();
+        $data = Enquiry::latest()->get();
         if ($data) {
             return response()->json([
                 'status'  => 200,
