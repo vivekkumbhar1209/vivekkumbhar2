@@ -93,7 +93,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Admit Patient',
-        to: '/dashboard/',
+        to: '/dashboard/admitPatient',
         icon: <CIcon icon={cilUserFollow} customClassName="nav-icon" />,
         badge: {
           color: 'danger',
