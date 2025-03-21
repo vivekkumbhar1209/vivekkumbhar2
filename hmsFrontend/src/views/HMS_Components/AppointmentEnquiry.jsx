@@ -7,6 +7,7 @@ import Pusher from 'pusher-js'
 import { FaSearch } from 'react-icons/fa'
 import ReactPaginate from 'react-paginate'
 import { data, useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 const AppointmentEnquiry = () => {
 
@@ -22,7 +23,7 @@ const AppointmentEnquiry = () => {
         setLoading(true)
         try {
 
-            Pusher.logToConsole = true
+            // Pusher.logToConsole = true
             const pusher = new Pusher(import.meta.env.VITE_PUSHER_APP_ID, {
                 cluster: import.meta.env.VITE_PUSHER_CLUSTER
             })
@@ -81,8 +82,38 @@ const AppointmentEnquiry = () => {
         (currentPage + 1) * itemsPerPage
     )
 
-    const handleNavigate = (elem) => {
-        navigate('/dashboard/registerPatient', { state: elem })
+    const checkIfPatientIsRegistered = (elem) => {
+        api.post('/checkIfPatientIsRegistered', { mobile: elem.mobile_no }).then(res => {
+            console.log(res.data)
+            if (res.data.status === 409) {
+                Swal.fire({
+                    icon: 'error',
+                    title: res.data.message,
+                    text: res.data.data.mobile,
+                    confirmButtonText: 'Ok'
+                })
+            }
+            else if (res.data.status === 201) {
+                Swal.fire({
+                    icon: 'question',
+                    title: res.data.message,
+                    text: res.data.text,
+                    confirmButtonText: 'Ok'
+                })
+            }
+            else if (res.data.status === 202) {
+                Swal.fire({
+                    icon: 'info',
+                    title: res.data.message,
+                    text: res.data.text,
+                    confirmButtonText: 'Ok'
+                }).then(() => {
+                    navigate('/dashboard/registerPatient', { state: elem })
+                })
+            }
+        }).catch(err => {
+            console.log(err)
+        })
     }
 
     const role = JSON.parse(localStorage.getItem('userData')).role
@@ -147,7 +178,7 @@ const AppointmentEnquiry = () => {
                                                     <CTableDataCell dangerouslySetInnerHTML={{ __html: highlightText(elem.address, searchTerm) }} />
                                                     <CTableDataCell dangerouslySetInnerHTML={{ __html: highlightText(elem.message, searchTerm) }} />
                                                     <CTableDataCell>
-                                                        <CButton color='primary' onClick={() => handleNavigate(elem)}>Register</CButton>
+                                                        <CButton color='primary' onClick={() => checkIfPatientIsRegistered(elem)}>Register</CButton>
                                                     </CTableDataCell>
                                                 </CTableRow>
                                             ))
