@@ -26,6 +26,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     //Implementation is done for this api in the frontend
     Route::post('/logout', [LogOutController::class, 'logout']);
     Route::post('/addDisease', [AddDisease::class, 'addDisease']);
+    Route::put('/updatedisease/{id}', [AddDisease::class, 'updateDisease']);//dhanu
     Route::post('/registerDepartment', [DeptReg::class, 'registerDepartment']);
     Route::get('/getDept', [DeptReg::class, 'getDept']);
     Route::post('/updateDepartment', [UpdateDepartment::class, 'updateDepartment']);
@@ -35,6 +36,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/patients', [PatientController::class, 'index']);
     Route::get('/patients/{id}', [PatientController::class, 'show']);
     Route::get('/viewAllUsers', [UserRegistration::class, 'getAllUsers']);
+    Route::get('/patientbypid/{pid}', [PatientRegistration::class, 'getPatientByPID']);//dhanu this scan barcode pid and fetch details
 
     Route::get('/getMedicines', [MedicineController::class, "getMedicines"]);
 
@@ -77,6 +79,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 
 Route::post('/submit-enquiry', [EnquiryController::class, 'store']);
-
+Route::get('/doctors/info', [DoctorController::class, 'getDoctorInfo']);
 Route::post('/forgot-password', [UserRegistration::class, 'forgotPassword']);
 Route::post('/update-password', [UserRegistration::class, 'updatePassword']);
