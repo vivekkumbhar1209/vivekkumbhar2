@@ -1,19 +1,24 @@
 import { useRef, useEffect, useState } from "react";
 import React from "react";
 import axios from "axios";
+import Loader from "../../../../../components/Loader";
+import api from "../../../../../api";
 
 const AllDoctors = () => {
-  const [doctors, setDoctors] = useState([]); 
+  const [doctors, setDoctors] = useState([]);
+  const [loading, setLoading] = useState(true); 
   const dialogRef = useRef([]); 
 
   useEffect(() => {
-    axios
-      .get("http://127.0.0.1:8000/api/doctors/info") 
+    api
+      .get("/doctors/info") 
       .then((response) => {
         setDoctors(response.data); 
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching doctors:", error);
+        setLoading(false);
       });
   }, []);
 
@@ -28,6 +33,11 @@ const AllDoctors = () => {
         <h1 className="text-center text-gray-600 m-2 font-bold text-3xl mb-4">
           Meet Our Doctors
         </h1>
+        {loading ? (
+          <div className="flex justify-center items-center h-40">
+            <Loader />
+          </div>
+        ) : (
         <div className="grid grid-cols-1 grid-rows-1 gap-1 md:grid-cols-3 lg:gap-2 ml-20 mr-20">
           {doctors.map((doctor, index) => (
             <div className="group" key={doctor.id}>
@@ -48,6 +58,7 @@ const AllDoctors = () => {
             </div>
           ))}
         </div>
+         )}
       </section>
     </>
   );
