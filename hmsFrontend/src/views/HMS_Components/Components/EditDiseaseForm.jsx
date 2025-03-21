@@ -147,7 +147,7 @@ const EditDiseaseForm = () => {
       })
   }
   
-  /*const handleUpdate = () => {
+ /* const handleUpdate = () => {
     const token = localStorage.getItem('login-token')
     axios
       .put(
