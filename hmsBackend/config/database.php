@@ -82,20 +82,20 @@ return [
             ]) : [],
         ],
 
-        'pgsql' => [
-            'driver' => 'pgsql',
-            'url' => env('DB_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'laravel'),
-            'username' => env('DB_USERNAME', 'postgres'),
-            'password' => env('DB_PASSWORD', 'rmEntering@!$data'),
-            'charset' => env('DB_CHARSET', 'utf8'),
-            'prefix' => '',
-            'prefix_indexes' => true,
-            'search_path' => 'public',
-            'sslmode' => 'prefer',
-        ],
+       'pgsql' => [
+    'driver' => 'pgsql',
+    'url' => env('DB_URL'),
+    'host' => env('DB_HOST', '127.0.0.1'),
+    'port' => env('DB_PORT', '5432'),
+    'database' => env('DB_DATABASE', 'laravel'),
+    'username' => env('DB_USERNAME', 'postgres'),
+    'password' => env('DB_PASSWORD', 'root'),
+    'charset' => 'utf8',  // Specify charset explicitly
+    'collation' => 'utf8_unicode_ci',  // Optional: Add this for proper collation
+    'prefix' => '',
+    'schema' => 'public', // Optional: Default schema to use
+    'sslmode' => 'prefer', // Optional: Adjust SSL mode if needed
+],
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',

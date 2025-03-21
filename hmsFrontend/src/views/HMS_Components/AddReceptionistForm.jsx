@@ -4,6 +4,7 @@ import swal from 'sweetalert2'
 import Webcam from 'react-webcam'
 import { CCard, CForm, CFormSelect, CFormTextarea, CFormInput, CCardBody, CButton, CFormLabel, CModal, CModalHeader, CModalBody, CModalFooter, CModalTitle } from '@coreui/react'
 import Loader from '../../components/Loader'
+import api from '../../api'
 
 const AddReceptionistForm = ({ role, propAction = 'add', user }) => {
   const [data, setData] = useState({
@@ -143,7 +144,7 @@ const AddReceptionistForm = ({ role, propAction = 'add', user }) => {
         console.log(res)
         swal.fire({
           title: 'Success!',
-          text: 'Receptionist added successfully.',
+          text: propAction === 'add' ? 'Receptionist added successfully.' : 'Receptionist updated successfully',
           icon: 'success',
           confirmButtonText: 'OK',
         })
@@ -364,7 +365,7 @@ const AddReceptionistForm = ({ role, propAction = 'add', user }) => {
                     {data.profilePhoto ? <img src={typeof data.profilePhoto === 'string' ? `http://localhost:8000/storage/${data.profilePhoto}` : URL.createObjectURL(data.profilePhoto)} alt="Profile Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <span>No Image</span>}
                   </div>
 
-                <CFormLabel className="mt-2"></CFormLabel>[]
+                <CFormLabel className="mt-2"></CFormLabel>
                   <input type="file" accept="image/*" id="profilePhoto" name="profilePhoto" onChange={handlePhotoChange} hidden />
                   <CButton color="primary" className="me-2" onClick={() => document.getElementById('profilePhoto').click()}>
                     Upload Photo
@@ -381,7 +382,7 @@ const AddReceptionistForm = ({ role, propAction = 'add', user }) => {
 
             <div className="text-left mt-3">
               <CButton color="primary" type="submit">
-                Add User
+                Update Receptionist
               </CButton>
             </div>
           </CForm>
@@ -392,29 +393,34 @@ const AddReceptionistForm = ({ role, propAction = 'add', user }) => {
       ) : (
         // Form after loading completes
         <div className="container">
-          <CForm onSubmit={handleSubmit} className="w-100" encType="multipart/form-data">
-            <div className="row align-items-stretch">
-              {/* Left and Middle Columns - Wrapped in a single card */}
-              <div className="col-md-8">
-                <CCard className="p-3 h-100">
-                  <p className="text-body-secondary fs-5">Add Receptionist</p>
-                  <div className="row">
-                    {/* Left Column */}
-                    <div className="col-md-6">
-                      <CFormLabel htmlFor="name" className="mt-2">
-                        Name:
-                      </CFormLabel>
-                      <CFormInput id="name" onChange={handleChange} type="text" name="name" required value={data.name} />
 
-                      <CFormLabel htmlFor="email" className="mt-2">
-                        Email:
-                      </CFormLabel>
-                      <CFormInput id="email" onChange={handleChange} type="email" name="email" required value={data.email} />
+  <CForm onSubmit={handleSubmit} className="w-100" encType="multipart/form-data">
+    <div className="row align-items-stretch">
+      {/* Left and Middle Columns - Wrapped in a single card */}
+      <div className="col-md-8">
+        <CCard className="p-3 h-100">
+        <p className="text-body-secondary fs-5">Add Receptionist</p>
+          <div className="row">
+            {/* Left Column */}
+            <div className="col-md-6">
+              <CFormLabel htmlFor="name" className="mt-2">Name:</CFormLabel>
+              <CFormInput id="name" onChange={handleChange} type="text" name="name" required value={data.name} />
 
-                      <CFormLabel htmlFor="password" className="mt-2">
-                        Password:
-                      </CFormLabel>
-                      <CFormInput id="password" onChange={handleChange} type="password" name="password" required autoComplete="new-password" value={data.password} />
+              <CFormLabel htmlFor="email" className="mt-2">Email:</CFormLabel>
+              <CFormInput id="email" onChange={handleChange} type="email" name="email" required value={data.email} />
+
+              <CFormLabel htmlFor="password" className="mt-2">Password:</CFormLabel>
+              <CFormInput id="password" onChange={handleChange} type="password" name="password" required autoComplete="new-password" value={data.password} />
+
+              <CFormLabel htmlFor="gender" className="mt-2">Gender:</CFormLabel>
+              <CFormSelect id="gender" name="gender" onChange={handleChange} required value={data.gender}>
+                <option value="" disabled>Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </CFormSelect>
+            </div>
+
 
                       <CFormLabel htmlFor="gender" className="mt-2">
                         Gender:

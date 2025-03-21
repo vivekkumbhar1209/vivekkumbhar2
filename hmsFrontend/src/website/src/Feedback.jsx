@@ -6,7 +6,8 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination , Autoplay } from "swiper/modules";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import starImage from '../Images/five-stars.png'
 
 function Feedback() {
   useEffect(() => {
@@ -45,19 +46,19 @@ function Feedback() {
       text: "I recently had an incredible experience at JK Hospital, and their doctors are exceptional!",
       name: "T. Gowtham",
       role: "Patient",
-      image: "/images/five-stars.png",
+      image: starImage,
     },
     {
       text: "Dr. Subramani's dedication to healthcare is truly praiseworthy.",
       name: "T. Vasudevan",
       role: "Patient",
-      image: "/images/five-stars.png",
+      image: starImage,
     },
     {
       text: "Dr. Kishore provided me with an excellent treatment plan.",
       name: "T. Meena",
       role: "Patient",
-      image: "/images/five-stars.png",
+      image: starImage,
     },
   ];
 
@@ -105,7 +106,7 @@ function Feedback() {
 
       {/* Patient Testimonials Swiper */}
       <div className="testimonials-container h-100 flex justify-center align-center flex-col" style={{ textAlign: "center" }}>
-      <h2 className="section-title" style={{ fontSize: "30px" }} data-aos="fade-up" data-aos-duration="1000">
+        <h2 className="section-title" style={{ fontSize: "30px" }} data-aos="fade-up" data-aos-duration="1000">
           <strong>Patient Speaks</strong>
         </h2>
         <Swiper

@@ -1,25 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import {
-  CCard,
-  CCardHeader,
-  CInputGroup,
-  CFormInput,
-  CCardBody,
-  CButton,
-  CTable,
-  CTableHead,
-  CTableBody,
-  CTableRow,
-  CTableHeaderCell,
-  CTableDataCell,
-  CFormSelect,
-} from '@coreui/react'
+import { CCard, CCardHeader, CInputGroup, CFormInput, CCardBody, CButton, CTable, CTableHead, CTableBody, CTableRow, CTableHeaderCell, CTableDataCell, CFormSelect, CModal, CModalHeader, CModalBody, CModalFooter, CModalTitle } from '@coreui/react'
 import { FaSearch } from 'react-icons/fa'
 import ReactPaginate from 'react-paginate'
 import AddReceptionistForm from './AddReceptionistForm'
 import AddAdminForm from './Components/AddAdminForm'
 import AddDoctorForm from './Components/AddDoctorForm'
+import UpdateAvailability from './Updateavailability'
 
 const ViewAllUsers = ({ action }) => {
   const [users, setUsers] = useState([])
@@ -28,23 +15,29 @@ const ViewAllUsers = ({ action }) => {
   const [currentPage, setCurrentPage] = useState(0)
   const [sortBy, setSortBy] = useState('name')
   const [order, setOrder] = useState('asc')
-  const [editingUser, setEditingUser] = useState(null) // State to hold the user being edited
+  const [editingUser, setEditingUser] = useState(null)
+  const [showModal, setShowModal] = useState(false) // State to control modal visibility
+  const [currentUser, setCurrentUser] = useState(null) // State to store the user for whom update is being triggered
   const itemsPerPage = 5
 
   useEffect(() => {
     var token = localStorage.getItem('login-token')
-    axios
-      .get('http://127.0.0.1:8000/api/viewAllUsers', {
-        headers: { Authorization: `Bearer ${token}` },
-        params: { sortBy, order },
-      })
+    const url = 'http://127.0.0.1:8000/api/viewAllUsers'
+    axios({
+      method: 'GET',
+      url: url,
+      params: { sortBy, order, action },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((res) => {
         setUsers(res.data.Users)
       })
       .catch((err) => {
         console.log(err)
       })
-  }, [sortBy, order])
+  }, [sortBy, order, action])
 
   const handleSearch = (e) => {
     var value = e.target.value.toLowerCase()
@@ -75,17 +68,14 @@ const ViewAllUsers = ({ action }) => {
     setOrder(e.target.value === '1' ? 'asc' : 'desc')
   }
 
-  const currentData =
-    searchTerm.length > 0
-      ? filteredData.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
-      : users.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
+  const currentData = searchTerm.length > 0 ? filteredData.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage) : users.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
 
   const handleEdit = (user) => {
-    setEditingUser(user) // Set the user to be edited
+    setEditingUser(user)
   }
 
   const renderEditForm = () => {
-    if (!editingUser) return null // If no user is being edited, don't show form
+    if (!editingUser) return null
 
     if (editingUser.role === 'Admin') {
       return <AddAdminForm role={editingUser.role} propAction="edit" user={editingUser} />
@@ -96,9 +86,15 @@ const ViewAllUsers = ({ action }) => {
     }
   }
 
+  // Function to open the modal for UpdateAvailability
+  const handleUpdateAvailability = (user) => {
+    setCurrentUser(user) // Store the current user whose availability is being updated
+    setShowModal(true) // Show the modal
+  }
+
   return (
     <>
-      {renderEditForm()} {/* Render the form when user clicks edit */}
+      {renderEditForm()}
       <CCard className="mb-3">
         <CCardHeader>
           <strong>Search Users</strong>
@@ -112,19 +108,10 @@ const ViewAllUsers = ({ action }) => {
               <FaSearch />
             </CButton>
             <div style={{ width: '80%', margin: '0px 5px' }}>
-              <CFormInput
-                placeholder="Search"
-                aria-label="Search"
-                aria-describedby="addon-wrapping"
-                onChange={handleSearch}
-              />
+              <CFormInput placeholder="Search" aria-label="Search" aria-describedby="addon-wrapping" onChange={handleSearch} />
             </div>
             <div style={{ width: '10%', margin: '0px 5px' }}>
-              <CFormSelect
-                className="text-start"
-                aria-label="Default select example"
-                onChange={handleSortChange}
-              >
+              <CFormSelect className="text-start" aria-label="Default select example" onChange={handleSortChange}>
                 <option color="secondary" defaultChecked>
                   Sort By
                 </option>
@@ -134,11 +121,7 @@ const ViewAllUsers = ({ action }) => {
               </CFormSelect>
             </div>
             <div style={{ width: '10%', margin: '0px 5px' }}>
-              <CFormSelect
-                className="text-start"
-                aria-label="Default select example"
-                onChange={handleOrderChange}
-              >
+              <CFormSelect className="text-start" aria-label="Default select example" onChange={handleOrderChange}>
                 <option color="secondary" disabled>
                   Order
                 </option>
@@ -161,19 +144,19 @@ const ViewAllUsers = ({ action }) => {
                 <CTableHeaderCell>Email</CTableHeaderCell>
                 <CTableHeaderCell>Gender</CTableHeaderCell>
                 <CTableHeaderCell>Contact Number</CTableHeaderCell>
-                { action === "edit" ? 
-                  (<>
-                  <CTableHeaderCell>Last Updated</CTableHeaderCell>
-                  <CTableHeaderCell>Action</CTableHeaderCell>
-                  </>) : null
-                }
+                {action === 'edit' ? (
+                  <>
+                    <CTableHeaderCell>Last Updated</CTableHeaderCell>
+                    <CTableHeaderCell>Action</CTableHeaderCell>
+                  </>
+                ) : null}
               </CTableRow>
             </CTableHead>
             <CTableBody>
               {currentData.length > 0 ? (
                 currentData.map((elem, index) => (
                   <CTableRow key={index}>
-                    <CTableDataCell  >
+                    <CTableDataCell>
                       {elem.profilePhoto ? (
                         <img
                           src={`http://127.0.0.1:8000/storage/${elem.profilePhoto}`}
@@ -183,7 +166,6 @@ const ViewAllUsers = ({ action }) => {
                             height: '60px',
                             borderRadius: '50%',
                             objectFit: 'cover',
-
                           }}
                         />
                       ) : (
@@ -205,21 +187,36 @@ const ViewAllUsers = ({ action }) => {
                         </div>
                       )}
                     </CTableDataCell>
-                    <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>{elem.id}</CTableDataCell>
+                    <CTableDataCell className="text-center" style={{ verticalAlign: 'middle' }}>
+                      {elem.id}
+                    </CTableDataCell>
                     <CTableDataCell style={{ verticalAlign: 'middle' }}>{elem.name}</CTableDataCell>
-                    <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>{elem.role}</CTableDataCell>
+                    <CTableDataCell className="text-center" style={{ verticalAlign: 'middle' }}>
+                      {elem.role}
+                    </CTableDataCell>
                     <CTableDataCell style={{ verticalAlign: 'middle' }}>{elem.email}</CTableDataCell>
-                    <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>{elem.gender}</CTableDataCell>
-                    <CTableDataCell className='text-center' style={{ verticalAlign: 'middle' }}>{elem.mobile}</CTableDataCell>
+                    <CTableDataCell className="text-center" style={{ verticalAlign: 'middle' }}>
+                      {elem.gender}
+                    </CTableDataCell>
+                    <CTableDataCell className="text-center" style={{ verticalAlign: 'middle' }}>
+                      {elem.mobile}
+                    </CTableDataCell>
                     {action === 'edit' ? (
-                        <> 
-                      <CTableDataCell>
-                        {new Date(elem.updated_at).toLocaleString()}
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <CButton onClick={() => handleEdit(elem)}>Edit</CButton>
-                      </CTableDataCell>
-                        </>
+                      <>
+                        <CTableDataCell className="text-center" style={{ verticalAlign: 'middle' }}>
+                          {new Date(elem.updated_at).toLocaleString()}
+                        </CTableDataCell>
+                        <CTableDataCell className="text-center" style={{ verticalAlign: 'middle' }}>
+                          <CButton onClick={() => handleEdit(elem)}>Edit</CButton>
+                        </CTableDataCell>
+                      </>
+                    ) : null}
+                    {action === 'doctors' ? (
+                      <>
+                        <CTableDataCell className="text-center" style={{ verticalAlign: 'middle' }}>
+                          <CButton onClick={() => handleUpdateAvailability(elem)}>Update</CButton>
+                        </CTableDataCell>
+                      </>
                     ) : null}
                   </CTableRow>
                 ))
@@ -234,6 +231,18 @@ const ViewAllUsers = ({ action }) => {
           </CTable>
         </CCardBody>
       </CCard>
+      {/* Modal for UpdateAvailability */}
+      <CModal visible={showModal} onClose={() => setShowModal(false)} size='lg'>
+        <CModalHeader>
+          <CModalTitle >Update Availability</CModalTitle>
+        </CModalHeader>
+        <CModalBody className='p-3'>
+          <UpdateAvailability doctorUser={currentUser} /> {/* Pass current user to the UpdateAvailability component */}
+        </CModalBody>
+        <CModalFooter className='p-3'>
+          <CButton color="secondary" onClick={() => setShowModal(false)}>Close</CButton>
+        </CModalFooter>
+      </CModal>
       <CCard className="mt-2">
         <CCardBody className="pb-0">
           <div className="d-flex justify-content-center">
@@ -241,9 +250,7 @@ const ViewAllUsers = ({ action }) => {
               previousLabel={'<<'}
               nextLabel={'>>'}
               breakLabel={'...'}
-              pageCount={Math.ceil(
-                (filteredData.length > 0 ? filteredData.length : users.length) / itemsPerPage,
-              )}
+              pageCount={Math.ceil((filteredData.length > 0 ? filteredData.length : users.length) / itemsPerPage)}
               marginPagesDisplayed={2}
               pageRangeDisplayed={3}
               onPageChange={(e) => setCurrentPage(e.selected)}

@@ -69,6 +69,7 @@ const ServicesCarousel = () => {
                 <img
                   src={service.image}
                   alt={service.title}
+                  loading="lazy"
                   className="w-full h-40 object-cover"
                 />
                 <div className="p-4 text-center flex flex-col justify-center h-24">

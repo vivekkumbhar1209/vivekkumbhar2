@@ -20,7 +20,7 @@ import {
 import Loader from '../../../components/Loader'
 
 const AddDoctorForm = ({ role, propAction = 'add', user }) => {
-    const [modalVisible, setModalVisible] = useState(false); // State for modal visibility
+  const [modalVisible, setModalVisible] = useState(false); // State for modal visibility
 
   const [loading, setLoading] = useState(false)
   const [departments, setDepartments] = useState([]) // Store departments
@@ -80,10 +80,10 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
         mobile: user.mobile,
         address: user.address,
         role: user.role,
-        specialization: user.specialization,
-        experience: user.experience,
-        departmentID: user.departmentID,
-        consultation_fee: user.consultation_fee,
+        // specialization: user.doctor.specialization,
+        experience: user.doctor.experience,
+        departmentID: user.doctor.departmentID,
+        consultation_fee: user.doctor.consultation_fee,
         profilePhoto: user.profilePhoto
       })
       setModalVisible(true) // Open the modal
@@ -97,7 +97,7 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
         mobile: '',
         address: '',
         role: role,
-        specialization: '',
+        // specialization: '',
         experience: '',
         departmentID: '',
         consultation_fee: '',
@@ -151,8 +151,10 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
     formData.append('experience', data.experience)
     formData.append('departmentID', data.departmentID)
     formData.append('consultation_fee', data.consultation_fee)
+    const uniqueFileName = `compressed-image-${Date.now()}.jpg`
+    formData.append('profilePhoto', data.profilePhoto, uniqueFileName)
 
-    if (data.profilePhoto) {
+    /*if (data.profilePhoto) {
       try {
         let compressedBlob = await compressImage(data.profilePhoto)
         const uniqueFileName = `compressed-image-${Date.now()}.jpg`
@@ -160,7 +162,7 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
       } catch (error) {
         console.error('Image compression failed:', error)
       }
-    }
+    }*/
 
     // Log FormData before sending
     console.log('FormData being sent:')
@@ -184,44 +186,44 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
   }
 
 
-const sendToBackend = async (url, method, formData) => {
-  const token = localStorage.getItem('login-token')
+  const sendToBackend = async (url, method, formData) => {
+    const token = localStorage.getItem('login-token')
 
-  try {
-    const response = await axios({
-      method: method,
-      url: url,
-      data: formData,
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-
-    // Check if API response contains validation errors
-    if (response.data.errors) {
-      let errorMessages = Object.values(response.data.errors)
-        .flat()
-        .map((msg) => `<li>${msg}</li>`)
-        .join('')
-
-      swal.fire({
-        title: 'Validation Error',
-        html: `<ul style="text-align: left;">${errorMessages}</ul>`,
-        icon: 'error',
-        confirmButtonText: 'Try Again',
+    try {
+      const response = await axios({
+        method: method,
+        url: url,
+        data: formData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
       })
 
-      // Stop execution if there are validation errors
-      return
-    }
+      // Check if API response contains validation errors
+      if (response.data.errors) {
+        let errorMessages = Object.values(response.data.errors)
+          .flat()
+          .map((msg) => `<li>${msg}</li>`)
+          .join('')
 
-    swal.fire({
-      title: 'Success!',
-      text: 'Doctor added successfully.',
-      icon: 'success',
-      confirmButtonText: 'OK',
-    })
+        swal.fire({
+          title: 'Validation Error',
+          html: `<ul style="text-align: left;">${errorMessages}</ul>`,
+          icon: 'error',
+          confirmButtonText: 'Try Again',
+        })
+
+        // Stop execution if there are validation errors
+        return
+      }
+
+      swal.fire({
+        title: 'Success!',
+        text: 'Doctor added successfully.',
+        icon: 'success',
+        confirmButtonText: 'OK',
+      })
 
     setData({
       name: '',
@@ -232,108 +234,109 @@ const sendToBackend = async (url, method, formData) => {
       mobile: '',
       address: '',
       role: role,
-      specialization: '',
+      // specialization: '',
       experience: '',
       departmentID: '',
       consultation_fee: '',
       profilePhoto: '',
     })
+    setModalVisible(false);
   } catch (err) {
     console.error('Error:', err)
 
-    if (err.response && err.response.status === 422) {
-      let errorMessages = Object.values(err.response.data.errors)
-        .flat()
-        .map((msg) => `<li>${msg}</li>`)
-        .join('')
+      if (err.response && err.response.status === 422) {
+        let errorMessages = Object.values(err.response.data.errors)
+          .flat()
+          .map((msg) => `<li>${msg}</li>`)
+          .join('')
 
-      swal.fire({
-        title: 'Validation Error',
-        html: `<ul style="text-align: left;">${errorMessages}</ul>`,
-        icon: 'error',
-        confirmButtonText: 'Try Again',
-      })
-    } else {
-      swal.fire({
-        title: 'Error!',
-        text: 'Failed to add doctor.',
-        icon: 'error',
-        confirmButtonText: 'Try Again',
-      })
+        swal.fire({
+          title: 'Validation Error',
+          html: `<ul style="text-align: left;">${errorMessages}</ul>`,
+          icon: 'error',
+          confirmButtonText: 'Try Again',
+        })
+      } else {
+        swal.fire({
+          title: 'Error!',
+          text: 'Failed to add doctor.',
+          icon: 'error',
+          confirmButtonText: 'Try Again',
+        })
+      }
+    } finally {
+      setLoading(false)
     }
-  } finally {
-    setLoading(false)
   }
-}
 
-//compress image
-const compressImage = (image) => {
-  return new Promise((resolve, reject) => {
-    if (typeof image === 'string' && image.startsWith('data:image')) {
-      // If image is already a base64 string (captured by webcam), no need to compress
-      resolve(image)
-      return
-    }
-
-    const img = new Image()
-    img.onload = () => {
-      const canvas = document.createElement('canvas')
-      const ctx = canvas.getContext('2d')
-
-      const maxWidth = 300
-      const maxHeight = 300
-      let width = img.width
-      let height = img.height
-
-      if (width > maxWidth || height > maxHeight) {
-        if (width > height) {
-          height *= maxWidth / width
-          width = maxWidth
-        } else {
-          width *= maxHeight / height
-          height = maxHeight
-        }
+  //compress image
+  const compressImage = (image) => {
+    return new Promise((resolve, reject) => {
+      if (typeof image === 'string' && image.startsWith('data:image')) {
+        // If image is already a base64 string (captured by webcam), no need to compress
+        resolve(image)
+        return
       }
 
-      canvas.width = width
-      canvas.height = height
-      ctx.drawImage(img, 0, 0, width, height)
+      const img = new Image()
+      img.onload = () => {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')
 
-      canvas.toBlob(
-        (blob) => {
-          if (blob) {
-            resolve(blob)
+        const maxWidth = 300
+        const maxHeight = 300
+        let width = img.width
+        let height = img.height
+
+        if (width > maxWidth || height > maxHeight) {
+          if (width > height) {
+            height *= maxWidth / width
+            width = maxWidth
           } else {
-            reject(new Error('Compression failed'))
+            width *= maxHeight / height
+            height = maxHeight
           }
-        },
-        'image/jpeg',
-        0.7,
-      )
-    }
+        }
 
-    img.onerror = reject
+        canvas.width = width
+        canvas.height = height
+        ctx.drawImage(img, 0, 0, width, height)
 
-    if (typeof image !== 'string') {
-      img.src = URL.createObjectURL(image)
-    } else {
-      img.src = image
-    }
-  })
-}
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              resolve(blob)
+            } else {
+              reject(new Error('Compression failed'))
+            }
+          },
+          'image/jpeg',
+          0.7,
+        )
+      }
 
-const dataURItoBlob = (dataURI) => {
-  const byteString = atob(dataURI.split(',')[1])
-  const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
-  const arrayBuffer = new ArrayBuffer(byteString.length)
-  const uint8Array = new Uint8Array(arrayBuffer)
+      img.onerror = reject
 
-  for (let i = 0; i < byteString.length; i++) {
-    uint8Array[i] = byteString.charCodeAt(i)
+      if (typeof image !== 'string') {
+        img.src = URL.createObjectURL(image)
+      } else {
+        img.src = image
+      }
+    })
   }
 
-  return new Blob([uint8Array], { type: mimeString })
-}
+  const dataURItoBlob = (dataURI) => {
+    const byteString = atob(dataURI.split(',')[1])
+    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+    const arrayBuffer = new ArrayBuffer(byteString.length)
+    const uint8Array = new Uint8Array(arrayBuffer)
+
+    for (let i = 0; i < byteString.length; i++) {
+      uint8Array[i] = byteString.charCodeAt(i)
+    }
+
+    return new Blob([uint8Array], { type: mimeString })
+  }
 
 
 const closeModal = () => {
@@ -347,7 +350,7 @@ const closeModal = () => {
     mobile: '',
     address: '',
     role: role,
-    specialization: '',
+    // specialization: '',
     experience: '',
     departmentID: '',
     consultation_fee: '',
@@ -355,479 +358,479 @@ const closeModal = () => {
   })
 };
 
-return (
-  <>
-    {loading ? (
-      // Loader at center
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
-          backgroundColor: 'rgba(255, 255, 255, 0.8)',
-          zIndex: 9999,
-        }}
-      >
-        <Loader />
-      </div>
-    ) : null}
-    {propAction === 'edit' ? (
-      <CModal visible={modalVisible} onClose={closeModal} backdrop="static" size="xl">
-                <CModalHeader closeButton={true}>
-                  <CModalTitle>Edit Doctor</CModalTitle>
-                </CModalHeader>
-      
-                <CModalBody>
+  return (
+    <>
+      {loading ? (
+        // Loader at center
+        <div
+          className="d-flex justify-content-center align-items-center"
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
+            zIndex: 9999,
+          }}
+        >
+          <Loader />
+        </div>
+      ) : null}
+      {propAction === 'edit' ? (
+        <CModal visible={modalVisible} onClose={closeModal} backdrop="static" size="xl">
+          <CModalHeader closeButton={true}>
+            <CModalTitle>Edit Doctor</CModalTitle>
+          </CModalHeader>
 
-      <div className="container">
-        <CForm onSubmit={handleSubmit} className="w-100" encType="multipart/form-data">
-          <div className="row align-items-stretch">
-            {/* Left Column */}
-            <div className="col-md-8">
-              <CCard className="p-3 h-100">
-                <div className="row">
-                  <div className="col-md-6">
-                    <CFormLabel htmlFor="name">Name:</CFormLabel>
-                    <CFormInput
-                      id="name"
-                      onChange={handleChange}
-                      type="text"
-                      name="name"
-                      required
-                      value={data.name}
-                      />
+          <CModalBody>
 
-                    <CFormLabel htmlFor="email" className="mt-2">
-                      Email:
-                    </CFormLabel>
-                    <CFormInput
-                      id="email"
-                      onChange={handleChange}
-                      type="email"
-                      name="email"
-                      required
-                      value={data.email}
-                      />
+            <div className="container">
+              <CForm onSubmit={handleSubmit} className="w-100" encType="multipart/form-data">
+                <div className="row align-items-stretch">
+                  {/* Left Column */}
+                  <div className="col-md-8">
+                    <CCard className="p-3 h-100">
+                      <div className="row">
+                        <div className="col-md-6">
+                          <CFormLabel htmlFor="name">Name:</CFormLabel>
+                          <CFormInput
+                            id="name"
+                            onChange={handleChange}
+                            type="text"
+                            name="name"
+                            required
+                            value={data.name}
+                          />
 
-                    <CFormLabel htmlFor="password" className="mt-2">
-                      Password:
-                    </CFormLabel>
-                    <CFormInput
-                      id="password"
-                      onChange={handleChange}
-                      type="password"
-                      name="password"
-                      required={propAction === "add"}
-                      placeholder={propAction === 'add' ? 'Password' : 'Leave blank to keep current password'}
-                      value={data.password}
-                      />
+                          <CFormLabel htmlFor="email" className="mt-2">
+                            Email:
+                          </CFormLabel>
+                          <CFormInput
+                            id="email"
+                            onChange={handleChange}
+                            type="email"
+                            name="email"
+                            required
+                            value={data.email}
+                          />
 
-                    <CFormLabel htmlFor="gender" className="mt-2">
-                      Gender:
-                    </CFormLabel>
-                    <CFormSelect
-                      id="gender"
-                      name="gender"
-                      onChange={handleChange}
-                      required
-                      value={data.gender}
+                          <CFormLabel htmlFor="password" className="mt-2">
+                            Password:
+                          </CFormLabel>
+                          <CFormInput
+                            id="password"
+                            onChange={handleChange}
+                            type="password"
+                            name="password"
+                            required={propAction === "add"}
+                            placeholder={propAction === 'add' ? 'Password' : 'Leave blank to keep current password'}
+                            value={data.password}
+                          />
+
+                          <CFormLabel htmlFor="gender" className="mt-2">
+                            Gender:
+                          </CFormLabel>
+                          <CFormSelect
+                            id="gender"
+                            name="gender"
+                            onChange={handleChange}
+                            required
+                            value={data.gender}
+                          >
+                            <option value="" disabled>
+                              Select Gender
+                            </option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                          </CFormSelect>
+
+                          <CFormLabel htmlFor="address" className="mt-2">
+                            Address:
+                          </CFormLabel>
+                          <CFormTextarea
+                            id="address"
+                            onChange={handleChange}
+                            name="address"
+                            required
+                            value={data.address}
+                          ></CFormTextarea>
+                        </div>
+
+                        {/* Right Column */}
+                        <div className="col-md-6">
+                          <CFormLabel htmlFor="mobile">Mobile:</CFormLabel>
+                          <CFormInput
+                            id="mobile"
+                            onChange={handleChange}
+                            type="text"
+                            name="mobile"
+                            required
+                            value={data.mobile}
+                          />
+
+                          <CFormLabel htmlFor="experience" className="mt-2">
+                            Experience (Years):
+                          </CFormLabel>
+                          <CFormInput
+                            id="experience"
+                            onChange={handleChange}
+                            type="text"
+                            name="experience"
+                            required
+                            value={data.experience}
+                          />
+
+                          <CFormLabel htmlFor="department" className="mt-2">
+                            Department:
+                          </CFormLabel>
+                          <CFormSelect
+                            id="departmentID"
+                            name="departmentID"
+                            onChange={handleChange}
+                            required
+                            value={data.departmentID}
+                          >
+                            <option value="" disabled>
+                              Select Department
+                            </option>
+                            {departments.map((dept) => (
+                              <option key={dept.departmentID} value={dept.departmentID}>
+                                {dept.department_name}
+                              </option>
+                            ))}
+                          </CFormSelect>
+
+                          <CFormLabel htmlFor="consultation_fee" className="mt-2">
+                            Consultation Fee:
+                          </CFormLabel>
+                          <CFormInput
+                            id="consultation_fee"
+                            onChange={handleChange}
+                            type="text"
+                            name="consultation_fee"
+                            required
+                            value={data.consultation_fee}
+                          />
+
+                          <CFormLabel htmlFor="date_Of_Birth" className="mt-2">
+                            Date of Birth:
+                          </CFormLabel>
+                          <CFormInput
+                            id="date_Of_Birth"
+                            onChange={handleChange}
+                            type="date"
+                            name="date_Of_Birth"
+                            value={data.date_Of_Birth}
+                          />
+                        </div>
+                      </div>
+                    </CCard>
+                  </div>
+
+                  {/* Right Column - Wrapped in its own card */}
+                  <div className="col-md-4">
+                    <CCard className="p-3 h-100 d-flex flex-column align-items-center">
+                      <p className="text-body-secondary fs-5">Add Photo</p>
+                      <div
+                        className="rounded-circle border d-flex justify-content-center align-items-center mt-2"
+                        style={{
+                          width: '150px',
+                          height: '150px',
+                          overflow: 'hidden',
+                          backgroundColor: '#f8f9fa',
+                        }}
                       >
-                      <option value="" disabled>
-                        Select Gender
-                      </option>
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
-                      <option value="Other">Other</option>
-                    </CFormSelect>
+                        {data.profilePhoto ? (
+                          <img
+                            src={
+                              typeof data.profilePhoto === 'string'
+                                ? `http://localhost:8000/storage/${data.profilePhoto}`
+                                : URL.createObjectURL(data.profilePhoto)
+                            }
+                            alt="Profile Preview"
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                          />
+                        ) : (
+                          <span>No Image</span>
+                        )}
+                      </div>
 
-                    <CFormLabel htmlFor="address" className="mt-2">
-                      Address:
-                    </CFormLabel>
-                    <CFormTextarea
-                      id="address"
-                      onChange={handleChange}
-                      name="address"
-                      required
-                      value={data.address}
+                      <CFormLabel className="mt-2"></CFormLabel>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        id="profilePhoto"
+                        name="profilePhoto"
+                        onChange={handlePhotoChange}
+                        hidden
+                      />
+                      <CButton
+                        color="primary"
+                        className="me-2"
+                        onClick={() => document.getElementById('profilePhoto').click()}
+                      >
+                        Upload Photo
+                      </CButton>
+                      <CButton color="primary" className="mt-2" onClick={() => setShowCamera(true)}>
+                        Capture Photo
+                      </CButton>
+                      <CButton color="danger" className="mt-2" onClick={handleRemovePhoto}>
+                        Remove Photo
+                      </CButton>
+                    </CCard>
+                  </div>
+                </div>
+
+                <div className="text-left mt-3">
+                  <CButton color="primary" type="submit">
+                    Update Doctor
+                  </CButton>
+                </div>
+              </CForm>
+            </div>
+          </CModalBody>
+        </CModal>
+      ) : (
+        <div className="container">
+          <CForm onSubmit={handleSubmit} className="w-100" encType="multipart/form-data">
+            <div className="row align-items-stretch">
+              {/* Left Column */}
+              <div className="col-md-8">
+                <CCard className="p-3 h-100">
+                  <p className="text-body-secondary fs-5">Add Doctor</p>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <CFormLabel htmlFor="name">Name:</CFormLabel>
+                      <CFormInput
+                        id="name"
+                        onChange={handleChange}
+                        type="text"
+                        name="name"
+                        required
+                        value={data.name}
+                      />
+
+                      <CFormLabel htmlFor="email" className="mt-2">
+                        Email:
+                      </CFormLabel>
+                      <CFormInput
+                        id="email"
+                        onChange={handleChange}
+                        type="email"
+                        name="email"
+                        required
+                        value={data.email}
+                      />
+
+                      <CFormLabel htmlFor="password" className="mt-2">
+                        Password:
+                      </CFormLabel>
+                      <CFormInput
+                        id="password"
+                        onChange={handleChange}
+                        type="password"
+                        name="password"
+                        required
+                        value={data.password}
+                      />
+
+                      <CFormLabel htmlFor="gender" className="mt-2">
+                        Gender:
+                      </CFormLabel>
+                      <CFormSelect
+                        id="gender"
+                        name="gender"
+                        onChange={handleChange}
+                        required
+                        value={data.gender}
+                      >
+                        <option value="" disabled>
+                          Select Gender
+                        </option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                      </CFormSelect>
+
+                      <CFormLabel htmlFor="address" className="mt-2">
+                        Address:
+                      </CFormLabel>
+                      <CFormTextarea
+                        id="address"
+                        onChange={handleChange}
+                        name="address"
+                        required
+                        value={data.address}
                       ></CFormTextarea>
-                  </div>
+                    </div>
 
-                  {/* Right Column */}
-                  <div className="col-md-6">
-                    <CFormLabel htmlFor="mobile">Mobile:</CFormLabel>
-                    <CFormInput
-                      id="mobile"
-                      onChange={handleChange}
-                      type="text"
-                      name="mobile"
-                      required
-                      value={data.mobile}
+                    {/* Right Column */}
+                    <div className="col-md-6">
+                      <CFormLabel htmlFor="mobile">Mobile:</CFormLabel>
+                      <CFormInput
+                        id="mobile"
+                        onChange={handleChange}
+                        type="text"
+                        name="mobile"
+                        required
+                        value={data.mobile}
                       />
 
-                    <CFormLabel htmlFor="experience" className="mt-2">
-                      Experience (Years):
-                    </CFormLabel>
-                    <CFormInput
-                      id="experience"
-                      onChange={handleChange}
-                      type="text"
-                      name="experience"
-                      required
-                      value={data.experience}
+                      <CFormLabel htmlFor="experience" className="mt-2">
+                        Experience (Years):
+                      </CFormLabel>
+                      <CFormInput
+                        id="experience"
+                        onChange={handleChange}
+                        type="text"
+                        name="experience"
+                        required
+                        value={data.experience}
                       />
 
-                    <CFormLabel htmlFor="department" className="mt-2">
-                      Department:
-                    </CFormLabel>
-                    <CFormSelect
-                      id="departmentID"
-                      name="departmentID"
-                      onChange={handleChange}
-                      required
-                      value={data.departmentID}
+                      <CFormLabel htmlFor="department" className="mt-2">
+                        Department:
+                      </CFormLabel>
+                      <CFormSelect
+                        id="departmentID"
+                        name="departmentID"
+                        onChange={handleChange}
+                        required
+                        value={data.departmentID}
                       >
-                      <option value="" disabled>
-                        Select Department
-                      </option>
-                      {departments.map((dept) => (
-                        <option key={dept.departmentID} value={dept.departmentID}>
-                          {dept.department_name}
+                        <option value="" disabled>
+                          Select Department
                         </option>
-                      ))}
-                    </CFormSelect>
+                        {departments.map((dept) => (
+                          <option key={dept.departmentID} value={dept.departmentID}>
+                            {dept.department_name}
+                          </option>
+                        ))}
+                      </CFormSelect>
 
-                    <CFormLabel htmlFor="consultation_fee" className="mt-2">
-                      Consultation Fee:
-                    </CFormLabel>
-                    <CFormInput
-                      id="consultation_fee"
-                      onChange={handleChange}
-                      type="text"
-                      name="consultation_fee"
-                      required
-                      value={data.consultation_fee}
+                      <CFormLabel htmlFor="consultation_fee" className="mt-2">
+                        Consultation Fee:
+                      </CFormLabel>
+                      <CFormInput
+                        id="consultation_fee"
+                        onChange={handleChange}
+                        type="text"
+                        name="consultation_fee"
+                        required
+                        value={data.consultation_fee}
                       />
 
-                    <CFormLabel htmlFor="date_Of_Birth" className="mt-2">
-                      Date of Birth:
-                    </CFormLabel>
-                    <CFormInput
-                      id="date_Of_Birth"
-                      onChange={handleChange}
-                      type="date"
-                      name="date_Of_Birth"
-                      value={data.date_Of_Birth}
+                      <CFormLabel htmlFor="date_Of_Birth" className="mt-2">
+                        Date of Birth:
+                      </CFormLabel>
+                      <CFormInput
+                        id="date_Of_Birth"
+                        onChange={handleChange}
+                        type="date"
+                        name="date_Of_Birth"
+                        value={data.date_Of_Birth}
                       />
+                    </div>
                   </div>
-                </div>
-              </CCard>
-            </div>
+                </CCard>
+              </div>
 
-            {/* Right Column - Wrapped in its own card */}
-            <div className="col-md-4">
-              <CCard className="p-3 h-100 d-flex flex-column align-items-center">
-                <p className="text-body-secondary fs-5">Add Photo</p>
-                <div
-                  className="rounded-circle border d-flex justify-content-center align-items-center mt-2"
-                  style={{
-                    width: '150px',
-                    height: '150px',
-                    overflow: 'hidden',
-                    backgroundColor: '#f8f9fa',
-                  }}
+              {/* Right Column - Wrapped in its own card */}
+              <div className="col-md-4">
+                <CCard className="p-3 h-100 d-flex flex-column align-items-center">
+                  <p className="text-body-secondary fs-5">Add Photo</p>
+                  <div
+                    className="rounded-circle border d-flex justify-content-center align-items-center mt-2"
+                    style={{
+                      width: '150px',
+                      height: '150px',
+                      overflow: 'hidden',
+                      backgroundColor: '#f8f9fa',
+                    }}
                   >
-                  {data.profilePhoto ? (
-                    <img
-                    src={
-                      typeof data.profilePhoto === 'string'
-                      ? `http://localhost:8000/storage/${data.profilePhoto}`
-                      : URL.createObjectURL(data.profilePhoto)
-                    }
-                    alt="Profile Preview"
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
-                  ) : (
-                    <span>No Image</span>
-                  )}
-                </div>
+                    {data.profilePhoto ? (
+                      <img
+                        src={
+                          typeof data.profilePhoto === 'string'
+                            ? data.profilePhoto
+                            : URL.createObjectURL(data.profilePhoto)
+                        }
+                        alt="Profile Preview"
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      />
+                    ) : (
+                      <span>No Image</span>
+                    )}
+                  </div>
 
-                <CFormLabel className="mt-2"></CFormLabel>
-                <input
-                  type="file"
-                  accept="image/*"
-                  id="profilePhoto"
-                  name="profilePhoto"
-                  onChange={handlePhotoChange}
-                  hidden
+                  <CFormLabel className="mt-2"></CFormLabel>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    id="profilePhoto"
+                    name="profilePhoto"
+                    onChange={handlePhotoChange}
+                    hidden
                   />
-                <CButton
-                  color="primary"
-                  className="me-2"
-                  onClick={() => document.getElementById('profilePhoto').click()}
+                  <CButton
+                    color="primary"
+                    className="me-2"
+                    onClick={() => document.getElementById('profilePhoto').click()}
                   >
-                  Upload Photo
-                </CButton>
-                <CButton color="primary" className="mt-2" onClick={() => setShowCamera(true)}>
-                  Capture Photo
-                </CButton>
-                <CButton color="danger" className="mt-2" onClick={handleRemovePhoto}>
-                  Remove Photo
-                </CButton>
-              </CCard>
-            </div>
-          </div>
-
-          <div className="text-left mt-3">
-            <CButton color="primary" type="submit">
-              Update Doctor
-            </CButton>
-          </div>
-        </CForm>
-      </div>
-                  </CModalBody>
-                  </CModal>
-    ) : (
-      <div className="container">
-        <CForm onSubmit={handleSubmit} className="w-100" encType="multipart/form-data">
-          <div className="row align-items-stretch">
-            {/* Left Column */}
-            <div className="col-md-8">
-              <CCard className="p-3 h-100">
-                <p className="text-body-secondary fs-5">Add Doctor</p>
-                <div className="row">
-                  <div className="col-md-6">
-                    <CFormLabel htmlFor="name">Name:</CFormLabel>
-                    <CFormInput
-                      id="name"
-                      onChange={handleChange}
-                      type="text"
-                      name="name"
-                      required
-                      value={data.name}
-                    />
-
-                    <CFormLabel htmlFor="email" className="mt-2">
-                      Email:
-                    </CFormLabel>
-                    <CFormInput
-                      id="email"
-                      onChange={handleChange}
-                      type="email"
-                      name="email"
-                      required
-                      value={data.email}
-                    />
-
-                    <CFormLabel htmlFor="password" className="mt-2">
-                      Password:
-                    </CFormLabel>
-                    <CFormInput
-                      id="password"
-                      onChange={handleChange}
-                      type="password"
-                      name="password"
-                      required
-                      value={data.password}
-                    />
-
-                    <CFormLabel htmlFor="gender" className="mt-2">
-                      Gender:
-                    </CFormLabel>
-                    <CFormSelect
-                      id="gender"
-                      name="gender"
-                      onChange={handleChange}
-                      required
-                      value={data.gender}
-                    >
-                      <option value="" disabled>
-                        Select Gender
-                      </option>
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
-                      <option value="Other">Other</option>
-                    </CFormSelect>
-
-                    <CFormLabel htmlFor="address" className="mt-2">
-                      Address:
-                    </CFormLabel>
-                    <CFormTextarea
-                      id="address"
-                      onChange={handleChange}
-                      name="address"
-                      required
-                      value={data.address}
-                    ></CFormTextarea>
-                  </div>
-
-                  {/* Right Column */}
-                  <div className="col-md-6">
-                    <CFormLabel htmlFor="mobile">Mobile:</CFormLabel>
-                    <CFormInput
-                      id="mobile"
-                      onChange={handleChange}
-                      type="text"
-                      name="mobile"
-                      required
-                      value={data.mobile}
-                    />
-
-                    <CFormLabel htmlFor="experience" className="mt-2">
-                      Experience (Years):
-                    </CFormLabel>
-                    <CFormInput
-                      id="experience"
-                      onChange={handleChange}
-                      type="text"
-                      name="experience"
-                      required
-                      value={data.experience}
-                    />
-
-                    <CFormLabel htmlFor="department" className="mt-2">
-                      Department:
-                    </CFormLabel>
-                    <CFormSelect
-                      id="departmentID"
-                      name="departmentID"
-                      onChange={handleChange}
-                      required
-                      value={data.departmentID}
-                    >
-                      <option value="" disabled>
-                        Select Department
-                      </option>
-                      {departments.map((dept) => (
-                        <option key={dept.departmentID} value={dept.departmentID}>
-                          {dept.department_name}
-                        </option>
-                      ))}
-                    </CFormSelect>
-
-                    <CFormLabel htmlFor="consultation_fee" className="mt-2">
-                      Consultation Fee:
-                    </CFormLabel>
-                    <CFormInput
-                      id="consultation_fee"
-                      onChange={handleChange}
-                      type="text"
-                      name="consultation_fee"
-                      required
-                      value={data.consultation_fee}
-                    />
-
-                    <CFormLabel htmlFor="date_Of_Birth" className="mt-2">
-                      Date of Birth:
-                    </CFormLabel>
-                    <CFormInput
-                      id="date_Of_Birth"
-                      onChange={handleChange}
-                      type="date"
-                      name="date_Of_Birth"
-                      value={data.date_Of_Birth}
-                    />
-                  </div>
-                </div>
-              </CCard>
+                    Upload Photo
+                  </CButton>
+                  <CButton color="primary" className="mt-2" onClick={() => setShowCamera(true)}>
+                    Capture Photo
+                  </CButton>
+                  <CButton color="danger" className="mt-2" onClick={handleRemovePhoto}>
+                    Remove Photo
+                  </CButton>
+                </CCard>
+              </div>
             </div>
 
-            {/* Right Column - Wrapped in its own card */}
-            <div className="col-md-4">
-              <CCard className="p-3 h-100 d-flex flex-column align-items-center">
-                <p className="text-body-secondary fs-5">Add Photo</p>
-                <div
-                  className="rounded-circle border d-flex justify-content-center align-items-center mt-2"
-                  style={{
-                    width: '150px',
-                    height: '150px',
-                    overflow: 'hidden',
-                    backgroundColor: '#f8f9fa',
-                  }}
-                >
-                  {data.profilePhoto ? (
-                    <img
-                      src={
-                        typeof data.profilePhoto === 'string'
-                          ? data.profilePhoto
-                          : URL.createObjectURL(data.profilePhoto)
-                      }
-                      alt="Profile Preview"
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
-                  ) : (
-                    <span>No Image</span>
-                  )}
-                </div>
-
-                <CFormLabel className="mt-2"></CFormLabel>
-                <input
-                  type="file"
-                  accept="image/*"
-                  id="profilePhoto"
-                  name="profilePhoto"
-                  onChange={handlePhotoChange}
-                  hidden
-                />
-                <CButton
-                  color="primary"
-                  className="me-2"
-                  onClick={() => document.getElementById('profilePhoto').click()}
-                >
-                  Upload Photo
-                </CButton>
-                <CButton color="primary" className="mt-2" onClick={() => setShowCamera(true)}>
-                  Capture Photo
-                </CButton>
-                <CButton color="danger" className="mt-2" onClick={handleRemovePhoto}>
-                  Remove Photo
-                </CButton>
-              </CCard>
+            <div className="text-left mt-3">
+              <CButton color="primary" type="submit">
+                Add User
+              </CButton>
             </div>
-          </div>
-
-          <div className="text-left mt-3">
-            <CButton color="primary" type="submit">
-              Add User
+          </CForm>
+        </div>
+      )}
+      <CModal visible={showCamera} onClose={() => setShowCamera(false)}>
+        <CModalHeader>Capture Photo</CModalHeader>
+        <CModalBody>
+          {!capturedImage ? (
+            <Webcam ref={webcamRef} screenshotFormat="image/jpeg" style={{ width: '100%' }} />
+          ) : (
+            <img src={capturedImage} alt="Captured" style={{ width: '100%' }} />
+          )}
+        </CModalBody>
+        <CModalFooter>
+          {!capturedImage ? (
+            <CButton color="primary" onClick={handleCapture}>
+              Capture
             </CButton>
-          </div>
-        </CForm>
-      </div>
-    )}
-    <CModal visible={showCamera} onClose={() => setShowCamera(false)}>
-      <CModalHeader>Capture Photo</CModalHeader>
-      <CModalBody>
-        {!capturedImage ? (
-          <Webcam ref={webcamRef} screenshotFormat="image/jpeg" style={{ width: '100%' }} />
-        ) : (
-          <img src={capturedImage} alt="Captured" style={{ width: '100%' }} />
-        )}
-      </CModalBody>
-      <CModalFooter>
-        {!capturedImage ? (
-          <CButton color="primary" onClick={handleCapture}>
-            Capture
-          </CButton>
-        ) : (
-          <>
-            <CButton color="success" onClick={handleUsePhoto}>
-              Use This Photo
-            </CButton>
-            <CButton
-              color="warning"
-              onClick={() => {
-                setCapturedImage(null)
-              }}
-            >
-              Recapture
-            </CButton>
-          </>
-        )}
-      </CModalFooter>
-    </CModal>
-  </>
+          ) : (
+            <>
+              <CButton color="success" onClick={handleUsePhoto}>
+                Use This Photo
+              </CButton>
+              <CButton
+                color="warning"
+                onClick={() => {
+                  setCapturedImage(null)
+                }}
+              >
+                Recapture
+              </CButton>
+            </>
+          )}
+        </CModalFooter>
+      </CModal>
+    </>
   )
 }
 export default AddDoctorForm
