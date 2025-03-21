@@ -75,3 +75,4 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 });
 Route::post('/submit-enquiry', [EnquiryController::class, 'store']);
+Route::get('/doctors/info', [DoctorController::class, 'getDoctorInfo']);
