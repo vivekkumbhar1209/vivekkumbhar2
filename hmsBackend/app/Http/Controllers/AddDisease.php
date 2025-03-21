@@ -68,10 +68,63 @@ class AddDisease extends Controller
         return response()->json([
             "status"=> 200,
             "diseases"=>$disease,
-        ]
-        );
+        ]);
+    }
+
+    // ✅ Function to update disease by ID
+    public function updateDisease(Request $request, $id)
+    {
+        Log::info('Update Disease Request:', $request->all());
+
+        $validator = Validator::make($request->all(), [
+            'diseaseName'        => ['required', 'string', 'max:255'],
+            'diseaseDescription' => ['required', 'string', 'max:500'],
+            'isActive'           => ['required', 'in:Active,Inactive'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                "status"           => 422,
+                "message"          => "Validation failed",
+                "validationErrors" => $validator->errors(),
+            ], 422);
+        }
+
+        try {
+            $disease = Disease::find($id);
+
+            if (!$disease) {
+                return response()->json([
+                    "status"  => 404,
+                    "message" => "Disease not found.",
+                ], 404);
+            }
+
+            $disease->diseaseName        = $request->input('diseaseName');
+            $disease->diseaseDescription = $request->input('diseaseDescription');
+            $disease->isActive           = $request->input('isActive');
+            $disease->save();
+
+            Log::info('Disease updated successfully:', $disease->toArray());
+
+            return response()->json([
+                "status"  => 200,
+                "message" => "Disease updated successfully.",
+                "data"    => $disease,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error updating disease:', ['error' => $e->getMessage()]);
+
+            return response()->json([
+                "status"  => 500,
+                "message" => "Failed to update disease.",
+                "error"   => $e->getMessage(),
+            ], 500);
+        }
     }
 }
+
+
 
 
         

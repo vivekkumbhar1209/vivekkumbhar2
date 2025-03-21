@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('mobile_no');
             $table->text('address');
             $table->text('message');
+            $table->enum('registered', ['yes', 'no'])->default('no');
             $table->timestamps();
         });
     }
