@@ -41,7 +41,6 @@ const App = () => {
     mobile: `${JSON.parse(localStorage.getItem('userData'))}.mobile`,
     role: `${JSON.parse(localStorage.getItem('userData'))}.profile`,
     profilePhoto:`http://127.0.0.1:8000/storage/${JSON.parse(localStorage.getItem('userData'))}.profilePhoto`, // profilePhoto is null in the default data
-    
 
   };
 

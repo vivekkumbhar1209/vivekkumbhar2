@@ -34,7 +34,7 @@ const SearchPatient = () => {
     setLoading(true)
     const token = localStorage.getItem('login-token')
     api
-      .get('patients')
+      .get('/patients')
       .then((res) => {
         setData(res.data.data)
         setLoading(false)

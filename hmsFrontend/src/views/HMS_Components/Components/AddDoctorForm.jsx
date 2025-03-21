@@ -151,8 +151,10 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
     formData.append('experience', data.experience)
     formData.append('departmentID', data.departmentID)
     formData.append('consultation_fee', data.consultation_fee)
+    const uniqueFileName = `compressed-image-${Date.now()}.jpg`
+    formData.append('profilePhoto', data.profilePhoto, uniqueFileName)
 
-    if (data.profilePhoto) {
+    /*if (data.profilePhoto) {
       try {
         let compressedBlob = await compressImage(data.profilePhoto)
         const uniqueFileName = `compressed-image-${Date.now()}.jpg`
@@ -160,7 +162,7 @@ const AddDoctorForm = ({ role, propAction = 'add', user }) => {
       } catch (error) {
         console.error('Image compression failed:', error)
       }
-    }
+    }*/
 
     // Log FormData before sending
     console.log('FormData being sent:')

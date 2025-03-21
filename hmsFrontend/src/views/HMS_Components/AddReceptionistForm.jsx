@@ -4,6 +4,7 @@ import swal from 'sweetalert2'
 import Webcam from 'react-webcam'
 import { CCard, CForm, CFormSelect, CFormTextarea, CFormInput, CCardBody, CButton, CFormLabel, CModal, CModalHeader, CModalBody, CModalFooter, CModalTitle } from '@coreui/react'
 import Loader from '../../components/Loader'
+import api from '../../api'
 
 const AddReceptionistForm = ({ role, propAction = 'add', user }) => {
   const [data, setData] = useState({
