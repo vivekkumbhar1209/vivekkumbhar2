@@ -28,6 +28,7 @@ import ReactPaginate from 'react-paginate'
 import Loader from '../../../components/Loader'
 import swal from 'sweetalert2'
 import { formatDate } from '../../../dateUtility'
+import api from '../../../api'
 
 const ManageOPDPatients = () => {
   const [data, setData] = useState([])
@@ -58,12 +59,8 @@ const ManageOPDPatients = () => {
       reason: reason,
     }
 
-    axios
-      .post('http://127.0.0.1:8000/api/registerOPDPatient', formData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('login-token')}`,
-        },
-      })
+    api
+      .post('/registerOPDPatient', formData)
       .then((res) => {
         if (res.data.status === 403) {
           swal.fire({
@@ -111,12 +108,8 @@ const ManageOPDPatients = () => {
       return
     }
 
-    axios
-      .get('http://127.0.0.1:8000/api/getDept', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('login-token')}`,
-        },
-      })
+    api
+      .get('/getDept')
       .then((res) => {
         setDepartments(res.data.deptData)
       })
@@ -130,16 +123,10 @@ const ManageOPDPatients = () => {
       return
     }
 
-    axios
+    api
       .post(
-        'http://127.0.0.1:8000/api/getDoctorByDeparmentID',
-        { selectedDepartment },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('login-token')}`,
-          },
-        },
-      )
+        '/getDoctorByDeparmentID',
+        { selectedDepartment } )
       .then((res) => {
         setDoctors(res.data.doctorData)
       })
@@ -153,12 +140,8 @@ const ManageOPDPatients = () => {
   useEffect(() => {
     setLoading(true)
     const token = localStorage.getItem('login-token')
-    axios
-      .get('http://127.0.0.1:8000/api/getPatientsWithOPDStatus', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+   api
+      .get('/getPatientsWithOPDStatus')
       .then((res) => {
         setData(res.data.data)
         console.log(res.data.data)

@@ -14,12 +14,14 @@ import {
   CTableDataCell,
   CFormSelect,
 } from '@coreui/react'
+
 import { useEffect } from 'react'
 import { useState } from 'react'
 import axios from 'axios'
 import { formatDate } from '../../../dateUtility'
 import { FaSearch } from 'react-icons/fa'
 import ReactPaginate from 'react-paginate'
+import api from '../../../api'
 
 const ViewAllMedicine = () => {
   const [medicines, setMedicines] = useState([])
@@ -32,16 +34,8 @@ const ViewAllMedicine = () => {
 
   useEffect(() => {
     var token = localStorage.getItem('login-token')
-    axios
-      .get('http://127.0.0.1:8000/api/getMedicines', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        params: {
-          sortBy: sortBy,
-          order: order,
-        },
-      })
+    api
+      .get('/getMedicines')
       .then((res) => {
         console.log(res.data)
         setMedicines(res.data.medicines)

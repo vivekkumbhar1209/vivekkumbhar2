@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import api from '../../api'
 import { CCard,
    CCardHeader, 
    CCardBody, 
@@ -38,7 +39,7 @@ const RegisterPatient = () => {
     console.log('Submitting Data:', JSON.stringify(data, null, 2)) // Log request payload
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/registerpatient', data, {
+      const response = await api.post('/registerpatient', data, {
         headers: { Authorization: `Bearer ${token}` },
       })
 

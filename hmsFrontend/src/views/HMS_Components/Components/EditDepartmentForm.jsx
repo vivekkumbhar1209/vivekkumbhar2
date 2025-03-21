@@ -5,17 +5,14 @@ import { useEffect } from 'react'
 import axios from 'axios'
 import Loader from '../../../components/Loader'
 import swal from 'sweetalert2'
+import api from '../../../api'
 
 const EditDepartmentForm = () => {
   useEffect(() => {
     setLoading(true)
     var token = localStorage.getItem('login-token')
-    axios
-      .get('http://127.0.0.1:8000/api/getDept', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+    api
+      .get('/getDept')
       .then((res) => {
         setDeptData(res.data.deptData)
         setFormData({ departmentID: res.data.deptData[0].departmentID })
@@ -44,12 +41,8 @@ const EditDepartmentForm = () => {
     e.preventDefault()
     var token = localStorage.getItem('login-token')
     console.log(formData)
-    axios
-      .post('http://localhost:8000/api/updateDepartment', formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+   api
+      .post('/updateDepartment', formData)
       .then((res) => {
         if (res.data.status === 403) {
           const validationErrorMessages = Object.values(res.data.validationErrors)

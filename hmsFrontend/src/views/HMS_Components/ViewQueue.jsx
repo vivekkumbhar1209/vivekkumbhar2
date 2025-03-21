@@ -20,6 +20,7 @@ import Loader from '../../components/Loader'
 import swal from 'sweetalert2'
 import { FaSearch } from 'react-icons/fa'
 import ReactPaginate from 'react-paginate'
+import api from '../../api'
 
 const ViewQueue = () => {
   const [queue, setQueue] = useState([])
@@ -55,10 +56,8 @@ const ViewQueue = () => {
       }
     })
 
-    axios
-      .get('http://127.0.0.1:8000/api/getOpdQueue', {
-        headers: { Authorization: `Bearer ${localStorage.getItem('login-token')}` },
-      })
+    api
+      .get('/getOpdQueue')
       .then((res) => {
         console.log(res.data)
       })
@@ -108,10 +107,8 @@ const ViewQueue = () => {
             patientID: elem.patientID,
           }
 
-          axios
-            .post('http://127.0.0.1:8000/api/dequeue', data, {
-              headers: { Authorization: `Bearer ${localStorage.getItem('login-token')}` },
-            })
+          api
+            .post('/dequeue', data)
             .then((res) => {
               console.log(res.data)
               if (res.data.status === 200) {
