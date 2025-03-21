@@ -24,7 +24,9 @@ import html2canvas from "html2canvas";
 import html2pdf from "html2pdf.js"; 
 import JsBarcode from "jsbarcode";
 import axios from "axios";
+import BarcodeScannerComponent from 'react-qr-barcode-scanner';
 import Loader from '../../components/Loader'
+import Swal from 'sweetalert2'
 
 const RegisterPatient = () => {
   const [data, setData] = useState({
@@ -47,6 +49,10 @@ const RegisterPatient = () => {
   const [submittedData, setSubmittedData] = useState(null);
   const webcamRef = useRef(null);
   const [photoPreview, setPhotoPreview] = useState(null);
+
+  const [scanning, setScanning] = useState(false);
+const [scannedPID, setScannedPID] = useState('');
+
   const barcodeRef = useRef(null);
   const modalRef = useRef(null);
 
@@ -104,9 +110,19 @@ const RegisterPatient = () => {
         profilePhotoUrl,
       };
 
-      setSubmittedData(finalData);
+      
+        setSubmittedData(finalData);
+        // Show SweetAlert first
+    Swal.fire({
+      title: "Patient Registered!",
+      text: "Patient registration successful.",
+      icon: "success",
+      confirmButtonText: "OK"
+    }).then(() => {
+      // Open modal after clicking OK
       setShowPatientModal(true);
 
+      // Generate barcode     
       setTimeout(() => {
         if (barcodeRef.current) {
           JsBarcode(barcodeRef.current, generatedPID, {
@@ -118,6 +134,7 @@ const RegisterPatient = () => {
           });
         }
       }, 200);
+    });
     } catch (error) {
       console.error("Registration Failed", error);
       alert("Error during registration. Check API or server.");
@@ -136,7 +153,38 @@ const RegisterPatient = () => {
     }
   };
  
-
+  const handleScan = async (err, result) => {
+    if (result) {
+      const pid = result?.text || '';
+      setScannedPID(pid);
+      setScanning(false);
+      if (pid) {
+        try {
+          setLoading(true);
+          const token = localStorage.getItem("login-token");
+          const response = await axios.get(`http://localhost:8000/api/patientbypid/${pid}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+  
+          const { patient, profilePhotoUrl } = response.data.data;
+          setSubmittedData({
+            ...patient,
+            generatedPID: pid,
+            profilePhotoUrl,
+          });
+          
+          setShowPatientModal(true);
+        } catch (err) {
+          alert("Patient not found or server error.");
+        } finally {
+          setLoading(false);
+        }
+      }
+    }
+  };
+  
   const handleReset = () => {
     setData({
       patient_name: "",
@@ -283,13 +331,16 @@ const RegisterPatient = () => {
             </div>
 
             <div className="text-left mt-3 d-flex gap-3">
-             <CButton color="primary" type="submit">
-              Register Patient
-              </CButton>
-             <CButton color="secondary" type="button" onClick={handleReset}>
-                  Reset
-             </CButton>
-            </div>
+  <CButton color="primary" type="submit">
+    Register Patient
+  </CButton>
+  <CButton color="secondary" type="button" onClick={handleReset}>
+    Reset
+  </CButton>
+  <CButton color="success" type="button" onClick={() => setScanning(true)}>
+    Scan Barcode
+  </CButton>
+</div>
           </CForm>
         </CCardBody>
       </CCard>
@@ -306,6 +357,25 @@ const RegisterPatient = () => {
         </CModalFooter>
       </CModal>
    
+
+{/* Barcode Scanner Modal */}
+      <CModal visible={scanning} onClose={() => setScanning(false)}>
+  <CModalHeader>
+    <CModalTitle>Scan Barcode (PID)</CModalTitle>
+  </CModalHeader>
+  <CModalBody>
+    <BarcodeScannerComponent
+      width="100%"
+      height={300}
+      onUpdate={handleScan}
+    />
+    <div className="mt-3">Scanned PID: {scannedPID}</div>
+  </CModalBody>
+  <CModalFooter>
+    <CButton color="secondary" onClick={() => setScanning(false)}>Close</CButton>
+  </CModalFooter>
+</CModal>
+
       {/* Success Modal */}   
       
       <CModal visible={showPatientModal} onClose={() => setShowPatientModal(false)}>
@@ -330,21 +400,15 @@ const RegisterPatient = () => {
               }}
             />
           )}
-        </div>
-        <div className="mb-2"><strong>Name:</strong> {submittedData.patient_name}</div>
+        </div>        <div className="mb-2"><strong>Name:</strong> {submittedData.patient_name}</div>
         <div className="mb-2"><strong>Email:</strong> {submittedData.patient_email}</div>
         <div className="mb-2"><strong>Mobile:</strong> {submittedData.patient_mobile}</div>
         <div className="mb-2"><strong>Gender:</strong> {submittedData.patient_gender}</div>
-        <div className="mb-2"><strong>DOB:</strong> {submittedData.patient_dob}</div>
+        <div className="mb-2"><strong>Aadhaar:</strong> {submittedData.patient_adhar}</div>
       </div>
 
       {/* RIGHT COLUMN: Remaining Details */}
-      <div className="col-md-6">
-        <div className="mb-2"><strong>Aadhaar:</strong> {submittedData.patient_adhar}</div>
-        <div className="mb-2"><strong>Address:</strong> {submittedData.patient_address}</div>
-        <div className="mb-2"><strong>Emergency Contact Name:</strong> {submittedData.emergency_name}</div>
-        <div className="mb-2"><strong>Emergency Contact No:</strong> {submittedData.emergency_no}</div>
-      </div>
+      
     </div>
 
     {/* BOTTOM BARCODE SECTION */}

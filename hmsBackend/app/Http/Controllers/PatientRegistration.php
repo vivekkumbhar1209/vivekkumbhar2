@@ -101,7 +101,44 @@ class PatientRegistration extends Controller
             ], 500);
         }
     }
-}
+
+     // ✅ Add this NEW METHOD here 👇 to fetch patient by PID
+     public function getPatientByPID($pid)
+{
+    try {
+        // Convert PID000123 → 123
+        $id = intval(str_replace('PID', '', $pid));
+
+        // Fetch patient by ID column (default Laravel)
+        $patient = Patients::find($id);
+
+        if (!$patient) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Patient not found',
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => true,
+            'data' => $patient,
+            'generatedPID' => 'PID' . str_pad($patient->id, 6, '0', STR_PAD_LEFT),
+            'profilePhotoUrl' => $patient->profilePhoto ? asset('storage/' . $patient->profilePhoto) : null,
+        ], 200);
+
+    } catch (\Exception $e) {
+        Log::error('Get patient by PID error: ' . $e->getMessage());
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Internal Server Error',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+  }
+ }
+
+
 
 
 /*use App\Http\Controllers\Controller;

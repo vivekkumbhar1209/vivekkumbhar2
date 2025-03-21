@@ -36,6 +36,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/patients', [PatientController::class, 'index']);
     Route::get('/patients/{id}', [PatientController::class, 'show']);
     Route::get('/viewAllUsers', [UserRegistration::class, 'getAllUsers']);
+    Route::get('/patientbypid/{pid}', [PatientRegistration::class, 'getPatientByPID']);//dhanu this scan barcode pid and fetch details
 
     Route::get('/getMedicines', [MedicineController::class, "getMedicines"]);
 
