@@ -27,6 +27,7 @@ import axios from "axios";
 import BarcodeScannerComponent from 'react-qr-barcode-scanner';
 import Loader from '../../components/Loader'
 import Swal from 'sweetalert2'
+import api from '../../api'
 
 const RegisterPatient = () => {
   const [data, setData] = useState({
@@ -95,12 +96,7 @@ const [scannedPID, setScannedPID] = useState('');
     });
 
     try {
-      const response = await axios.post("http://localhost:8000/api/registerpatient", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await api.post("/registerpatient", formData);
 
       const { patient, generatedPID, profilePhotoUrl } = response.data.data;
 
@@ -162,11 +158,7 @@ const [scannedPID, setScannedPID] = useState('');
         try {
           setLoading(true);
           const token = localStorage.getItem("login-token");
-          const response = await axios.get(`http://localhost:8000/api/patientbypid/${pid}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+          const response = await api.get(`/patientbypid/${pid}`);
   
           const { patient, profilePhotoUrl } = response.data.data;
           setSubmittedData({
