@@ -63,13 +63,7 @@ const UpdateAvailability = ( {doctorUser = null} ) => {
         reason: availabilityStatus === 'Unavailable' ? reason : null,
       }
 
-      const response = await api.post('/updateavailability', formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-      })
+      const response = await api.post('/updateavailability', formData)
 
       if (response.data.status === 200) {
         swal.fire('Success', 'Availability updated successfully.', 'success')

@@ -154,16 +154,10 @@ const ViewQueue = () => {
       })
       .then((res) => {
         if (res.isConfirmed) {
-          axios
+          api
             .post(
-              'http://localhost:8000/api/updatePatientQueueStatus',
-              { queueID: elem.queueID },
-              {
-                headers: {
-                  Authorization: `Bearer ${localStorage.getItem('login-token')}`,
-                },
-              },
-            )
+              '/updatePatientQueueStatus',
+              { queueID: elem.queueID })
             .then((res) => {
               if (res.data.status === 200) {
                 var newElem = { ...elem, status: 'In Consultation' }
