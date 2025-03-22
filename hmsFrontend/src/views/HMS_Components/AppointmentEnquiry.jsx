@@ -167,7 +167,12 @@ const AppointmentEnquiry = () => {
                                             <CTableHeaderCell>Mobile</CTableHeaderCell>
                                             <CTableHeaderCell>Address</CTableHeaderCell>
                                             <CTableHeaderCell>Reason</CTableHeaderCell>
-                                            <CTableHeaderCell>Register</CTableHeaderCell>
+                                            {role === 'Receptionist' ? (
+                                                <CTableHeaderCell>Register</CTableHeaderCell>
+
+                                            ) : (
+                                                ''
+                                            )}
                                         </CTableRow>
                                     </CTableHead>
 
@@ -181,12 +186,14 @@ const AppointmentEnquiry = () => {
                                                     <CTableDataCell dangerouslySetInnerHTML={{ __html: highlightText(elem.mobile_no, searchTerm) }} />
                                                     <CTableDataCell dangerouslySetInnerHTML={{ __html: highlightText(elem.address, searchTerm) }} />
                                                     <CTableDataCell dangerouslySetInnerHTML={{ __html: highlightText(elem.message, searchTerm) }} />
-                                                    <CTableDataCell>
-                                                        <CButton color='primary' onClick={() => checkIfPatientIsRegistered(elem)}>
-                                                            Register
+                                                    {role === 'Receptionist' ? (
+                                                        <CTableDataCell>
+                                                            <CButton color='primary' onClick={() => checkIfPatientIsRegistered(elem)}>
+                                                                Register
 
-                                                        </CButton>
-                                                    </CTableDataCell>
+                                                            </CButton>
+                                                        </CTableDataCell>
+                                                    ) : ('')}
                                                 </CTableRow>
                                             ))
                                         ) : (
