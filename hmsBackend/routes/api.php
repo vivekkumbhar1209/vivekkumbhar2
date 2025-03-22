@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AddDisease;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\DataVisualizationController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DeptReg;
 use App\Http\Controllers\DoctorAvailabilityController;
@@ -78,7 +79,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/getAllEnquiries', [EnquiryController::class, 'retrieveAllEnquiries']);
 
     Route::post('/checkIfPatientIsRegistered', [AppointmentController::class, 'checkIfPatientIsRegistered']);
-
+    Route::post('/getEnquiryRecords', [DataVisualizationController::class, 'getEnquiryRecords']);
+    Route::get('/getEnquiryAnalyticalData', [DataVisualizationController::class, 'getEnquiryAnalyticalData']);
 });
 
 Route::post('/submit-enquiry', [EnquiryController::class, 'store']);
