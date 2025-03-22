@@ -2,6 +2,7 @@ import React from 'react';
 import './Css/AdminProfile.css'; // or the path to your CSS file
 import avatar8 from './../../assets/images/avatars/8.jpg'; // Import the default image
 
+
 const UserView = ({ user }) => {
   return (
     <div className="user-view">
@@ -31,7 +32,7 @@ const App = () => {
 
   // Default user object in case localStorage data is not available
   const defaultUser = {
-  
+
     name: `${JSON.parse(localStorage.getItem('userData'))}.name`,
     email: `${JSON.parse(localStorage.getItem('userData'))}.email`,
     gender: `${JSON.parse(localStorage.getItem('userData'))}.gender`,
@@ -40,7 +41,7 @@ const App = () => {
     age: `${JSON.parse(localStorage.getItem('userData'))}.age`,
     mobile: `${JSON.parse(localStorage.getItem('userData'))}.mobile`,
     role: `${JSON.parse(localStorage.getItem('userData'))}.profile`,
-    profilePhoto:`http://127.0.0.1:8000/storage/${JSON.parse(localStorage.getItem('userData'))}.profilePhoto`, // profilePhoto is null in the default data
+    profilePhoto: `http://127.0.0.1:8000/storage/${JSON.parse(localStorage.getItem('userData'))}.profilePhoto`, // profilePhoto is null in the default data
 
   };
 

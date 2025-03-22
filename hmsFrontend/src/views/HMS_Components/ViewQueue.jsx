@@ -40,7 +40,7 @@ const ViewQueue = () => {
 
   useEffect(() => {
     setLoading(true)
-    Pusher.logToConsole = true
+    // Pusher.logToConsole = true
 
     // console.log(JSON.parse(localStorage.getItem('userData')).email)
 
