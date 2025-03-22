@@ -6,8 +6,9 @@ import PermissionDenied from '../warning/PermissionDenied'
 import Pusher from 'pusher-js'
 import { FaSearch } from 'react-icons/fa'
 import ReactPaginate from 'react-paginate'
-import { data, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import Ringloader from '../../components/RingLoader'
 
 const AppointmentEnquiry = () => {
 
@@ -16,6 +17,7 @@ const AppointmentEnquiry = () => {
     const [searchTerm, setSearchTerm] = useState('')
     const [enquiryTableUpdated, setEnquiryTableUpdated] = useState(false)
     const [currentPage, setCurrentPage] = useState(0)
+    const [ringLoading, setRingLoading] = useState(false)
     const itemsPerPage = 5
     const navigate = useNavigate()
 
@@ -62,19 +64,20 @@ const AppointmentEnquiry = () => {
         })
     }, [])
 
+    //function to highlight the match text
     const highlightText = (text, searchTerm) => {
         if (!searchTerm) return text; // Return normal text if no search term
 
-        const regex = new RegExp(`(${searchTerm})`, "g"); // Case-insensitive match
+        const regex = new RegExp(`(${searchTerm})`, "gi"); // Case-insensitive match
         return text.replace(regex, `<span style="background-color: yellow;">$1</span>`);
     };
 
     const filteredData = enquiryData.filter((elem) =>
-        elem.name.includes(searchTerm) ||
-        elem.email.includes(searchTerm) ||
-        elem.mobile_no.includes(searchTerm) ||
-        elem.address.includes(searchTerm) ||
-        elem.message.includes(searchTerm)
+        elem.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        elem.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        elem.mobile_no.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        elem.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        elem.message.toLowerCase().includes(searchTerm.toLowerCase())
     )
 
     const currentData = filteredData.slice(
@@ -83,6 +86,7 @@ const AppointmentEnquiry = () => {
     )
 
     const checkIfPatientIsRegistered = (elem) => {
+        setRingLoading(true)
         api.post('/checkIfPatientIsRegistered', { mobile: elem.mobile_no }).then(res => {
             console.log(res.data)
             if (res.data.status === 409) {
@@ -113,7 +117,7 @@ const AppointmentEnquiry = () => {
             }
         }).catch(err => {
             console.log(err)
-        })
+        }).finally(() => setRingLoading(false))
     }
 
     const role = JSON.parse(localStorage.getItem('userData')).role
@@ -178,7 +182,10 @@ const AppointmentEnquiry = () => {
                                                     <CTableDataCell dangerouslySetInnerHTML={{ __html: highlightText(elem.address, searchTerm) }} />
                                                     <CTableDataCell dangerouslySetInnerHTML={{ __html: highlightText(elem.message, searchTerm) }} />
                                                     <CTableDataCell>
-                                                        <CButton color='primary' onClick={() => checkIfPatientIsRegistered(elem)}>Register</CButton>
+                                                        <CButton color='primary' onClick={() => checkIfPatientIsRegistered(elem)}>
+                                                            Register
+
+                                                        </CButton>
                                                     </CTableDataCell>
                                                 </CTableRow>
                                             ))

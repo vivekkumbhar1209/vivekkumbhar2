@@ -62,7 +62,7 @@ const SearchPatient = () => {
     if (searchTerm) {
       updatedData = updatedData.filter(
         (patient) =>
-          patient.name.toLowerCase().includes(searchTerm) || patient.mobile.includes(searchTerm),
+          patient.name.toLowerCase().includes(searchTerm) || patient.mobile.includes(searchTerm) || String(patient.id).includes(searchTerm)
       )
     }
 
@@ -80,6 +80,14 @@ const SearchPatient = () => {
     currentPage * itemsPerPage,
     (currentPage + 1) * itemsPerPage,
   )
+
+  //function to highlight the match text
+  const highlightText = (text, searchTerm) => {
+    if (!searchTerm) return text; // Return normal text if no search term
+
+    const regex = new RegExp(`(${searchTerm})`, "gi"); // Case-insensitive match
+    return String(text).replace(regex, `<span style="background-color: yellow;">$1</span>`);
+  };
 
   return (
     <>
@@ -149,10 +157,10 @@ const SearchPatient = () => {
                 {currentData.length > 0 ? (
                   currentData.map((elem, index) => (
                     <CTableRow key={index}>
-                      <CTableDataCell>{elem.id}</CTableDataCell>
-                      <CTableDataCell>{elem.name}</CTableDataCell>
+                      <CTableDataCell dangerouslySetInnerHTML={{ __html: highlightText(elem.id, searchTerm) }} />
+                      <CTableDataCell dangerouslySetInnerHTML={{ __html: highlightText(elem.name, searchTerm) }} />
                       <CTableDataCell>{elem.email}</CTableDataCell>
-                      <CTableDataCell>{elem.mobile}</CTableDataCell>
+                      <CTableDataCell dangerouslySetInnerHTML={{ __html: highlightText(elem.mobile, searchTerm) }} />
                       <CTableDataCell>
                         {elem.emergency_contact.name + ' - ' + elem.emergency_contact.number}
                       </CTableDataCell>
