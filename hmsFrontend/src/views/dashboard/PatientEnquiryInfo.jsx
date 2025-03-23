@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { CCard, CCardBody, CCol, CRow, CButton, CButtonGroup, CTable, CTableHead, CTableBody, CTableDataCell, CTableHeaderCell, CTableRow } from '@coreui/react'
+import { CCard, CCardBody, CCol, CRow, CButton, CButtonGroup, CTable, CTableHead, CTableBody, CTableDataCell, CTableHeaderCell, CTableRow, CTableFoot } from '@coreui/react'
 import api from '../../api'
-import Loader from '../../components/Loader'
 import { formatDate } from '../../dateUtility'
 import DarkRingLoader from '../../components/DarkRingLoader'
+import ReactPaginate from 'react-paginate'
 
 const PatientEnquiryInfo = () => {
 
@@ -11,6 +11,8 @@ const PatientEnquiryInfo = () => {
     const [enquiryLoading, setEnquiryLoading] = useState(false)
     const [enquiryData, setEnquiryData] = useState([])
     const [enquiryAnalyticalData, setEnquiryAnalyticalData] = useState(false)
+    const [currentPage, setCurrentPage] = useState(0)
+    const itemsPerPage = 5
     const today = new Date()
 
     useEffect(() => {
@@ -57,6 +59,12 @@ const PatientEnquiryInfo = () => {
         })
     }
 
+    const paginatedData = enquiryData.slice(
+        currentPage * itemsPerPage,
+        (currentPage + 1) * itemsPerPage
+    )
+
+    console.log(paginatedData)
 
     return (
         <>
@@ -147,8 +155,8 @@ const PatientEnquiryInfo = () => {
                                     </CTableRow>
                                 </CTableHead>
                                 <CTableBody>
-                                    {enquiryData.length > 0 ? (
-                                        enquiryData.map((element, index) => (
+                                    {paginatedData.length > 0 ? (
+                                        paginatedData.map((element, index) => (
                                             <CTableRow key={index}
                                             // className={element.registered === 'yes' ? 'table-success' : 'table-danger'}
                                             >
@@ -167,6 +175,31 @@ const PatientEnquiryInfo = () => {
                                         </CTableRow>
                                     )}
                                 </CTableBody>
+                                <CTableFoot>
+                                    <CTableRow>
+                                        <CTableDataCell colSpan={5}>
+                                            <ReactPaginate
+                                                previousLabel={'<<'}
+                                                nextLabel={'>>'}
+                                                breakLabel={'...'}
+                                                pageCount={Math.ceil(enquiryData.length / itemsPerPage)}
+                                                marginPagesDisplayed={2}
+                                                pageRangeDisplayed={3}
+                                                onPageChange={(e) => setCurrentPage(e.selected)}
+                                                containerClassName="pagination justify-content-center"
+                                                pageClassName="page-item"
+                                                pageLinkClassName="page-link"
+                                                previousClassName="page-item"
+                                                previousLinkClassName="page-link"
+                                                nextClassName="page-item"
+                                                nextLinkClassName="page-link"
+                                                breakClassName="page-item disabled"
+                                                breakLinkClassName="page-link"
+                                                activeClassName="active"
+                                            />
+                                        </CTableDataCell>
+                                    </CTableRow>
+                                </CTableFoot>
                             </CTable>
                         </CRow>
                     )}

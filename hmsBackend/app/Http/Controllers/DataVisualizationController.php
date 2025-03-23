@@ -22,7 +22,7 @@ class DataVisualizationController extends Controller
         } else {
             if ($request->recordType === 'all') {
 
-                $data = Enquiry::whereDate('created_at', today())->latest()->get();
+                $data = Enquiry::latest()->get();
                 if ($data) {
                     return response()->json([
                         'status'  => 200,
