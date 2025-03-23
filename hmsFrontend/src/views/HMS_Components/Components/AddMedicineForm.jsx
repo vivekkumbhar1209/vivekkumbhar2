@@ -3,6 +3,7 @@ import { CButton, CForm, CFormInput, CFormLabel, CFormSelect } from '@coreui/rea
 import axios from 'axios';
 import Swal from 'sweetalert2'; // Import SweetAlert2
 import Loader from '../../../components/Loader';
+import api from '../../../api'
 
 const AddMedicineForm = () => {
   const [categories, setCategories] = useState([]); // Store medicine categories
@@ -15,10 +16,8 @@ const AddMedicineForm = () => {
     setLoading(true);
     const token = localStorage.getItem('login-token');
 
-    axios
-      .get('http://127.0.0.1:8000/api/getMedicineCategory', {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+    api
+      .get('/getMedicineCategory')
       .then((res) => {
         console.log("API Response:", res.data);
         setCategories(res.data); // Correctly storing categories
@@ -51,12 +50,7 @@ const AddMedicineForm = () => {
     };
 
     try {
-      await axios.post('http://127.0.0.1:8000/api/addMedicine', medicineData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
+      await api.post('/addMedicine', medicineData);
 
       // Success SweetAlert
       Swal.fire({

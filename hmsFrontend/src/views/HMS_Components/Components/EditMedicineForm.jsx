@@ -22,6 +22,9 @@ import axios from 'axios';
 import { formatDate } from '../../../dateUtility';
 import { FaSearch, FaEdit } from 'react-icons/fa';
 import ReactPaginate from 'react-paginate';
+import api from '../../../api'
+import swal from 'sweetalert2'
+import Loader from '../../../components/Loader'
 
 const EditMedicine = () => {
   const [medicines, setMedicines] = useState([]);
@@ -33,16 +36,12 @@ const EditMedicine = () => {
   const [selectedMedicine, setSelectedMedicine] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const itemsPerPage = 5;
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     var token = localStorage.getItem('login-token');
-    axios
-      .get('http://127.0.0.1:8000/api/getMedicines', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        params: { sortBy, order },
-      })
+    api
+      .get('/getMedicines')
       .then((res) => setMedicines(res.data.medicines))
       .catch((err) => console.log(err));
   }, [sortBy, order]);
@@ -71,16 +70,31 @@ const EditMedicine = () => {
   };
 
   const handleUpdate = () => {
+    setLoading(true);
     var token = localStorage.getItem('login-token');
-    axios
-      .post(`http://127.0.0.1:8000/api/updateMedicine/${selectedMedicine.medicineID}`, selectedMedicine, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+    api
+      .post(`/updateMedicine/${selectedMedicine.medicineID}`, selectedMedicine)
       .then(() => {
         setShowModal(false);
-        window.location.reload(); // Refresh the page to update the table
+        swal.fire({
+          title: "Success!",
+          text: "Medicine updated successfully.",
+          icon: "success",
+          confirmButtonText: "OK",
+        })
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        swal.fire({
+          title: "Error!",
+          text: "Failed to update medicine.",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+        
+      }).finally(() => {
+        setLoading(false);
+      })
   };
 
   const currentData =
@@ -89,6 +103,15 @@ const EditMedicine = () => {
       : medicines.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
   return (
+    <>
+  {loading ? (
+    <div
+      className="d-flex justify-content-center align-items-center"
+      style={{ height: '50vh' }}
+    >
+      <Loader />
+    </div>
+  ) : (
     <>
       <CCard className="mb-3">
         <CCardHeader>
@@ -169,6 +192,9 @@ const EditMedicine = () => {
         </CModalFooter>
       </CModal>
     </>
+  )}
+</>
+
   );
 };
 

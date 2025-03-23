@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import api from '../../../api'
 import {
   CCard,
   CCardHeader,
@@ -33,12 +34,8 @@ const ViewAllDiseases = () => {
 // ✅ NEW: Separated disease fetch logic into refreshDiseases()
 const refreshDiseases = () => {
   const token = localStorage.getItem('login-token')
-  axios
-    .get('http://127.0.0.1:8000/api/getdiseases', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+  api
+    .get('/getdiseases')
     .then((res) => {
       setDisease(res.data.diseases)
     })

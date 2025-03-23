@@ -6,14 +6,16 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 import TailSpinLoader from '../TailSpinLoader'
 import DefaultAvatar from '../../assets/images/avatars/1.png'
+import api from '../../api'
 
 const AppHeaderDropdown = () => {
   const [loading, setLoading] = useState(false)
   const [profile, setProfile] = useState(null)
+  const storageUrl = import.meta.env.VITE_BACKEND_STORAGEURL
   useEffect(() => {
     setLoading(true)
-    axios
-      .post('http://localhost:8000/api/getProfilePhoto', { userID: JSON.parse(localStorage.getItem('userData')).id }, { headers: { Authorization: `Bearer ${localStorage.getItem('login-token')}` } })
+    api
+      .post('/getProfilePhoto', { userID: JSON.parse(localStorage.getItem('userData')).id })
       .then((res) => {
         setProfile(res.data.data)
         setLoading(false)
@@ -25,16 +27,10 @@ const AppHeaderDropdown = () => {
   }, [])
 
   const handleLogout = () => {
-    const token = localStorage.getItem('login-token')
-    axios
+
+    api
       .post(
-        'http://localhost:8000/api/logout',
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
+        '/logout',
       )
       .then((res) => {
         localStorage.clear()
@@ -50,7 +46,7 @@ const AppHeaderDropdown = () => {
             <TailSpinLoader />
           </div>
         ) : (
-          <div>{profile ? <CAvatar src={profile ? `http://127.0.0.1:8000/storage/${profile}` : ''} alt={'Profile Photo'} size="md" /> : <CAvatar src={DefaultAvatar} alt={'Profile Photo'} size="md" />}</div>
+          <div>{profile ? <CAvatar src={profile ? `${storageUrl}/${profile}` : ''} alt={'Profile Photo'} size="md" /> : <CAvatar src={DefaultAvatar} alt={'Profile Photo'} size="md" />}</div>
         )}
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">

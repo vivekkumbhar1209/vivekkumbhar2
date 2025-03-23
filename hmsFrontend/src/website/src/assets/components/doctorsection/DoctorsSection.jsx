@@ -6,19 +6,22 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Loader from "../../../../../components/Loader";
 
 function DoctorsSection() {
   const [doctors, setDoctors] = useState([]); // State to store doctors data
-
+  const [loading, setLoading] = useState(true);
   // Fetch doctors data from API
   useEffect(() => {
     axios
       .get("http://127.0.0.1:8000/api/doctors/info") // Replace with actual API URL
       .then((response) => {
-        setDoctors(response.data); // Update state with fetched data
+        setDoctors(response.data);
+        setLoading(false); // Update state with fetched data
       })
       .catch((error) => {
         console.error("Error fetching doctors:", error);
+        setLoading(false);
       });
   }, []);
 
@@ -27,6 +30,11 @@ function DoctorsSection() {
       <h1 className="text-center text-gray-600 m-2 font-bold text-3xl">
         Meet Our Doctors
       </h1>
+      {loading ? (
+        <div className="flex justify-center items-center h-40">
+          <Loader />
+        </div>
+      ) : (
       <div className="relative">
         {/* Custom navigation buttons */}
         <button className="custom-prev-doc absolute left-2 sm:left-0 md:-left-6 lg:left-15 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-white border border-gray-300 rounded-full shadow-md hover:bg-gray-100 transition">
@@ -70,6 +78,7 @@ function DoctorsSection() {
           ))}
         </Swiper>
       </div>
+      )}
       <div className="flex justify-center m-2">
         <Link
           className="bg-purple-900 pl-2 text-white text-lg pr-2 pt-1 pb-1 rounded-md ml-50% hover:bg-purple-500 hover:outline-2 border-1 border-white hover:outline-[var(--accent-2)] transition-all duration-200 ease"

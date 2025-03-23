@@ -7,7 +7,11 @@ import AddReceptionistForm from './AddReceptionistForm'
 import AddAdminForm from './Components/AddAdminForm'
 import AddDoctorForm from './Components/AddDoctorForm'
 import UpdateAvailability from './Updateavailability'
+
 import { FaEdit } from 'react-icons/fa'
+
+import api from '../../api'
+
 
 const ViewAllUsers = ({ action }) => {
   const [users, setUsers] = useState([])
