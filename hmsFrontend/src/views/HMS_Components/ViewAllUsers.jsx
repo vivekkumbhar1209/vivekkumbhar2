@@ -7,6 +7,7 @@ import AddReceptionistForm from './AddReceptionistForm'
 import AddAdminForm from './Components/AddAdminForm'
 import AddDoctorForm from './Components/AddDoctorForm'
 import UpdateAvailability from './Updateavailability'
+import { FaEdit } from 'react-icons/fa'
 
 const ViewAllUsers = ({ action }) => {
   const [users, setUsers] = useState([])
@@ -207,7 +208,11 @@ const ViewAllUsers = ({ action }) => {
                           {new Date(elem.updated_at).toLocaleString()}
                         </CTableDataCell>
                         <CTableDataCell className="text-center" style={{ verticalAlign: 'middle' }}>
-                          <CButton onClick={() => handleEdit(elem)}>Edit</CButton>
+                          <CButton size="sm"
+                        color="warning"
+                        className="w-100 d-flex align-items-center justify-content-center gap-1"
+                         onClick={() => handleEdit(elem)}>
+                           <FaEdit />  Edit</CButton>
                         </CTableDataCell>
                       </>
                     ) : null}
