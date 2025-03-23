@@ -147,11 +147,38 @@ const RegisterPatient = () => {
       });
     } catch (error) {
       console.error("Registration Failed", error);
+
+
+       // ✅ Show SweetAlert Error with appropriate message
+    let errorMessage = "An error occurred during registration.";
+
+    if (error.response) {
+      // Laravel validation errors
+      if (error.response.status === 422) {
+        const errors = error.response.data.errors;
+        errorMessage = Object.values(errors).flat().join("\n");
+      }
+      // If patient already exists or any custom message from backend
+      else if (error.response.data.message) {
+        errorMessage = error.response.data.message;
+      }
+
       alert("Error during registration. Check API or server.");
     } finally {
       setLoading(false); // Hide loader
+
     }
-  };
+
+    Swal.fire({
+      title: "Registration Failed!",
+      text: errorMessage,
+      icon: "error",
+      confirmButtonText: "OK",
+    });
+  } finally {
+    setLoading(false); // Hide loader
+  }
+};
   const handleDownload = () => {
     if (modalRef.current) {
       html2canvas(modalRef.current).then((canvas) => {
