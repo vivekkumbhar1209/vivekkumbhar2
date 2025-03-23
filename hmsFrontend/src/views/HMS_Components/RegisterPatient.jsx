@@ -162,11 +162,6 @@ const RegisterPatient = () => {
       else if (error.response.data.message) {
         errorMessage = error.response.data.message;
       }
-
-      alert("Error during registration. Check API or server.");
-    } finally {
-      setLoading(false); // Hide loader
-
     }
 
     Swal.fire({
