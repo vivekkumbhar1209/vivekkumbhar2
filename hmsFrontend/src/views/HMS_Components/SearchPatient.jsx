@@ -44,7 +44,6 @@ const SearchPatient = () => {
 
   useEffect(() => {
     setLoading(true)
-    const token = localStorage.getItem('login-token')
     api
       .get('/patients')
       .then((res) => {

@@ -10,7 +10,7 @@ const PatientOPDRegistrationModal = ({ patientOPDModelVisibility, setOPDModelVis
             <CModal visible={patientOPDModelVisibility} onClose={setOPDModelVisibility}>
                 <CModalContent>
                     <CModalHeader>
-                        <CModalTitle>Patient Card</CModalTitle>
+                        <CModalTitle>OPD Registration</CModalTitle>
                     </CModalHeader>
                     <CModalBody>
                         Opd registration modal
