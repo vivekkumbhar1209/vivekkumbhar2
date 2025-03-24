@@ -17,13 +17,24 @@ const AppHeaderDropdown = () => {
     api
       .post('/getProfilePhoto', { userID: JSON.parse(localStorage.getItem('userData')).id })
       .then((res) => {
-        setProfile(res.data.data)
-        setLoading(false)
+        console.log("API Response:", res);
+    
+        const photoPath = res.data?.data;
+        if (!photoPath) {
+          console.error("No profile photo found!");
+          return;
+        }
+    
+        // Fix: Remove '/api' from backend URL
+        const fullPhotoURL = `${import.meta.env.VITE_BACKEND_BASEURL.replace('/api', '')}/storage/${photoPath}`;
+        //console.log("Full Photo URL:", fullPhotoURL);
+    
+        setProfile(fullPhotoURL);
+        setLoading(false);
       })
-      .catch((err) => {
-        console.log(err)
-        setLoading(false)
-      })
+      .catch((error) => {
+        console.error("API Error:", error);
+      });
   }, [])
 
   const handleLogout = () => {
@@ -46,7 +57,13 @@ const AppHeaderDropdown = () => {
             <TailSpinLoader />
           </div>
         ) : (
-          <div>{profile ? <CAvatar src={profile ? `${storageUrl}/${profile}` : ''} alt={'Profile Photo'} size="md" /> : <CAvatar src={DefaultAvatar} alt={'Profile Photo'} size="md" />}</div>
+          <div>
+  <CAvatar 
+    src={profile ? profile : DefaultAvatar} 
+    alt="Profile Photo" 
+    size="md" 
+  />
+</div>
         )}
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
