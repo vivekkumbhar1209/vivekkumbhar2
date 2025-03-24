@@ -48,6 +48,12 @@ const _nav = [
         to: '/dashboard/searchPatient',
         icon: <CIcon icon={cilMagnifyingGlass} customClassName="nav-icon" />,
       },
+      {
+        component: CNavItem,
+        name: 'Appointment Enquiry',
+        to: '/dashboard/appointment-enquiry',
+        icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+      },
     ],
   },
   {
@@ -87,7 +93,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Admit Patient',
-        to: '/dashboard/registerPatient',
+        to: '/dashboard/admitPatient',
         icon: <CIcon icon={cilUserFollow} customClassName="nav-icon" />,
         badge: {
           color: 'danger',
@@ -106,16 +112,16 @@ const _nav = [
       },
     ],
   },
-   {
-      component: CNavTitle,
-      name: 'Doctor Availability',
-    },
-    {
-      component: CNavItem,
-      name: 'Doctor Availability',
-      to: '/dashboard/doctorAvailability',
-      icon: <CIcon icon={cilUserFollow} customClassName="nav-icon" />,
-    },
+  {
+    component: CNavTitle,
+    name: 'Doctor Availability',
+  },
+  {
+    component: CNavItem,
+    name: 'Doctor Availability',
+    to: '/dashboard/doctorAvailability',
+    icon: <CIcon icon={cilUserFollow} customClassName="nav-icon" />,
+  },
 ]
 
 export default _nav

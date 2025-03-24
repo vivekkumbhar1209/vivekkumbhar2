@@ -13,11 +13,19 @@ import {
   CTableHeaderCell,
   CTableDataCell,
   CFormSelect,
+  CLink,
+  CDropdown, CDropdownToggle, CDropdownMenu, CDropdownItem,
+  CModal, CModalHeader, CModalTitle, CModalBody,
+  CModalContent, CRow, CCol
 } from '@coreui/react'
 import { FaSearch } from 'react-icons/fa'
 import api from '../../api'
 import ReactPaginate from 'react-paginate'
 import Loader from '../../components/Loader'
+import { formatDate } from '../../dateUtility'
+import PatientDetailsModal from './SearchPatientModals/PatientDetailsModal'
+import PatientCardModal from './SearchPatientModals/PatientCardModal'
+import PatientOPDRegistrationModal from './SearchPatientModals/PatientOPDRegistrationModal'
 
 const SearchPatient = () => {
   const [data, setData] = useState([])
@@ -27,6 +35,10 @@ const SearchPatient = () => {
   const [sortColumn, setSortColumn] = useState('name')
   const [sortOrder, setSortOrder] = useState('asc')
   const [loading, setLoading] = useState(false)
+  const [selectedPatient, setSelectedPatient] = useState([])
+  const [patientDetailModelVisibility, setPatientDetailModelVisibility] = useState(false)
+  const [patientCardModelVisibility, setPatientCardModelVisibility] = useState(false)
+  const [patientOPDModelVisibility, setOPDModelVisibility] = useState(false)
 
   const itemsPerPage = 5
 
@@ -62,7 +74,7 @@ const SearchPatient = () => {
     if (searchTerm) {
       updatedData = updatedData.filter(
         (patient) =>
-          patient.name.toLowerCase().includes(searchTerm) || patient.mobile.includes(searchTerm),
+          String(patient.id).includes(searchTerm)
       )
     }
 
@@ -81,6 +93,32 @@ const SearchPatient = () => {
     (currentPage + 1) * itemsPerPage,
   )
 
+  //function to highlight the match text
+  const highlightText = (text, searchTerm) => {
+    if (!searchTerm) return text; // Return normal text if no search term
+
+    const regex = new RegExp(`(${searchTerm})`, "gi"); // Case-insensitive match
+    return String(text).replace(regex, `<span style="background-color: yellow;">$1</span>`);
+  };
+
+  const handleViewPatientDetails = (elem) => {
+    console.log("view patient option clicked")
+    setSelectedPatient(elem)
+    setPatientDetailModelVisibility(true)
+  }
+
+  const handleViewPatientCard = (elem) => {
+    console.log('view patient card button pressed')
+    setSelectedPatient(elem)
+    setPatientCardModelVisibility(true)
+  }
+
+  const handleViewOPDRegistrationModal = (elem) => {
+    console.log('view opd registration button pressed')
+    setSelectedPatient(elem)
+    setOPDModelVisibility(true)
+  }
+
   return (
     <>
       <CCard>
@@ -89,7 +127,7 @@ const SearchPatient = () => {
         </CCardHeader>
         <CCardBody>
           <p className="text-body-secondary small">
-            Search patients by their <code>id</code>, <code>name</code>, or <code>mobile</code>.
+            Search patients by their <code>id</code>
           </p>
           <CInputGroup className="flex-nowrap">
             <CButton color="primary" id="addon-wrapping">
@@ -131,35 +169,40 @@ const SearchPatient = () => {
               <Loader />
             </div>
           ) : (
-            <CTable responsive bordered hover>
+            <CTable responsive hover className='align-middle border' >
               <CTableHead color="light">
                 <CTableRow>
                   <CTableHeaderCell>ID</CTableHeaderCell>
                   <CTableHeaderCell>Name</CTableHeaderCell>
-                  <CTableHeaderCell>Email</CTableHeaderCell>
                   <CTableHeaderCell>Mobile</CTableHeaderCell>
-                  <CTableHeaderCell>Emergency Contact</CTableHeaderCell>
-                  <CTableHeaderCell>Address</CTableHeaderCell>
-                  <CTableHeaderCell>Gender</CTableHeaderCell>
-                  <CTableHeaderCell>DOB</CTableHeaderCell>
-                  <CTableHeaderCell>Age</CTableHeaderCell>
+                  <CTableHeaderCell>Email</CTableHeaderCell>
+                  <CTableHeaderCell>Manage Patient</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
                 {currentData.length > 0 ? (
                   currentData.map((elem, index) => (
                     <CTableRow key={index}>
-                      <CTableDataCell>{elem.id}</CTableDataCell>
-                      <CTableDataCell>{elem.name}</CTableDataCell>
-                      <CTableDataCell>{elem.email}</CTableDataCell>
-                      <CTableDataCell>{elem.mobile}</CTableDataCell>
+                      <CTableDataCell dangerouslySetInnerHTML={{ __html: highlightText(elem.id, searchTerm) }} />
                       <CTableDataCell>
-                        {elem.emergency_contact.name + ' - ' + elem.emergency_contact.number}
+                        <div>{elem.name}</div>
+                        <div className="small text-body-secondary text-nowrap">
+                          <span>Registered | </span>
+                          {formatDate(elem.created_at)}
+                        </div>
                       </CTableDataCell>
-                      <CTableDataCell>{elem.address}</CTableDataCell>
-                      <CTableDataCell>{elem.gender}</CTableDataCell>
-                      <CTableDataCell>{elem.dob}</CTableDataCell>
-                      <CTableDataCell>{elem.age}</CTableDataCell>
+                      <CTableDataCell>{elem.mobile}</CTableDataCell>
+                      <CTableDataCell>{elem.email}</CTableDataCell>
+                      <CTableDataCell>
+                        <CDropdown>
+                          <CDropdownToggle color="warning" >Quick Actions</CDropdownToggle>
+                          <CDropdownMenu>
+                            <CDropdownItem style={{ cursor: "pointer" }} onClick={() => handleViewPatientDetails(elem)}>View Details</CDropdownItem>
+                            <CDropdownItem style={{ cursor: "pointer" }} onClick={() => handleViewPatientCard(elem)} >Patient Card</CDropdownItem>
+                            <CDropdownItem style={{ cursor: "pointer" }} onClick={() => handleViewOPDRegistrationModal(elem)} >Register for OPD</CDropdownItem>
+                          </CDropdownMenu>
+                        </CDropdown>
+                      </CTableDataCell>
                     </CTableRow>
                   ))
                 ) : (
@@ -200,6 +243,12 @@ const SearchPatient = () => {
           </div>
         </CCardBody>
       </CCard>
+
+      <PatientDetailsModal patientDetailModelVisibility={patientDetailModelVisibility} setPatientDetailModelVisibility={setPatientDetailModelVisibility} currentData={selectedPatient} />
+      <PatientCardModal patientCardModelVisibility={patientCardModelVisibility} setPatientCardModelVisibility={setPatientCardModelVisibility} currentData={selectedPatient} />
+      <PatientOPDRegistrationModal patientOPDModelVisibility={patientOPDModelVisibility} setOPDModelVisibility={setOPDModelVisibility} />
+
+      {console.log('patient card visibility :- ' + patientCardModelVisibility)}
     </>
   )
 }

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AddDisease;
+use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\DataVisualizationController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DeptReg;
 use App\Http\Controllers\DoctorAvailabilityController;
@@ -26,7 +28,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     //Implementation is done for this api in the frontend
     Route::post('/logout', [LogOutController::class, 'logout']);
     Route::post('/addDisease', [AddDisease::class, 'addDisease']);
-    Route::put('/updatedisease/{id}', [AddDisease::class, 'updateDisease']);//dhanu
+    Route::put('/updatedisease/{id}', [AddDisease::class, 'updateDisease']); //dhanu
     Route::post('/registerDepartment', [DeptReg::class, 'registerDepartment']);
     Route::get('/getDept', [DeptReg::class, 'getDept']);
     Route::post('/updateDepartment', [UpdateDepartment::class, 'updateDepartment']);
@@ -36,7 +38,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/patients', [PatientController::class, 'index']);
     Route::get('/patients/{id}', [PatientController::class, 'show']);
     Route::get('/viewAllUsers', [UserRegistration::class, 'getAllUsers']);
-    Route::get('/patientbypid/{pid}', [PatientRegistration::class, 'getPatientByPID']);//dhanu this scan barcode pid and fetch details
+    Route::get('/patientbypid/{pid}', [PatientRegistration::class, 'getPatientByPID']); //dhanu this scan barcode pid and fetch details
 
     Route::get('/getMedicines', [MedicineController::class, "getMedicines"]);
 
@@ -76,6 +78,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/getProfilePhoto', [OPDController::class, 'showProfilePhoto']);
     Route::get('/getAllEnquiries', [EnquiryController::class, 'retrieveAllEnquiries']);
 
+    Route::post('/checkIfPatientIsRegistered', [AppointmentController::class, 'checkIfPatientIsRegistered']);
+    Route::post('/getEnquiryRecords', [DataVisualizationController::class, 'getEnquiryRecords']);
+    Route::get('/getEnquiryAnalyticalData', [DataVisualizationController::class, 'getEnquiryAnalyticalData']);
 });
 
 Route::post('/submit-enquiry', [EnquiryController::class, 'store']);
