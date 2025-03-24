@@ -427,6 +427,9 @@ const closeModal = () => {
                             placeholder={propAction === 'add' ? 'Password' : 'Leave blank to keep current password'}
                             value={data.password}
                           />
+                          <div>
+                        <small className="text-gray-400">Note: Password must contain at least 1 uppercase letter, 1 special character, and 1 number.</small>
+                      </div>
 
                           <CFormLabel htmlFor="gender" className="mt-2">
                             Gender:
@@ -635,6 +638,9 @@ const closeModal = () => {
                         required
                         value={data.password}
                       />
+                      <div>
+                        <small className="text-gray-400">Note: Password must contain at least 1 uppercase letter, 1 special character, and 1 number.</small>
+                      </div>
 
                       <CFormLabel htmlFor="gender" className="mt-2">
                         Gender:
