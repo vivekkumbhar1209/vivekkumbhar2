@@ -163,10 +163,8 @@ const AppointmentEnquiry = () => {
                                     <CTableHead color='light'>
                                         <CTableRow>
                                             <CTableHeaderCell>Name</CTableHeaderCell>
-                                            <CTableHeaderCell>Email</CTableHeaderCell>
                                             <CTableHeaderCell>Mobile</CTableHeaderCell>
-                                            <CTableHeaderCell>Address</CTableHeaderCell>
-                                            <CTableHeaderCell>Reason</CTableHeaderCell>
+                                            <CTableHeaderCell>Email</CTableHeaderCell>
                                             {role === 'Receptionist' ? (
                                                 <CTableHeaderCell>Register</CTableHeaderCell>
 
@@ -182,10 +180,8 @@ const AppointmentEnquiry = () => {
                                             currentData.map((elem, index) => (
                                                 <CTableRow key={index}>
                                                     <CTableDataCell dangerouslySetInnerHTML={{ __html: highlightText(elem.name, searchTerm) }} />
-                                                    <CTableDataCell dangerouslySetInnerHTML={{ __html: highlightText(elem.email, searchTerm) }} />
                                                     <CTableDataCell dangerouslySetInnerHTML={{ __html: highlightText(elem.mobile_no, searchTerm) }} />
-                                                    <CTableDataCell dangerouslySetInnerHTML={{ __html: highlightText(elem.address, searchTerm) }} />
-                                                    <CTableDataCell dangerouslySetInnerHTML={{ __html: highlightText(elem.message, searchTerm) }} />
+                                                    <CTableDataCell dangerouslySetInnerHTML={{ __html: highlightText(elem.email, searchTerm) }} />
                                                     {role === 'Receptionist' ? (
                                                         <CTableDataCell>
                                                             <CButton color='primary' onClick={() => checkIfPatientIsRegistered(elem)}>

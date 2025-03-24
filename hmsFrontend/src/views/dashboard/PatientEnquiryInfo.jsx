@@ -4,6 +4,7 @@ import api from '../../api'
 import { formatDate } from '../../dateUtility'
 import DarkRingLoader from '../../components/DarkRingLoader'
 import ReactPaginate from 'react-paginate'
+import Counter from './Counter'
 
 const PatientEnquiryInfo = () => {
 
@@ -13,6 +14,7 @@ const PatientEnquiryInfo = () => {
     const [enquiryAnalyticalData, setEnquiryAnalyticalData] = useState(false)
     const [currentPage, setCurrentPage] = useState(0)
     const itemsPerPage = 5
+    const counterDuration = 1000
     const today = new Date()
 
     useEffect(() => {
@@ -73,9 +75,13 @@ const PatientEnquiryInfo = () => {
                 <CCardBody>
                     <CRow className='mb-3'>
                         <CCol sm={5}>
-                            <h4 id="traffic" className="card-title mb-0">
-                                Enquiry
+                            <h4 id="traffic" className="card-title mb-0 d-flex align-items-center gap-4">
+                                <span>Enquiry</span>
+                                <span className='mt-1'>
+                                    {enquiryAnalyticalData ? ("") : (<DarkRingLoader />)}
+                                </span>
                             </h4>
+
                             <div className="small text-body-secondary">{today.toDateString()}</div>
                         </CCol>
                         <CCol sm={7}>
@@ -113,7 +119,11 @@ const PatientEnquiryInfo = () => {
                         <CCol>
                             <div className="border-start border-start-4 border-start-info py-1 px-3">
                                 <div className="text-body-secondary text-truncate small"> Total Enquiries</div>
-                                <div className="fs-5 fw-semibold">{enquiryAnalyticalData ? `${enquiryAnalyticalData.totalEnquiries}` : (<DarkRingLoader />)}</div>
+                                <div className='fs-5 fw-semibold'>
+                                    {enquiryAnalyticalData ? (
+                                        <Counter finalValue={enquiryAnalyticalData.totalEnquiries} duration={counterDuration} />
+                                    ) : ('0')}
+                                </div>
                             </div>
                         </CCol>
                         <CCol>
@@ -121,19 +131,34 @@ const PatientEnquiryInfo = () => {
                                 <div className="text-body-secondary text-truncate small">
                                     Pending Registrations
                                 </div>
-                                <div className="fs-5 fw-semibold">{enquiryAnalyticalData ? `${enquiryAnalyticalData.pendingRegistrations}` : (<DarkRingLoader />)}</div>
+                                <div className='fs-5 fw-semibold'>
+                                    {enquiryAnalyticalData ? (
+                                        <Counter finalValue={enquiryAnalyticalData.pendingRegistrations} duration={counterDuration} />
+                                    ) : ('0')}
+                                </div>
+                                {/* <div className="fs-5 fw-semibold">{enquiryAnalyticalData ? `${enquiryAnalyticalData.pendingRegistrations}` : ('0')}</div> */}
                             </div>
                         </CCol>
                         <CCol>
                             <div className="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
                                 <div className="text-body-secondary text-truncate small">Today's Enquiries </div>
-                                <div className="fs-5 fw-semibold">{enquiryAnalyticalData ? `${enquiryAnalyticalData.todaysEnquiries}` : <DarkRingLoader />}</div>
+                                <div className='fs-5 fw-semibold'>
+                                    {enquiryAnalyticalData ? (
+                                        <Counter finalValue={enquiryAnalyticalData.todaysEnquiries} duration={counterDuration} />
+                                    ) : ('0')}
+                                </div>
+                                {/* <div className="fs-5 fw-semibold">{enquiryAnalyticalData ? `${enquiryAnalyticalData.todaysEnquiries}` : ('0')}</div> */}
                             </div>
                         </CCol>
                         <CCol>
                             <div className="border-start border-start-4 border-start-success py-1 px-3 mb-3">
                                 <div className="text-body-secondary text-truncate small"> Today's Converted Enquiries</div>
-                                <div className="fs-5 fw-semibold">{enquiryAnalyticalData ? `${enquiryAnalyticalData.convertedEnquiries}` : (<DarkRingLoader />)}</div>
+                                <div className='fs-5 fw-semibold'>
+                                    {enquiryAnalyticalData ? (
+                                        <Counter finalValue={enquiryAnalyticalData.convertedEnquiries} duration={counterDuration} />
+                                    ) : ('0')}
+                                </div>
+                                {/* <div className="fs-5 fw-semibold">{enquiryAnalyticalData ? `${enquiryAnalyticalData.convertedEnquiries}` : ('0')}</div> */}
                             </div>
                         </CCol>
                     </CRow>
