@@ -2,23 +2,8 @@ import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import swal from 'sweetalert2'
 import Webcam from 'react-webcam'
-import {
-  CCard,
-  CForm,
-  CFormSelect,
-  CFormTextarea,
-  CFormInput,
-  CCardBody,
-  CButton,
-  CFormLabel,
-  CModal,
-  CModalHeader,
-  CModalBody,
-  CModalFooter,
-  CModalTitle,
-} from '@coreui/react'
+import { CCard, CForm, CFormSelect, CFormTextarea, CFormInput, CCardBody, CButton, CFormLabel, CModal, CModalHeader, CModalBody, CModalFooter, CModalTitle } from '@coreui/react'
 import Loader from '../../components/Loader'
-import api from '../../api'
 
 const AddReceptionistForm = ({ role, propAction = 'add', user }) => {
   const [data, setData] = useState({
@@ -74,7 +59,7 @@ const AddReceptionistForm = ({ role, propAction = 'add', user }) => {
         profilePhoto: null,
       })
     }
-  }, [propAction, user, role]) // Runs whenever `propAction`, `user`, or `role` changes
+  }, [propAction, user, role]) // Runs whenever propAction, user, or role changes
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value })
@@ -158,10 +143,7 @@ const AddReceptionistForm = ({ role, propAction = 'add', user }) => {
         console.log(res)
         swal.fire({
           title: 'Success!',
-          text:
-            propAction === 'add'
-              ? 'Receptionist added successfully.'
-              : 'Receptionist updated successfully',
+          text: propAction === 'add' ? 'Receptionist added successfully.' : 'Receptionist updated successfully',
           icon: 'success',
           confirmButtonText: 'OK',
         })
@@ -310,7 +292,7 @@ const AddReceptionistForm = ({ role, propAction = 'add', user }) => {
       ) : null}
 
       {propAction === 'edit' ? (
-        <CModal visible={modalVisible} onclose={closeModal} backdrop="static" size="xl">
+        <CModal visible={modalVisible} onClose={closeModal} backdrop="static" size="xl">
           <CModalHeader closeButton={true}>
             <CModalTitle>Edit Receptionist</CModalTitle>
           </CModalHeader>
@@ -327,55 +309,25 @@ const AddReceptionistForm = ({ role, propAction = 'add', user }) => {
                           <CFormLabel htmlFor="name" className="mt-2">
                             Name:
                           </CFormLabel>
-                          <CFormInput
-                            id="name"
-                            onChange={handleChange}
-                            type="text"
-                            name="name"
-                            required
-                            value={data.name}
-                          />
+                          <CFormInput id="name" onChange={handleChange} type="text" name="name" required value={data.name} />
 
                           <CFormLabel htmlFor="email" className="mt-2">
                             Email:
                           </CFormLabel>
-                          <CFormInput
-                            id="email"
-                            onChange={handleChange}
-                            type="email"
-                            name="email"
-                            required
-                            value={data.email}
-                          />
+                          <CFormInput id="email" onChange={handleChange} type="email" name="email" required value={data.email} />
 
                           <CFormLabel htmlFor="password" className="mt-2">
                             Password:
                           </CFormLabel>
-                          <CFormInput
-                            id="password"
-                            onChange={handleChange}
-                            type="password"
-                            name="password"
-                            required={propAction === 'add'}
-                            autoComplete="new-password"
-                            value={data.password}
-                            placeholder={
-                              propAction === 'add'
-                                ? 'Password'
-                                : 'Leave blank to keep current password'
-                            }
-                          />
+                          <CFormInput id="password" onChange={handleChange} type="password" name="password" required={propAction === 'add'} autoComplete="new-password" value={data.password} placeholder={propAction === 'add' ? 'Password' : 'Leave blank to keep current password'} />
+                          <div>
+                            <small className="text-gray-400">Password must contain at least 1 uppercase letter, 1 special character, and 1 number.</small>
+                          </div>
 
                           <CFormLabel htmlFor="gender" className="mt-2">
                             Gender:
                           </CFormLabel>
-                          <CFormSelect
-                            id="gender"
-                            name="gender"
-                            onChange={handleChange}
-                            required
-                            value={data.gender}
-                          >
+                          <CFormSelect id="gender" name="gender" onChange={handleChange} required value={data.gender}>
                             <option value="" disabled>
                               Select Gender
                             </option>
@@ -390,36 +342,17 @@ const AddReceptionistForm = ({ role, propAction = 'add', user }) => {
                           <CFormLabel htmlFor="date_Of_Birth" className="mt-2">
                             Date of Birth:
                           </CFormLabel>
-                          <CFormInput
-                            id="date_Of_Birth"
-                            onChange={handleChange}
-                            type="date"
-                            name="date_Of_Birth"
-                            value={data.date_Of_Birth || ''}
-                          />
+                          <CFormInput id="date_Of_Birth" onChange={handleChange} type="date" name="date_Of_Birth" value={data.date_Of_Birth || ''} />
 
                           <CFormLabel htmlFor="mobile" className="mt-2">
                             Mobile:
                           </CFormLabel>
-                          <CFormInput
-                            id="mobile"
-                            onChange={handleChange}
-                            type="tel"
-                            name="mobile"
-                            required
-                            value={data.mobile}
-                          />
+                          <CFormInput id="mobile" onChange={handleChange} type="tel" name="mobile" required value={data.mobile} />
 
                           <CFormLabel htmlFor="address" className="mt-2">
                             Address:
                           </CFormLabel>
-                          <CFormTextarea
-                            id="address"
-                            onChange={handleChange}
-                            name="address"
-                            required
-                            value={data.address}
-                          ></CFormTextarea>
+                          <CFormTextarea id="address" onChange={handleChange} name="address" required value={data.address}></CFormTextarea>
                         </div>
                       </div>
                     </CCard>
@@ -429,44 +362,13 @@ const AddReceptionistForm = ({ role, propAction = 'add', user }) => {
                   <div className="col-md-4">
                     <CCard className="p-3 h-100 d-flex flex-column align-items-center">
                       <p className="text-body-secondary fs-5">Add Photo</p>
-                      <div
-                        className="rounded-circle border d-flex justify-content-center align-items-center mt-2"
-                        style={{
-                          width: '150px',
-                          height: '150px',
-                          overflow: 'hidden',
-                          backgroundColor: '#f8f9fa',
-                        }}
-                      >
-                        {data.profilePhoto ? (
-                          <img
-                            src={
-                              typeof data.profilePhoto === 'string'
-                                ? `http://localhost:8000/storage/${data.profilePhoto}`
-                                : URL.createObjectURL(data.profilePhoto)
-                            }
-                            alt="Profile Preview"
-                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                          />
-                        ) : (
-                          <span>No Image</span>
-                        )}
+                      <div className="rounded-circle border d-flex justify-content-center align-items-center mt-2" style={{ width: '150px', height: '150px', overflow: 'hidden', backgroundColor: '#f8f9fa' }}>
+                        {data.profilePhoto ? <img src={typeof data.profilePhoto === 'string' ? `http://localhost:8000/storage/${data.profilePhoto}` : URL.createObjectURL(data.profilePhoto)} alt="Profile Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <span>No Image</span>}
                       </div>
 
                       <CFormLabel className="mt-2"></CFormLabel>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        id="profilePhoto"
-                        name="profilePhoto"
-                        onChange={handlePhotoChange}
-                        hidden
-                      />
-                      <CButton
-                        color="primary"
-                        className="me-2"
-                        onClick={() => document.getElementById('profilePhoto').click()}
-                      >
+                      <input type="file" accept="image/*" id="profilePhoto" name="profilePhoto" onChange={handlePhotoChange} hidden />
+                      <CButton color="primary" className="me-2" onClick={() => document.getElementById('profilePhoto').click()}>
                         Upload Photo
                       </CButton>
                       <CButton color="primary" className="mt-2" onClick={() => setShowCamera(true)}>
@@ -503,70 +405,25 @@ const AddReceptionistForm = ({ role, propAction = 'add', user }) => {
                       <CFormLabel htmlFor="name" className="mt-2">
                         Name:
                       </CFormLabel>
-                      <CFormInput
-                        id="name"
-                        onChange={handleChange}
-                        type="text"
-                        name="name"
-                        required
-                        value={data.name}
-                      />
+                      <CFormInput id="name" onChange={handleChange} type="text" name="name" required value={data.name} />
 
                       <CFormLabel htmlFor="email" className="mt-2">
                         Email:
                       </CFormLabel>
-                      <CFormInput
-                        id="email"
-                        onChange={handleChange}
-                        type="email"
-                        name="email"
-                        required
-                        value={data.email}
-                      />
+                      <CFormInput id="email" onChange={handleChange} type="email" name="email" required value={data.email} />
 
                       <CFormLabel htmlFor="password" className="mt-2">
                         Password:
                       </CFormLabel>
-                      <CFormInput
-                        id="password"
-                        onChange={handleChange}
-                        type="password"
-                        name="password"
-                        required
-                        autoComplete="new-password"
-                        value={data.password}
-                      />
+                      <CFormInput id="password" onChange={handleChange} type="password" name="password" required autoComplete="new-password" value={data.password} />
+                      <div>
+                        <small className="text-gray-400">Note: Password must contain at least 1 uppercase letter, 1 special character, and 1 number.</small>
+                      </div>
 
                       <CFormLabel htmlFor="gender" className="mt-2">
                         Gender:
                       </CFormLabel>
-                      <CFormSelect
-                        id="gender"
-                        name="gender"
-                        onChange={handleChange}
-                        required
-                        value={data.gender}
-                      >
-                        <option value="" disabled>
-                          Select Gender
-                        </option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Other">Other</option>
-                      </CFormSelect>
-                    </div>
-
-                    <div>
-                      <CFormLabel htmlFor="gender" className="mt-2">
-                        Gender:
-                      </CFormLabel>
-                      <CFormSelect
-                        id="gender"
-                        name="gender"
-                        onChange={handleChange}
-                        required
-                        value={data.gender}
-                      >
+                      <CFormSelect id="gender" name="gender" onChange={handleChange} required value={data.gender}>
                         <option value="" disabled>
                           Select Gender
                         </option>
@@ -581,36 +438,17 @@ const AddReceptionistForm = ({ role, propAction = 'add', user }) => {
                       <CFormLabel htmlFor="date_Of_Birth" className="mt-2">
                         Date of Birth:
                       </CFormLabel>
-                      <CFormInput
-                        id="date_Of_Birth"
-                        onChange={handleChange}
-                        type="date"
-                        name="date_Of_Birth"
-                        value={data.date_Of_Birth || ''}
-                      />
+                      <CFormInput id="date_Of_Birth" onChange={handleChange} type="date" name="date_Of_Birth" value={data.date_Of_Birth || ''} />
 
                       <CFormLabel htmlFor="mobile" className="mt-2">
                         Mobile:
                       </CFormLabel>
-                      <CFormInput
-                        id="mobile"
-                        onChange={handleChange}
-                        type="tel"
-                        name="mobile"
-                        required
-                        value={data.mobile}
-                      />
+                      <CFormInput id="mobile" onChange={handleChange} type="tel" name="mobile" required value={data.mobile} />
 
                       <CFormLabel htmlFor="address" className="mt-2">
                         Address:
                       </CFormLabel>
-                      <CFormTextarea
-                        id="address"
-                        onChange={handleChange}
-                        name="address"
-                        required
-                        value={data.address}
-                      ></CFormTextarea>
+                      <CFormTextarea id="address" onChange={handleChange} name="address" required value={data.address}></CFormTextarea>
                     </div>
                   </div>
                 </CCard>
@@ -620,44 +458,13 @@ const AddReceptionistForm = ({ role, propAction = 'add', user }) => {
               <div className="col-md-4">
                 <CCard className="p-3 h-100 d-flex flex-column align-items-center">
                   <p className="text-body-secondary fs-5">Add Photo</p>
-                  <div
-                    className="rounded-circle border d-flex justify-content-center align-items-center mt-2"
-                    style={{
-                      width: '150px',
-                      height: '150px',
-                      overflow: 'hidden',
-                      backgroundColor: '#f8f9fa',
-                    }}
-                  >
-                    {data.profilePhoto ? (
-                      <img
-                        src={
-                          typeof data.profilePhoto === 'string'
-                            ? data.profilePhoto
-                            : URL.createObjectURL(data.profilePhoto)
-                        }
-                        alt="Profile Preview"
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      />
-                    ) : (
-                      <span>No Image</span>
-                    )}
+                  <div className="rounded-circle border d-flex justify-content-center align-items-center mt-2" style={{ width: '150px', height: '150px', overflow: 'hidden', backgroundColor: '#f8f9fa' }}>
+                    {data.profilePhoto ? <img src={typeof data.profilePhoto === 'string' ? data.profilePhoto : URL.createObjectURL(data.profilePhoto)} alt="Profile Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <span>No Image</span>}
                   </div>
 
                   <CFormLabel className="mt-2"></CFormLabel>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    id="profilePhoto"
-                    name="profilePhoto"
-                    onChange={handlePhotoChange}
-                    hidden
-                  />
-                  <CButton
-                    color="primary"
-                    className="me-2"
-                    onClick={() => document.getElementById('profilePhoto').click()}
-                  >
+                  <input type="file" accept="image/*" id="profilePhoto" name="profilePhoto" onChange={handlePhotoChange} hidden />
+                  <CButton color="primary" className="me-2" onClick={() => document.getElementById('profilePhoto').click()}>
                     Upload Photo
                   </CButton>
                   <CButton color="primary" className="mt-2" onClick={() => setShowCamera(true)}>
@@ -680,13 +487,7 @@ const AddReceptionistForm = ({ role, propAction = 'add', user }) => {
       )}
       <CModal visible={showCamera} onClose={() => setShowCamera(false)}>
         <CModalHeader>Capture Photo</CModalHeader>
-        <CModalBody>
-          {!capturedImage ? (
-            <Webcam ref={webcamRef} screenshotFormat="image/jpeg" style={{ width: '100%' }} />
-          ) : (
-            <img src={capturedImage} alt="Captured" style={{ width: '100%' }} />
-          )}
-        </CModalBody>
+        <CModalBody>{!capturedImage ? <Webcam ref={webcamRef} screenshotFormat="image/jpeg" style={{ width: '100%' }} /> : <img src={capturedImage} alt="Captured" style={{ width: '100%' }} />}</CModalBody>
         <CModalFooter>
           {!capturedImage ? (
             <CButton color="primary" onClick={handleCapture}>

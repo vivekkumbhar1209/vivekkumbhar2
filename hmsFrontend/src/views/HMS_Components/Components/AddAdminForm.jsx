@@ -294,6 +294,9 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
                             placeholder={propAction === 'add' ? 'Password' : 'Leave blank to keep current password'}
                             value={data.password}
                           />
+                          <div>
+                        <small className="text-gray-400">Note: Password must contain at least 1 uppercase letter, 1 special character, and 1 number.</small>
+                      </div>
                         </div>
 
                         {/* Right Column */}
@@ -371,6 +374,9 @@ const AddAdminForm = ({ role, propAction = 'add', user }) => {
                     <div>
                       <CFormLabel htmlFor="password">Password:</CFormLabel>
                       <CFormInput id="password" onChange={handleChange} type="password" name="password" required autoComplete="new-password" placeholder="Password" value={data.password} />
+                      <div>
+                        <small className="text-gray-400">Note: Password must contain at least 1 uppercase letter, 1 special character, and 1 number.</small>
+                      </div>
                     </div>
 
                     <div>
