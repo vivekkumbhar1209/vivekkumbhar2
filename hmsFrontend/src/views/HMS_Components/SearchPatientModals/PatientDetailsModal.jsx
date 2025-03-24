@@ -27,7 +27,7 @@ const PatientDetailsModal = ({ patientDetailModelVisibility, setPatientDetailMod
     return (
         <>
 
-
+            {console.log(currentData)}
             <CModal visible={patientDetailModelVisibility} onClose={setPatientDetailModelVisibility}>
                 <CModalContent>
                     <CModalHeader>
@@ -79,7 +79,7 @@ const PatientDetailsModal = ({ patientDetailModelVisibility, setPatientDetailMod
                                             <strong>Age:</strong>
                                         </div>
                                     </CTableDataCell>
-                                    <CTableDataCell>{currentData?.age || "N/A"}</CTableDataCell>
+                                    <CTableDataCell>{currentData?.age ?? "N/A"}</CTableDataCell>
                                     <CTableDataCell>
                                         <CButton onClick={() => handleCopy(currentData.age)}>Copy</CButton>
                                     </CTableDataCell>
